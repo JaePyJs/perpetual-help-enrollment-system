@@ -1,0 +1,37 @@
+/* Teacher dashboard specific styles */
+.flexContainer {
+  display: flex;
+  align-items: center;
+}
+
+.sidebarLink {
+  display: flex;
+  align-items: center;
+}
+
+.avatarContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.statsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.navContainer {
+  margin-top: 20px;
+}
+
+/* Add other teacher dashboard specific styles here */

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attendance Tracking</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/teacher-dashboard.css" />
+    <style>
+      .attendance-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      
+      .attendance-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      
+      .attendance-filters {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+      }
+      
+      .attendance-filters select,
+      .attendance-filters input {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      .attendance-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1.5rem;
+      }
+      
+      .attendance-table th,
+      .attendance-table td {
+        padding: 0.75rem;
+        border: 1px solid #e1e1e1;
+        text-align: left;
+      }
+      
+      .attendance-table th {
+        background-color: #f8f8f8;
+        position: sticky;
+        top: 0;
+      }
+      
+      .attendance-table tr:nth-child(even) {
+        background-color: #fdf6f2;
+      }
+      
+      .status-selector {
+        padding: 0.25rem;
+        border-radius: 4px;
+        width: 100%;
+      }
+      
+      .minutes-late {
+        width: 60px;
+        padding: 0.25rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      .notes-input {
+        width: 150px;
+        padding: 0.25rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 1rem;
+      }
+      
+      .action-button {
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        background-color: #e77f33;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      
+      .action-button:hover {
+        background-color: #d66e22;
+      }
+      
+      .action-button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      
+      .action-button.secondary {
+        background-color: #6c757d;
+      }
+      
+      .action-button.secondary:hover {
+        background-color: #5a6268;
+      }
+      
+      .tab-container {
+        margin-bottom: 1.5rem;
+      }
+      
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid #ccc;
+      }
+      
+      .tab {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        background-color: #f8f8f8;
+        border: 1px solid #ccc;
+        border-bottom: none;
+        margin-right: 0.25rem;
+        border-radius: 4px 4px 0 0;
+      }
+      
+      .tab.active {
+        background-color: white;
+        border-bottom: 1px solid white;
+        position: relative;
+        bottom: -1px;
+      }
+      
+      .tab-content {
+        padding: 1.5rem;
+        border: 1px solid #ccc;
+        border-top: none;
+        border-radius: 0 0 4px 4px;
+      }
+      
+      .status-present {
+        background-color: #d4edda;
+      }
+      
+      .status-absent {
+        background-color: #f8d7da;
+      }
+      
+      .status-late {
+        background-color: #fff3cd;
+      }
+      
+      .status-excused {
+        background-color: #d1ecf1;
+      }
+      
+      #attendance-history {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      
+      .session-card {
+        background-color: white;
+        border: 1px solid #e1e1e1;
+        border-radius: 4px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      
+      .session-card h3 {
+        margin-top: 0;
+        color: #e77f33;
+      }
+      
+      .session-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+      }
+      
+      .session-stat {
+        background-color: #f8f8f8;
+        padding: 0.5rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+      
+      .attendance-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .summary-card {
+        background-color: white;
+        border: 1px solid #e1e1e1;
+        border-radius: 4px;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        text-align: center;
+      }
+      
+      .summary-card h3 {
+        margin-top: 0;
+        color: #e77f33;
+      }
+      
+      .summary-value {
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0.5rem 0;
+      }
+      
+      .date-picker {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      @media (max-width: 768px) {
+        .attendance-filters {
+          flex-direction: column;
+        }
+        
+        .attendance-table {
+          display: block;
+          overflow-x: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="teacher-dashboard">
+      <aside class="sidebar">
+        <h2>Teacher Panel</h2>
+        <ul>
+          <li><a href="teacher-dashboard.html">🏠 Dashboard</a></li>
+          <li>
+            <a href="teacher-dashboard.html#courses">📚 My Courses</a>
+          </li>
+          <li><a href="teacher-dashboard.html#students">👥 Students</a></li>
+          <li><a href="teacher-dashboard.html#grades">📊 Grades</a></li>
+          <li><a href="attendance-tracking.html" class="active">📝 Attendance</a></li>
+          <li><a href="teacher-dashboard.html#reports">📋 Reports</a></li>
+          <li><a href="loginpage.html" onclick="logout()">🚪 Log Out</a></li>
+        </ul>
+      </aside>
+
+      <main class="main-content">
+        <div class="attendance-container">
+          <div class="attendance-header">
+            <h1>Attendance Tracking</h1>
+            <div class="action-buttons">
+              <button id="new-session-btn" class="action-button">New Attendance Session</button>
+            </div>
+          </div>
+          
+          <div class="tab-container">
+            <div class="tabs">
+              <div class="tab active" onclick="showTab('record-attendance')">Record Attendance</div>
+              <div class="tab" onclick="showTab('attendance-history')">Attendance History</div>
+              <div class="tab" onclick="showTab('attendance-reports')">Reports & Analytics</div>
+            </div>
+            
+            <div id="record-attendance" class="tab-content">
+              <div class="attendance-filters">
+                <select id="course-filter" onchange="loadStudentList()">
+                  <option value="">Select Course</option>
+                  <!-- Course options will be populated via JS -->
+                </select>
+                
+                <select id="session-type">
+                  <option value="lecture">Lecture</option>
+                  <option value="laboratory">Laboratory</option>
+                  <option value="tutorial">Tutorial</option>
+                  <option value="exam">Exam</option>
+                  <option value="other">Other</option>
+                </select>
+                
+                <input type="date" id="session-date" class="date-picker" value="" />
+                
+                <input type="number" id="session-number" placeholder="Session #" min="1" value="1" />
+                
+                <input type="number" id="session-duration" placeholder="Duration (min)" min="30" step="15" value="60" />
+              </div>
+              
+              <div id="students-attendance-list">
+                <p>Please select a course to load the student list.</p>
+              </div>
+              
+              <div class="action-buttons">
+                <button id="save-attendance-btn" class="action-button" disabled>Save Attendance</button>
+                <button id="cancel-attendance-btn" class="action-button secondary">Cancel</button>
+              </div>
+            </div>
+            
+            <div id="attendance-history" class="tab-content" style="display: none;">
+              <div class="attendance-filters">
+                <select id="history-course-filter" onchange="loadAttendanceHistory()">
+                  <option value="">Select Course</option>
+                  <!-- Course options will be populated via JS -->
+                </select>
+                
+                <select id="history-academic-year" onchange="loadAttendanceHistory()">
+                  <option value="">All Academic Years</option>
+                  <!-- Academic year options will be populated via JS -->
+                </select>
+              </div>
+              
+              <div id="attendance-sessions-list">
+                <p>Please select a course to view attendance history.</p>
+              </div>
+            </div>
+            
+            <div id="attendance-reports" class="tab-content" style="display: none;">
+              <div class="attendance-filters">
+                <select id="report-course-filter" onchange="generateAttendanceReport()">
+                  <option value="">Select Course</option>
+                  <!-- Course options will be populated via JS -->
+                </select>
+                
+                <select id="report-academic-year" onchange="generateAttendanceReport()">
+                  <option value="">Current Academic Year</option>
+                  <!-- Academic year options will be populated via JS -->
+                </select>
+              </div>
+              
+              <div class="attendance-summary" id="attendance-summary">
+                <!-- Summary cards will be generated here -->
+              </div>
+              
+              <div id="attendance-report">
+                <p>Please select a course to generate an attendance report.</p>
+              </div>
+              
+              <div class="action-buttons">
+                <button id="export-report-btn" class="action-button" disabled>Export Report</button>
+                <button id="print-report-btn" class="action-button" disabled>Print Report</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    
+    <!-- Modal for viewing/editing an attendance session -->
+    <div id="attendance-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeAttendanceModal()">&times;</span>
+        <h2>Attendance Session Details</h2>
+        <div id="attendance-modal-content">
+          <!-- Modal content will be populated here -->
+        </div>
+      </div>
+    </div>
+    
+    <script src="js/api.js"></script>
+    <script src="js/session-manager.js"></script>
+    <script src="js/security-module.js"></script>
+    <script src="js/teacher-classes-data.js"></script>
+    <script src="js/attendance-tracking.js"></script>
+  </body>
+</html>

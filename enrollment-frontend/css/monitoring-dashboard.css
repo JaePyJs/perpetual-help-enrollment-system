@@ -1,0 +1,126 @@
+/* Monitoring Dashboard Styles */
+
+.health-check-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    height: 100%;
+    min-height: 150px;
+}
+
+.health-check-card h5 {
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.status-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem 0;
+    height: 50px;
+}
+
+.status-indicator i {
+    font-size: 2rem;
+}
+
+.status-details {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.status-pass {
+    background-color: rgba(40, 167, 69, 0.1);
+    border-color: #28a745;
+}
+
+.status-pass .status-indicator i {
+    color: #28a745;
+}
+
+.status-warn {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-color: #ffc107;
+}
+
+.status-warn .status-indicator i {
+    color: #ffc107;
+}
+
+.status-fail {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-color: #dc3545;
+}
+
+.status-fail .status-indicator i {
+    color: #dc3545;
+}
+
+#systemStatusBadge {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+}
+
+.badge-healthy {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-degraded {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge-unhealthy {
+    background-color: #dc3545;
+    color: white;
+}
+
+#lastUpdated {
+    color: #6c757d;
+}
+
+table.table th {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.endpoint-slow {
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+.endpoint-error {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.progress-bar-success {
+    background-color: #28a745;
+}
+
+.progress-bar-warning {
+    background-color: #ffc107;
+}
+
+.progress-bar-danger {
+    background-color: #dc3545;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .health-check-card {
+        margin-bottom: 1rem;
+    }
+}

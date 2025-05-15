@@ -1,0 +1,66 @@
+.student-grades {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  overflow-x: auto;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.data-table th, .data-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+  background: #f8f8f8;
+  font-weight: bold;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.gpa-section {
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .student-grades {
+    padding: 0.5rem;
+  }
+  .data-table, .data-table thead, .data-table tbody, .data-table th, .data-table td, .data-table tr {
+    display: block;
+    width: 100%;
+  }
+  .data-table thead {
+    display: none;
+  }
+  .data-table tr {
+    margin-bottom: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    padding: 1rem 0.5rem;
+  }
+  .data-table td {
+    padding: 0.5rem 0.75rem;
+    border: none;
+    position: relative;
+  }
+  .data-table td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.25rem;
+    color: #888;
+  }
+} 

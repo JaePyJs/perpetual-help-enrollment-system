@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="School Enrollment System Login" />
+    <title>Login Page - School Enrollment System</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- Add no-js class by default -->
+    <script>
+      document.documentElement.className =
+        document.documentElement.className.replace("no-js", "");
+
+      // Theme management
+      function setTheme(theme) {
+        const html = document.documentElement;
+        html.classList.remove("light", "dark");
+
+        if (theme === "dark") {
+          html.classList.add("dark");
+        } else {
+          html.classList.add("light");
+        }
+
+        localStorage.setItem("theme", theme);
+      }
+
+      // Check for saved theme on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        const savedTheme = localStorage.getItem("theme") || "light";
+        setTheme(savedTheme);
+      });
+    </script>
+    <style>
+      /* Dark theme support for login page */
+      .dark {
+        --text-primary: #f0f0f0;
+        --text-secondary: #cccccc;
+        --bg-primary: #2d2d2d;
+        --bg-card: #3a3a3a;
+        --border-color: #4a4a4a;
+      }
+
+      .dark .wrapper {
+        background-color: #2d2d2d;
+      }
+
+      .dark .right-panel {
+        background-color: #41413c;
+      }
+
+      .dark .tab-link,
+      .dark h3,
+      .dark .show-password,
+      .dark .forgot {
+        color: #f0f0f0 !important;
+      }
+
+      .dark input[type="text"],
+      .dark input[type="password"] {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-color: #4a4a4a;
+      }
+
+      /* Fixed inline styles */
+      #error-message {
+        color: #ff4444;
+        text-align: center;
+        margin-bottom: 10px;
+        display: none;
+      }
+
+      .tab-link {
+        color: white;
+      }
+
+      .student-login-heading {
+        color: #50b04f;
+      }
+
+      .teacher-login-heading {
+        color: #4a90e2;
+      }
+
+      .admin-login-heading {
+        color: white;
+      }
+
+      .dark .student-login-heading {
+        color: #6ee66c;
+      }
+
+      .dark .teacher-login-heading {
+        color: #7bb3ff;
+      }
+
+      /* Theme switcher */
+      .theme-switcher {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .theme-button {
+        background: none;
+        border: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .theme-button:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+      <button
+        id="light-theme-btn"
+        class="theme-button"
+        onclick="setTheme('light')"
+        title="Light Mode"
+      >
+        <i class="fas fa-sun"></i>
+      </button>
+      <button
+        id="dark-theme-btn"
+        class="theme-button"
+        onclick="setTheme('dark')"
+        title="Dark Mode"
+      >
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+
+    <div class="wrapper">
+      <div class="container">
+        <div class="left-panel">
+          <div class="image-text-wrapper">
+            <div class="image-container student-theme">
+              <img
+                src="images/students.png"
+                alt="Student Portal"
+                id="img-student"
+                class="role-image active"
+              />
+              <img
+                src="images/teacher.png"
+                alt="Teacher Portal"
+                id="img-teacher"
+                class="role-image"
+              />
+              <img
+                src="images/admin.png"
+                alt="Admin Portal"
+                id="img-admin"
+                class="role-image"
+              />
+            </div>
+            <div class="welcome-message">
+              <h2><b>Welcome to Perpetual!</b></h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-panel">
+          <!-- Add error message container -->
+          <div id="error-message"></div>
+          <div class="nav-tabs" role="tablist">
+            <button
+              class="tab-link tab-link-animated active"
+              onclick="openTab('student')"
+              role="tab"
+              aria-controls="student"
+              aria-selected="true"
+            >
+              <span aria-hidden="true">🎓</span>
+              Student
+              <span class="sr-only">Login</span>
+            </button>
+            <button
+              class="tab-link"
+              onclick="openTab('teacher')"
+              role="tab"
+              aria-controls="teacher"
+              aria-selected="false"
+            >
+              <span aria-hidden="true">👩‍🏫</span>
+              Teacher
+              <span class="sr-only">Login</span>
+            </button>
+            <button
+              class="tab-link"
+              onclick="openTab('admin')"
+              role="tab"
+              aria-controls="admin"
+              aria-selected="false"
+            >
+              <span aria-hidden="true">⚙️</span>
+              Admin
+              <span class="sr-only">Login</span>
+            </button>
+          </div>
+          <form id="student" class="tab-content active">
+            <h3 class="student-login-heading">👨‍🎓 Student Log in</h3>
+            <input type="text" placeholder="User" id="student-email" required />
+            <input
+              type="password"
+              placeholder="Password"
+              class="password-input"
+              id="student-password"
+              required
+            />
+            <div class="actions">
+              <div
+                class="forgot"
+                onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSczJVOOdAV0IUG6nx72DVPbU2WPKyQbdYrM2lzHb_v01Ra8OQ/viewform?usp=dialog', '_blank')"
+              >
+                Forgot Username or Password?
+              </div>
+              <div class="show-password" onclick="togglePassword(this)">
+                Show
+              </div>
+            </div>
+            <button type="submit" class="continue">Continue</button>
+          </form>
+          <form id="teacher" class="tab-content">
+            <h3 class="teacher-login-heading">👩‍🏫 Teacher Log in</h3>
+            <input
+              type="text"
+              placeholder="Teacher ID"
+              id="teacher-email"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              class="password-input"
+              id="teacher-password"
+              required
+            />
+            <div class="actions">
+              <div
+                class="forgot"
+                onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSczJVOOdAV0IUG6nx72DVPbU2WPKyQbdYrM2lzHb_v01Ra8OQ/viewform?usp=dialog', '_blank')"
+              >
+                Forgot Username or Password?
+              </div>
+              <div class="show-password" onclick="togglePassword(this)">
+                Show
+              </div>
+            </div>
+            <button type="submit" class="continue">Continue</button>
+          </form>
+          <form id="admin" class="tab-content">
+            <h3 class="admin-login-heading">🤖 Admin Log in</h3>
+            <input
+              type="text"
+              placeholder="Admin ID"
+              id="admin-email"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              class="password-input"
+              id="admin-password"
+              required
+            />
+            <div class="actions">
+              <div
+                class="forgot"
+                onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSczJVOOdAV0IUG6nx72DVPbU2WPKyQbdYrM2lzHb_v01Ra8OQ/viewform?usp=dialog', '_blank')"
+              >
+                Forgot Username or Password?
+              </div>
+              <div class="show-password" onclick="togglePassword(this)">
+                Show
+              </div>
+            </div>
+            <button type="submit" class="continue">Continue</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="js/enhanced-login.js"></script>
+  </body>
+</html>

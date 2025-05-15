@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade Management | Teacher Dashboard</title>
+  <link rel="stylesheet" href="teacher-dashboard.css">
+  <link rel="stylesheet" href="css/grade-management.css">
+  <link rel="stylesheet" href="css/security-styles.css">
+</head>
+<body>
+  <div class="teacher-dashboard">
+    <aside class="sidebar">
+      <h2>Teacher Panel</h2>
+      <ul>
+        <li><a href="teacher-dashboard.html">🏠 Dashboard</a></li>
+        <li><a href="teacher-dashboard.html#courses">📚 My Courses</a></li>
+        <li><a href="teacher-dashboard.html#students">👥 Students</a></li>
+        <li><a href="grade-management.html" class="active">📊 Grades</a></li>
+        <li><a href="teacher-dashboard.html#reports">📋 Reports</a></li>
+        <li><a href="loginpage.html" onclick="return logout()">🚪 Log Out</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <div class="grade-management">
+        <div class="grade-header">
+          <h1>Advanced Grade Management</h1>
+          <div class="grade-actions">
+            <button class="secondary-btn" onclick="window.location.href='teacher-dashboard.html#grades'">Basic View</button>
+            <button class="download-btn" onclick="exportGradesToCSV()">Export to CSV</button>
+            <button class="primary-btn" onclick="toggleBatchUpload()">Batch Upload</button>
+          </div>
+        </div>
+
+        <!-- Batch Upload Section (Hidden by Default) -->
+        <div id="batch-upload-section" class="batch-upload" style="display: none;">
+          <h3>Batch Grade Upload</h3>
+          <div class="upload-instructions">
+            <p>Upload a CSV file with student grades. The file should contain the following columns: <br>
+            <strong>Student ID, Assignments, Quizzes, Midterm, Finals, Comments</strong></p>
+            <p>Each row should represent a single student's grades.</p>
+          </div>
+          <div class="file-upload">
+            <input type="file" id="grade-csv-upload" accept=".csv">
+            <button class="primary-btn" onclick="uploadGradeCSV()">Upload and Process</button>
+          </div>
+          <div class="download-template">
+            <a href="#" onclick="downloadGradeTemplate(); return false;">Download Template CSV</a>
+          </div>
+        </div>
+
+        <div class="grade-filters">
+          <div class="filter-group">
+            <label for="grade-course-filter">Course:</label>
+            <select id="grade-course-filter" onchange="loadGradeSheet()">
+              <option value="">Select Course</option>
+              <!-- Course options will be populated by JavaScript -->
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="grading-period">Grading Period:</label>
+            <select id="grading-period" onchange="loadGradeSheet()">
+              <option value="">Select Period</option>
+              <option value="midterm">Midterm</option>
+              <option value="finals">Finals</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="student-filter">Student Search:</label>
+            <input type="text" id="student-filter" placeholder="Search by name or ID..." oninput="filterGradeTable()">
+          </div>
+          <div class="filter-group">
+            <label for="status-filter">Grade Status:</label>
+            <select id="status-filter" onchange="filterGradeTable()">
+              <option value="">All Students</option>
+              <option value="passing">Passing</option>
+              <option value="failing">Failing</option>
+              <option value="incomplete">Incomplete</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Grading Components Section -->
+        <div id="grading-components" class="grade-components">
+          <h3>Grading Components</h3>
+          <p>Set the weight of each component for final grade calculation. Total must equal 100%.</p>
+          <div class="component-grid">
+            <div class="component-item">
+              <label for="assignments-weight">Assignments:</label>
+              <input type="number" id="assignments-weight" min="0" max="100" value="30" oninput="updateWeights()"> %
+            </div>
+            <div class="component-item">
+              <label for="quizzes-weight">Quizzes:</label>
+              <input type="number" id="quizzes-weight" min="0" max="100" value="20" oninput="updateWeights()"> %
+            </div>
+            <div class="component-item">
+              <label for="midterm-weight">Midterm:</label>
+              <input type="number" id="midterm-weight" min="0" max="100" value="20" oninput="updateWeights()"> %
+            </div>
+            <div class="component-item">
+              <label for="finals-weight">Finals:</label>
+              <input type="number" id="finals-weight" min="0" max="100" value="30" oninput="updateWeights()"> %
+            </div>
+          </div>
+          <div class="component-total" id="weight-total">Total: 100%</div>
+        </div>
+
+        <!-- Grading Scale Section -->
+        <div id="grading-scale" class="grade-scale">
+          <h3>Grading Scale</h3>
+          <p>Set the minimum percentage required for each letter grade.</p>
+          <div class="scale-grid">
+            <div class="scale-item">
+              <label for="scale-a">A (4.0):</label>
+              <input type="number" id="scale-a" min="0" max="100" value="93" oninput="updateGradeSheet()"> %
+            </div>
+            <div class="scale-item">
+              <label for="scale-a-minus">A- (3.7):</label>
+              <input type="number" id="scale-a-minus" min="0" max="100" value="90" oninput="updateGradeSheet()"> %
+            </div>
+            <div class="scale-item">
+              <label for="scale-b-plus">B+ (3.3):</label>
+              <input type="number" id="scale-b-plus" min="0" max="100" value="87" oninput="updateGradeSheet()"> %
+            </div>
+            <div class="scale-item">
+              <label for="scale-b">B (3.0):</label>
+              <input type="number" id="scale-b" min="0" max="100" value="83" oninput="updateGradeSheet()"> %
+            </div>
+            <div class="scale-item">
+              <label for="scale-b-minus">B- (2.7):</label>
+              <input type="number" id="scale-b-minus" min="0" max="100" value="80" oninput="updateGradeSheet()"> %
+            </div>
+            <div class="scale-item">
+              <label for="scale-c-plus">C+ (2.3):</label>
+              <input type="number" id="scale-c-plus" min="0" max="100" value="77" oninput="updateGradeSheet()"> %
+            </div>
+            <div class="scale-item">
+              <label for="scale-c">C (2.0):</label>
+              <input type="number" id="scale-c" min="0" max="100" value="73" oninput="updateGradeSheet()"> %
+            </div>
+            <div class="scale-item">
+              <label for="scale-c-minus">C- (1.7):</label>
+              <input type="number" id="scale-c-minus" min="0" max="100" value="70" oninput="updateGradeSheet()"> %
+            </div>
+            <div class="scale-item">
+              <label for="scale-d-plus">D+ (1.3):</label>
+              <input type="number" id="scale-d-plus" min="0" max="100" value="67" oninput="updateGradeSheet()"> %
+            </div>
+            <div class="scale-item">
+              <label for="scale-d">D (1.0):</label>
+              <input type="number" id="scale-d" min="0" max="100" value="63" oninput="updateGradeSheet()"> %
+            </div>
+            <div class="scale-item">
+              <label for="scale-d-minus">D- (0.7):</label>
+              <input type="number" id="scale-d-minus" min="0" max="100" value="60" oninput="updateGradeSheet()"> %
+            </div>
+            <div class="scale-item">
+              <label for="scale-f">F (0.0):</label>
+              <input type="number" id="scale-f" min="0" max="100" value="0" disabled> %
+            </div>
+          </div>
+        </div>
+
+        <div id="grade-sheet" class="grade-sheet loading">
+          <!-- Grade sheet will be loaded here -->
+          <p>Please select a course and grading period to load grades.</p>
+        </div>
+
+        <div class="grade-actions">
+          <button class="primary-btn" id="save-all-btn" onclick="saveAllGrades()" disabled>Save All Grades</button>
+          <button class="secondary-btn" id="calculate-btn" onclick="recalculateAllGrades()" disabled>Recalculate All</button>
+          <button class="primary-btn" id="finalize-btn" onclick="finalizeGrades()" disabled>Finalize Grades</button>
+        </div>
+      </div>
+
+      <!-- Grade History Modal -->
+      <!-- Grade Analysis Section -->
+      <div class="grade-analysis-section" id="grade-analysis">
+        <div class="grade-analysis-header">
+          <h2>Grade Analysis</h2>
+          <div class="analysis-actions">
+            <button class="primary-btn" onclick="generateCourseAnalytics()">Generate Analytics</button>
+            <button class="secondary-btn" onclick="toggleAnalysisView('course')">Course Overview</button>
+            <button class="secondary-btn" onclick="toggleAnalysisView('students')">Student Reports</button>
+            <button class="secondary-btn" onclick="toggleAnalysisView('rankings')">Class Rankings</button>
+            <button class="secondary-btn" onclick="toggleAnalysisView('at-risk')">At-Risk Students</button>
+          </div>
+        </div>
+        
+        <!-- Analysis Dashboard -->
+        <div class="analysis-dashboard" id="analysis-dashboard">
+          <div class="course-analytics view-section" id="course-analytics-view">
+            <h3>Course Performance Overview</h3>
+            <div class="analytics-charts">
+              <div class="chart-container">
+                <h4>Component Averages</h4>
+                <div id="component-averages-chart" class="chart"></div>
+              </div>
+              <div class="chart-container">
+                <h4>Grade Distribution</h4>
+                <div id="grade-distribution-chart" class="chart"></div>
+              </div>
+            </div>
+            <div class="analytics-summary" id="course-analytics-summary">
+              <!-- Course analytics summary will be populated here -->
+              <p>Select a course and click "Generate Analytics" to view course performance data.</p>
+            </div>
+          </div>
+          
+          <div class="student-reports view-section" id="student-reports-view" style="display: none;">
+            <h3>Individual Student Reports</h3>
+            <div class="student-selection">
+              <label for="student-report-selector">Select Student:</label>
+              <select id="student-report-selector" onchange="loadStudentReport()">
+                <option value="">Choose a student...</option>
+                <!-- Students will be populated by JavaScript -->
+              </select>
+            </div>
+            <div class="student-report" id="student-report-container">
+              <!-- Student report will be populated here -->
+              <p>Select a student to view their detailed performance report.</p>
+            </div>
+          </div>
+          
+          <div class="class-rankings view-section" id="class-rankings-view" style="display: none;">
+            <h3>Class Rankings</h3>
+            <div class="ranking-table-container">
+              <table class="ranking-table" id="ranking-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Overall Score</th>
+                    <th>Letter Grade</th>
+                    <th>Numeric Grade</th>
+                    <th>Percentile</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="ranking-table-body">
+                  <!-- Rankings will be populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="at-risk-students view-section" id="at-risk-students-view" style="display: none;">
+            <h3>Students Needing Additional Support</h3>
+            <div class="threshold-selector">
+              <label for="at-risk-threshold">Set Threshold Score:</label>
+              <input type="number" id="at-risk-threshold" min="0" max="100" value="70" onchange="updateAtRiskList()">
+              <button class="secondary-btn" onclick="updateAtRiskList()">Update</button>
+            </div>
+            <div class="at-risk-table-container">
+              <table class="at-risk-table" id="at-risk-table">
+                <thead>
+                  <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Overall Score</th>
+                    <th>Weak Areas</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="at-risk-table-body">
+                  <!-- At-risk students will be populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade History Modal -->
+      <div id="grade-history-modal" class="grade-history-modal">
+        <div class="grade-history-content">
+          <span class="close-modal" onclick="closeHistoryModal()">&times;</span>
+          <h2>Grade History</h2>
+          <div id="history-student-info"></div>
+          <div id="grade-history-table"></div>
+        </div>
+      </div>
+      
+      <!-- Student Report Modal -->
+      <div id="student-report-modal" class="grade-history-modal">
+        <div class="grade-history-content student-report-content">
+          <span class="close-modal" onclick="closeStudentReportModal()">&times;</span>
+          <h2>Detailed Student Report</h2>
+          <div id="student-report-detail"></div>
+          <div class="report-actions">
+            <button class="primary-btn" onclick="printStudentReport()">Print Report</button>
+            <button class="secondary-btn" onclick="emailStudentReport()">Email to Student</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/security-module.js"></script>
+  <script src="js/session-manager.js"></script>
+  <script src="js/teacher-classes-data.js"></script>
+  <script src="js/grade-analysis.js"></script>
+  <script src="js/grade-management.js"></script>
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

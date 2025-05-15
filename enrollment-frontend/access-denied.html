@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied | School Enrollment System</title>
+    <link rel="stylesheet" href="css/security-styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fdf6f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="access-denied-container">
+        <div class="access-denied-icon">🔒</div>
+        <h1 class="access-denied-title">Access Denied</h1>
+        <p class="access-denied-message">
+            You do not have permission to access this page. This could be because:
+            <br><br>
+            1. You are not logged in<br>
+            2. Your account does not have the required permissions<br>
+            3. Your session has expired
+        </p>
+        <div class="access-denied-actions">
+            <a href="loginpage.html" class="access-denied-button">Return to Login</a>
+        </div>
+    </div>
+
+    <script>
+        // Log the access denied event
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the referring page
+            const referrer = document.referrer;
+            
+            // Log the event (in a real app, this would send to the server)
+            const logEntry = {
+                event: 'access_denied',
+                timestamp: new Date().toISOString(),
+                referrer: referrer,
+                userAgent: navigator.userAgent
+            };
+            
+            console.log('Security Event:', logEntry);
+            
+            // Store access denied logs locally
+            const accessDeniedLogs = JSON.parse(localStorage.getItem('accessDeniedLogs') || '[]');
+            accessDeniedLogs.push(logEntry);
+            
+            // Keep only the most recent logs
+            if (accessDeniedLogs.length > 50) {
+                accessDeniedLogs.shift();
+            }
+            
+            localStorage.setItem('accessDeniedLogs', JSON.stringify(accessDeniedLogs));
+        });
+    </script>
+</body>
+</html>

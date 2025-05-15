@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messaging System</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/teacher-dashboard.css" />
+    <style>
+      .messaging-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      
+      .messaging-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      
+      .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+      }
+      
+      .action-button {
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        background-color: #e77f33;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      
+      .action-button:hover {
+        background-color: #d66e22;
+      }
+      
+      .action-button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      
+      .action-button.secondary {
+        background-color: #6c757d;
+      }
+      
+      .action-button.secondary:hover {
+        background-color: #5a6268;
+      }
+      
+      .messaging-layout {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 1.5rem;
+        height: calc(100vh - 200px);
+        min-height: 500px;
+      }
+      
+      .message-sidebar {
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        border: 1px solid #e1e1e1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .message-folders {
+        padding: 1rem;
+        border-bottom: 1px solid #e1e1e1;
+      }
+      
+      .folder-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .folder-list li {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        border-radius: 4px;
+        margin-bottom: 0.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .folder-list li:hover {
+        background-color: #f1f1f1;
+      }
+      
+      .folder-list li.active {
+        background-color: #e77f33;
+        color: white;
+      }
+      
+      .folder-list li.active .badge {
+        background-color: white;
+        color: #e77f33;
+      }
+      
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        background-color: #e77f33;
+        color: white;
+        border-radius: 10px;
+        font-size: 0.8rem;
+      }
+      
+      .message-search {
+        padding: 1rem;
+        border-bottom: 1px solid #e1e1e1;
+      }
+      
+      .search-input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      .message-list {
+        flex: 1;
+        overflow-y: auto;
+      }
+      
+      .message-item {
+        padding: 1rem;
+        border-bottom: 1px solid #e1e1e1;
+        cursor: pointer;
+      }
+      
+      .message-item:hover {
+        background-color: #f1f1f1;
+      }
+      
+      .message-item.active {
+        background-color: #fdf6f2;
+        border-left: 4px solid #e77f33;
+      }
+      
+      .message-item.unread {
+        background-color: #f8f9fa;
+        font-weight: bold;
+      }
+      
+      .message-item-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+      }
+      
+      .message-sender {
+        font-weight: bold;
+      }
+      
+      .message-time {
+        font-size: 0.8rem;
+        color: #6c757d;
+      }
+      
+      .message-subject {
+        margin-bottom: 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .message-preview {
+        font-size: 0.9rem;
+        color: #6c757d;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .message-content {
+        background-color: white;
+        border-radius: 8px;
+        border: 1px solid #e1e1e1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      
+      .message-view-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid #e1e1e1;
+      }
+      
+      .message-view-subject {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .message-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+      
+      .message-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .message-view-body {
+        padding: 1.5rem;
+        flex: 1;
+        overflow-y: auto;
+      }
+      
+      .message-text {
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+      
+      .message-attachments {
+        margin-top: 1.5rem;
+        border-top: 1px solid #e1e1e1;
+        padding-top: 1rem;
+      }
+      
+      .attachment-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      
+      .attachment-item {
+        padding: 0.5rem;
+        background-color: #f8f8f8;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+      }
+      
+      .attachment-icon {
+        font-size: 1.2rem;
+      }
+      
+      .message-reply {
+        padding: 1.5rem;
+        border-top: 1px solid #e1e1e1;
+      }
+      
+      .reply-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+        min-height: 100px;
+      }
+      
+      .reply-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+      }
+      
+      .reply-attachments {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .thread-container {
+        margin-top: 1.5rem;
+        border-top: 1px solid #e1e1e1;
+        padding-top: 1rem;
+      }
+      
+      .thread-title {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+      
+      .thread-message {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background-color: #f8f8f8;
+        border-radius: 8px;
+      }
+      
+      .thread-message-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+      }
+      
+      .thread-message-sender {
+        font-weight: bold;
+      }
+      
+      .thread-message-time {
+        font-size: 0.8rem;
+        color: #6c757d;
+      }
+      
+      .thread-message-content {
+        line-height: 1.5;
+      }
+      
+      .compose-form {
+        padding: 1.5rem;
+      }
+      
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+      
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      .form-group textarea {
+        resize: vertical;
+        min-height: 150px;
+      }
+      
+      .token-input {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        min-height: 50px;
+      }
+      
+      .recipient-token {
+        background-color: #e77f33;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .remove-token {
+        cursor: pointer;
+        font-weight: bold;
+      }
+      
+      .recipient-input {
+        flex: 1;
+        border: none;
+        padding: 0.25rem;
+        min-width: 100px;
+      }
+      
+      .recipient-input:focus {
+        outline: none;
+      }
+      
+      .recipient-suggestions {
+        position: absolute;
+        width: calc(100% - 3rem);
+        max-height: 200px;
+        overflow-y: auto;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        z-index: 10;
+      }
+      
+      .suggestion-item {
+        padding: 0.5rem;
+        cursor: pointer;
+      }
+      
+      .suggestion-item:hover {
+        background-color: #f1f1f1;
+      }
+      
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 3rem;
+        color: #6c757d;
+        height: 100%;
+      }
+      
+      .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+      
+      .empty-text {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        border-top: 1px solid #e1e1e1;
+      }
+      
+      .page-item {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      .page-item:hover {
+        background-color: #f1f1f1;
+      }
+      
+      .page-item.active {
+        background-color: #e77f33;
+        color: white;
+      }
+      
+      .file-input-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+      }
+      
+      .file-input-wrapper input[type=file] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+      }
+      
+      @media (max-width: 768px) {
+        .messaging-layout {
+          grid-template-columns: 1fr;
+        }
+        
+        .message-sidebar {
+          display: none;
+        }
+        
+        .message-sidebar.mobile-visible {
+          display: flex;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1000;
+        }
+        
+        .mobile-back {
+          display: block !important;
+        }
+      }
+      
+      .mobile-back {
+        display: none;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="teacher-dashboard">
+      <aside class="sidebar">
+        <h2>School Panel</h2>
+        <ul>
+          <li><a href="teacher-dashboard.html">🏠 Dashboard</a></li>
+          <li>
+            <a href="teacher-dashboard.html#courses">📚 My Courses</a>
+          </li>
+          <li><a href="teacher-dashboard.html#students">👥 Students</a></li>
+          <li><a href="teacher-dashboard.html#grades">📊 Grades</a></li>
+          <li><a href="attendance-tracking.html">📝 Attendance</a></li>
+          <li><a href="schedule-management.html">📅 Schedules</a></li>
+          <li><a href="messaging.html" class="active">✉️ Messages</a></li>
+          <li><a href="teacher-dashboard.html#reports">📋 Reports</a></li>
+          <li><a href="loginpage.html" onclick="logout()">🚪 Log Out</a></li>
+        </ul>
+      </aside>
+
+      <main class="main-content">
+        <div class="messaging-container">
+          <div class="messaging-header">
+            <h1>Messages</h1>
+            <div class="action-buttons">
+              <button id="compose-btn" class="action-button">Compose New Message</button>
+            </div>
+          </div>
+          
+          <div class="messaging-layout">
+            <div class="message-sidebar">
+              <div class="message-folders">
+                <ul class="folder-list">
+                  <li class="active" data-folder="inbox">
+                    <span>📥 Inbox</span>
+                    <span class="badge" id="inbox-count">0</span>
+                  </li>
+                  <li data-folder="sent">
+                    <span>📤 Sent</span>
+                  </li>
+                  <li data-folder="archived">
+                    <span>🗃️ Archived</span>
+                  </li>
+                  <li data-folder="deleted">
+                    <span>🗑️ Deleted</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="message-search">
+                <input type="text" class="search-input" placeholder="Search messages..." id="search-input">
+              </div>
+              
+              <div class="message-list" id="message-list">
+                <!-- Message items will be populated here -->
+              </div>
+              
+              <div class="pagination" id="message-pagination">
+                <!-- Pagination will be populated here -->
+              </div>
+            </div>
+            
+            <div class="message-content" id="message-content">
+              <!-- Message viewing area or compose form will be shown here -->
+              <div class="empty-state" id="empty-state">
+                <div class="empty-icon">✉️</div>
+                <div class="empty-text">Select a message to view its contents</div>
+                <button class="action-button" id="empty-compose-btn">Compose New Message</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    
+    <!-- Templates for dynamic content -->
+    <template id="message-item-template">
+      <div class="message-item" data-id="">
+        <div class="message-item-header">
+          <div class="message-sender"></div>
+          <div class="message-time"></div>
+        </div>
+        <div class="message-subject"></div>
+        <div class="message-preview"></div>
+      </div>
+    </template>
+    
+    <template id="message-view-template">
+      <div class="message-view">
+        <button class="action-button secondary mobile-back">← Back to Messages</button>
+        <div class="message-view-header">
+          <div class="message-view-subject"></div>
+          <div class="message-meta">
+            <div class="message-meta-item">
+              <span>From:</span>
+              <span class="message-sender"></span>
+            </div>
+            <div class="message-meta-item">
+              <span>To:</span>
+              <span class="message-recipients"></span>
+            </div>
+            <div class="message-meta-item">
+              <span>Date:</span>
+              <span class="message-date"></span>
+            </div>
+          </div>
+        </div>
+        <div class="message-view-body">
+          <div class="message-text"></div>
+          <div class="message-attachments">
+            <h3>Attachments</h3>
+            <ul class="attachment-list">
+              <!-- Attachments will be populated here -->
+            </ul>
+          </div>
+          <div class="thread-container" style="display: none;">
+            <h3 class="thread-title">Message Thread</h3>
+            <div class="thread-messages">
+              <!-- Thread messages will be populated here -->
+            </div>
+          </div>
+        </div>
+        <div class="message-reply">
+          <textarea class="reply-input" placeholder="Write your reply here..."></textarea>
+          <div class="reply-actions">
+            <div class="reply-attachments">
+              <div class="file-input-wrapper">
+                <button class="action-button secondary">Attach File</button>
+                <input type="file" multiple>
+              </div>
+              <span class="attachment-list-reply"></span>
+            </div>
+            <button class="action-button" id="send-reply-btn">Send Reply</button>
+          </div>
+        </div>
+      </div>
+    </template>
+    
+    <template id="compose-template">
+      <div class="compose-form">
+        <button class="action-button secondary mobile-back">← Back to Messages</button>
+        <h2>Compose New Message</h2>
+        <form id="compose-form">
+          <div class="form-group">
+            <label for="message-type">Message Type</label>
+            <select id="message-type">
+              <option value="direct">Direct Message</option>
+              <option value="class">Class Announcement</option>
+              <option value="announcement">General Announcement</option>
+            </select>
+          </div>
+          
+          <div class="form-group" id="recipients-group">
+            <label for="recipients">Recipients</label>
+            <div class="token-input" id="token-input">
+              <!-- Recipient tokens will be added here -->
+              <input type="text" class="recipient-input" id="recipient-input" placeholder="Search for users...">
+            </div>
+            <div class="recipient-suggestions" id="recipient-suggestions" style="display: none;">
+              <!-- Suggestions will be added here -->
+            </div>
+          </div>
+          
+          <div class="form-group" id="course-group" style="display: none;">
+            <label for="course-select">Select Course</label>
+            <select id="course-select">
+              <option value="">Select a course</option>
+              <!-- Course options will be populated here -->
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="message-subject">Subject</label>
+            <input type="text" id="message-subject" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="message-content">Message</label>
+            <textarea id="message-content" required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="message-attachments">Attachments</label>
+            <div class="file-input-wrapper">
+              <button class="action-button secondary" type="button">Select Files</button>
+              <input type="file" id="message-attachments" multiple>
+            </div>
+            <div id="attachment-list" class="attachment-list"></div>
+          </div>
+          
+          <div class="form-group" id="priority-group" style="display: none;">
+            <label for="message-priority">Priority</label>
+            <select id="message-priority">
+              <option value="normal">Normal</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+          
+          <div class="action-buttons">
+            <button type="button" class="action-button secondary" id="cancel-compose">Cancel</button>
+            <button type="submit" class="action-button">Send Message</button>
+          </div>
+        </form>
+      </div>
+    </template>
+    
+    <script src="js/api.js"></script>
+    <script src="js/session-manager.js"></script>
+    <script src="js/security-module.js"></script>
+    <script src="js/messaging.js"></script>
+  </body>
+</html>

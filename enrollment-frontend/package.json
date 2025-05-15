@@ -1,0 +1,24 @@
+{
+  "name": "enrollment-frontend",
+  "version": "1.0.0",
+  "description": "School Enrollment System Frontend",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "tailwindcss -i ./css/tailwind-custom.css -o ./css/tailwind.css",
+    "watch:css": "tailwindcss -i ./css/tailwind-custom.css -o ./css/tailwind.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "school",
+    "enrollment",
+    "system"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
+  },
+  "dependencies": {
+    "enrollment-frontend": "file:"
+  }
+}

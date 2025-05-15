@@ -1,0 +1,379 @@
+/* Security Module Styles */
+
+/* Input validation styles */
+input.invalid,
+select.invalid,
+textarea.invalid {
+    border: 1px solid #e74c3c !important;
+    background-color: #fef5f5;
+}
+
+.validation-error {
+    color: #e74c3c;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* Session expiry notification */
+.session-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(52, 73, 94, 0.9);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    max-width: 350px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transform: translateY(100px);
+    opacity: 0;
+}
+
+.session-notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.session-notification-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.session-notification-body {
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+}
+
+.session-notification-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.session-notification-button {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.2s ease;
+}
+
+.session-notification-button.primary {
+    background-color: #e77f33;
+    border-color: #e77f33;
+}
+
+.session-notification-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.session-notification-button.primary:hover {
+    background-color: #d87229;
+}
+
+/* Access denied page styles */
+.access-denied-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    padding: 20px;
+    background-color: #fdf6f2;
+}
+
+.access-denied-icon {
+    font-size: 6rem;
+    color: #e77f33;
+    margin-bottom: 20px;
+}
+
+.access-denied-title {
+    font-size: 2rem;
+    color: #41413c;
+    margin-bottom: 10px;
+}
+
+.access-denied-message {
+    max-width: 500px;
+    margin-bottom: 30px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.access-denied-button {
+    background-color: #e77f33;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.access-denied-button:hover {
+    background-color: #d87229;
+}
+
+/* Password strength meter */
+.password-strength-meter {
+    height: 5px;
+    width: 100%;
+    background-color: #e0e0e0;
+    margin-top: 8px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.password-strength-meter-progress {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.password-strength-meter-progress.very-weak {
+    width: 20%;
+    background-color: #e74c3c;
+}
+
+.password-strength-meter-progress.weak {
+    width: 40%;
+    background-color: #e67e22;
+}
+
+.password-strength-meter-progress.medium {
+    width: 60%;
+    background-color: #f1c40f;
+}
+
+.password-strength-meter-progress.strong {
+    width: 80%;
+    background-color: #3498db;
+}
+
+.password-strength-meter-progress.very-strong {
+    width: 100%;
+    background-color: #2ecc71;
+}
+
+.password-strength-text {
+    font-size: 0.8rem;
+    margin-top: 4px;
+    text-align: right;
+}
+
+.password-strength-text.very-weak {
+    color: #e74c3c;
+}
+
+.password-strength-text.weak {
+    color: #e67e22;
+}
+
+.password-strength-text.medium {
+    color: #f1c40f;
+}
+
+.password-strength-text.strong {
+    color: #3498db;
+}
+
+.password-strength-text.very-strong {
+    color: #2ecc71;
+}
+
+/* Security log entries */
+.security-log-container {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.security-log-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.security-log-entry:last-child {
+    border-bottom: none;
+}
+
+.security-log-time {
+    color: #777;
+    font-size: 0.85rem;
+    min-width: 150px;
+}
+
+.security-log-event {
+    flex: 1;
+}
+
+.security-log-event.success {
+    color: #2ecc71;
+}
+
+.security-log-event.failure {
+    color: #e74c3c;
+}
+
+.security-log-user {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Login attempt tracking */
+.login-attempts-warning {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Logout message */
+.logout-message {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    color: #41413c;
+    border-left: 4px solid #e77f33;
+}
+
+/* Two-factor authentication styles */
+.two-factor-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.two-factor-title {
+    color: #41413c;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.two-factor-subtitle {
+    color: #666;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.verification-code-input {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.verification-code-input input {
+    width: 40px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.verification-code-input input:focus {
+    border-color: #e77f33;
+    outline: none;
+}
+
+.resend-code {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.resend-code-button {
+    color: #e77f33;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-decoration: underline;
+}
+
+.resend-code-button:disabled {
+    color: #999;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+.verification-timer {
+    display: block;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    color: #666;
+}
+
+/* Dark mode modifications */
+@media (prefers-color-scheme: dark) {
+    .session-notification {
+        background-color: rgba(20, 20, 20, 0.9);
+    }
+    
+    .access-denied-container {
+        background-color: #2c2c2c;
+    }
+    
+    .access-denied-title {
+        color: #e0e0e0;
+    }
+    
+    .access-denied-message {
+        color: #b0b0b0;
+    }
+    
+    .security-log-container {
+        background-color: #2c2c2c;
+    }
+    
+    .security-log-entry {
+        border-bottom-color: #3a3a3a;
+    }
+    
+    .security-log-time {
+        color: #999;
+    }
+    
+    .logout-message {
+        background-color: #2c2c2c;
+        color: #e0e0e0;
+    }
+    
+    .two-factor-container {
+        background-color: #2c2c2c;
+    }
+    
+    .two-factor-title {
+        color: #e0e0e0;
+    }
+    
+    .two-factor-subtitle {
+        color: #b0b0b0;
+    }
+    
+    .verification-code-input input {
+        border-color: #3a3a3a;
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+    }
+}
