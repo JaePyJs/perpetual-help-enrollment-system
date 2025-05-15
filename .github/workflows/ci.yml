@@ -1,0 +1,232 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    name: Code Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      
+      - name: Install dependencies - Backend
+        run: cd enrollment-backend && npm ci
+      
+      - name: Install dependencies - Frontend
+        run: cd enrollment-frontend && npm ci
+      
+      - name: Run ESLint - Backend
+        run: cd enrollment-backend && npm run lint
+      
+      - name: Run ESLint - Frontend
+        run: cd enrollment-frontend && npm run lint
+
+  test:
+    name: Automated Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+    
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      
+      - name: Install dependencies - Backend
+        run: cd enrollment-backend && npm ci
+      
+      - name: Run Backend Tests
+        run: cd enrollment-backend && npm test
+        env:
+          NODE_ENV: testing
+          MONGODB_URI: mongodb://localhost:27017/enrollment_system_test
+          JWT_SECRET: test-jwt-secret
+          SESSION_SECRET: test-session-secret
+          COOKIE_SECRET: test-cookie-secret
+      
+      - name: Install dependencies - Frontend
+        run: cd enrollment-frontend && npm ci
+      
+      - name: Run Frontend Tests
+        run: cd enrollment-frontend && npm test
+      
+      - name: Generate coverage report
+        run: cd enrollment-backend && npm run coverage
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./enrollment-backend/coverage/
+          fail_ci_if_error: false
+
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      
+      - name: Determine environment
+        id: env
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "::set-output name=node_env::production"
+          else
+            echo "::set-output name=node_env::development"
+          fi
+      
+      - name: Create .env file
+        run: |
+          cp .env.${{ steps.env.outputs.node_env }} .env
+      
+      - name: Install dependencies
+        run: |
+          cd enrollment-backend && npm ci
+          cd ../enrollment-frontend && npm ci
+      
+      - name: Build application
+        run: node scripts/build.js
+        env:
+          NODE_ENV: ${{ steps.env.outputs.node_env }}
+      
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ steps.env.outputs.node_env }}
+          path: |
+            public/
+            !public/node_modules/
+  
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Determine environment
+        id: env
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "::set-output name=node_env::production"
+            echo "::set-output name=deploy_url::https://enrollment.manila.uphsl.edu.ph"
+          else
+            echo "::set-output name=node_env::development"
+            echo "::set-output name=deploy_url::https://dev.enrollment.manila.uphsl.edu.ph"
+          fi
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-${{ steps.env.outputs.node_env }}
+          path: public
+      
+      - name: Deploy to server
+        if: steps.env.outputs.node_env == 'production'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USERNAME }}
+          key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          script: |
+            mkdir -p /var/www/enrollment-system
+            cd /var/www/enrollment-system
+            rm -rf /var/www/enrollment-system/public_old
+            mv public public_old || true
+            mkdir -p public
+      
+      - name: Deploy artifacts to production
+        if: steps.env.outputs.node_env == 'production'
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USERNAME }}
+          key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          source: "public/*"
+          target: "/var/www/enrollment-system/"
+          strip_components: 0
+      
+      - name: Run post-deployment commands (Production)
+        if: steps.env.outputs.node_env == 'production'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USERNAME }}
+          key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/enrollment-system
+            cp .env.production public/.env
+            cd public
+            npm install --production
+            pm2 restart enrollment-system || pm2 start server.js --name "enrollment-system"
+            
+      - name: Deploy to development server
+        if: steps.env.outputs.node_env == 'development'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USERNAME }}
+          key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
+          script: |
+            mkdir -p /var/www/enrollment-system-dev
+            cd /var/www/enrollment-system-dev
+            rm -rf /var/www/enrollment-system-dev/public_old
+            mv public public_old || true
+            mkdir -p public
+      
+      - name: Deploy artifacts to development
+        if: steps.env.outputs.node_env == 'development'
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USERNAME }}
+          key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
+          source: "public/*"
+          target: "/var/www/enrollment-system-dev/"
+          strip_components: 0
+      
+      - name: Run post-deployment commands (Development)
+        if: steps.env.outputs.node_env == 'development'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USERNAME }}
+          key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/enrollment-system-dev
+            cp .env.development public/.env
+            cd public
+            npm install --production
+            pm2 restart enrollment-system-dev || pm2 start server.js --name "enrollment-system-dev"
+      
+      - name: Notify deployment
+        run: |
+          echo "✅ Deployed to ${{ steps.env.outputs.deploy_url }}"

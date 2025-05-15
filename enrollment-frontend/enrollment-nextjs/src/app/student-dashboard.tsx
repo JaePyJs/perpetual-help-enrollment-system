@@ -18,6 +18,7 @@ import {
 // Default student avatar for fallback
 const DEFAULT_AVATAR = "/images/student-avatar.svg";
 
+// Add authentication guard and loading/error states for dashboard
 export default function StudentDashboard() {
   const [activeSection, setActiveSection] = useState("dashboard");
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
@@ -87,28 +88,10 @@ export default function StudentDashboard() {
     }
   }, [authLoading, isAuthenticated, router]);
 
-  // Navigation sections
-  const navSections = [
-    { id: "dashboard", label: "Dashboard", icon: "home" },
-    { id: "courses", label: "My Courses", icon: "book" },
-    { id: "grades", label: "Grades", icon: "chart-line" },
-    { id: "schedule", label: "Schedule", icon: "calendar-alt" },
-    { id: "payments", label: "Payments", icon: "receipt" },
-    { id: "profile", label: "My Profile", icon: "user" },
-  ];
-
-  // Handle navigation to profile page
-  const handleProfileClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    router.push("/student-profile");
-  };
-
-  // Loading state for the entire dashboard
   if (authLoading || profileLoading) {
     return <Loading size="large" message="Loading dashboard..." />;
   }
 
-  // Error handling
   if (profileError) {
     return <ErrorMessage message={`Error loading profile: ${profileError}`} />;
   }
@@ -126,6 +109,22 @@ export default function StudentDashboard() {
           id: "Unknown",
           avatar: DEFAULT_AVATAR,
         };
+
+  // Navigation sections
+  const navSections = [
+    { id: "dashboard", label: "Dashboard", icon: "home" },
+    { id: "courses", label: "My Courses", icon: "book" },
+    { id: "grades", label: "Grades", icon: "chart-line" },
+    { id: "schedule", label: "Schedule", icon: "calendar-alt" },
+    { id: "payments", label: "Payments", icon: "receipt" },
+    { id: "profile", label: "My Profile", icon: "user" },
+  ];
+
+  // Handle navigation to profile page
+  const handleProfileClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    router.push("/student-profile");
+  };
 
   return (
     <div className="dashboard-container">

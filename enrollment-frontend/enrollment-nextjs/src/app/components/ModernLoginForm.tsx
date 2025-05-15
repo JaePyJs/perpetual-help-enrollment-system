@@ -1,39 +1,44 @@
 // src/app/components/ModernLoginForm.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { 
-  Box, 
-  Card, 
-  CardContent, 
-  Typography, 
-  TextField, 
-  Button, 
-  Tabs, 
-  Tab, 
-  InputAdornment, 
+import React, { useState } from "react";
+import {
+  Box,
+  Card,
+  Typography,
+  TextField,
+  Button,
+  Tabs,
+  Tab,
+  InputAdornment,
   IconButton,
   Alert,
-  CircularProgress
+  CircularProgress,
 } from "@mui/material";
-import { Visibility, VisibilityOff, School, Person, AdminPanelSettings } from "@mui/icons-material";
+import {
+  Visibility,
+  VisibilityOff,
+  School,
+  Person,
+  AdminPanelSettings,
+} from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { supabase } from "@/lib/supabaseClient";
 
 const RoleTab = styled(Tab)(({ theme }) => ({
   fontWeight: 500,
-  fontSize: '1rem',
-  textTransform: 'none',
-  minHeight: '48px',
+  fontSize: "1rem",
+  textTransform: "none",
+  minHeight: "48px",
   borderRadius: theme.shape.borderRadius,
 }));
 
 const StyledCard = styled(Card)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius * 2,
   boxShadow: theme.shadows[3],
-  overflow: 'hidden',
-  width: '100%',
-  maxWidth: '900px',
+  overflow: "hidden",
+  width: "100%",
+  maxWidth: "900px",
 }));
 
 interface TabPanelProps {
@@ -52,13 +57,8 @@ function TabPanel(props: TabPanelProps) {
       id={`login-tabpanel-${index}`}
       aria-labelledby={`login-tab-${index}`}
       {...other}
-      style={{ width: '100%' }}
     >
-      {value === index && (
-        <Box sx={{ pt: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ pt: 3, width: "100%" }}>{children}</Box>}
     </div>
   );
 }
@@ -113,7 +113,12 @@ export default function ModernLoginForm() {
     // If the input looks like an ID (e.g., m23-1470-578), try to resolve to email
     let email = usernameOrId;
     if (/^[a-z]\d{2}-\d{4}-\d{3}$/i.test(usernameOrId)) {
-      const idField = role === "student" ? "studentId" : role === "teacher" ? "employeeId" : "adminId";
+      const idField =
+        role === "student"
+          ? "studentId"
+          : role === "teacher"
+          ? "employeeId"
+          : "adminId";
       const { data, error: fetchError } = await supabase
         .from(role + "s")
         .select("email")
@@ -175,38 +180,44 @@ export default function ModernLoginForm() {
     }
   };
 
-  // Get active role based on tab index
-  const getActiveRole = (): Role => {
-    return roles[activeTabIndex].id;
-  };
-
   return (
     <StyledCard>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, height: '100%' }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          height: "100%",
+        }}
+      >
         {/* Left panel - school branding */}
-        <Box 
-          sx={{ 
-            bgcolor: 'primary.main', 
-            color: 'primary.contrastText',
+        <Box
+          sx={{
+            bgcolor: "primary.main",
+            color: "primary.contrastText",
             p: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minWidth: { md: '40%' },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            minWidth: { md: "40%" },
           }}
         >
-          <Box 
+          <Box
             component="img"
             src="/images/school-logo.png"
             alt="Perpetual Help College Logo"
-            sx={{ 
+            sx={{
               width: { xs: 120, md: 180 },
-              height: 'auto',
-              mb: 4
+              height: "auto",
+              mb: 4,
             }}
           />
-          <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            align="center"
+            gutterBottom
+          >
             Perpetual Help College
           </Typography>
           <Typography variant="h6" align="center">
@@ -215,33 +226,33 @@ export default function ModernLoginForm() {
         </Box>
 
         {/* Right panel - login form */}
-        <Box sx={{ p: 4, width: '100%' }}>
+        <Box sx={{ p: 4, width: "100%" }}>
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             Log In
           </Typography>
-          
+
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
             </Alert>
           )}
 
-          <Tabs 
-            value={activeTabIndex} 
+          <Tabs
+            value={activeTabIndex}
             onChange={handleTabChange}
             aria-label="login tabs"
             variant="fullWidth"
-            sx={{ 
-              borderBottom: 1, 
-              borderColor: 'divider',
-              mb: 2
+            sx={{
+              borderBottom: 1,
+              borderColor: "divider",
+              mb: 2,
             }}
           >
             {roles.map((role, index) => (
-              <RoleTab 
+              <RoleTab
                 key={role.id}
-                icon={role.icon} 
-                label={role.label} 
+                icon={role.icon}
+                label={role.label}
                 id={`login-tab-${index}`}
                 aria-controls={`login-tabpanel-${index}`}
               />
@@ -250,8 +261,8 @@ export default function ModernLoginForm() {
 
           {roles.map((role, index) => (
             <TabPanel key={role.id} value={activeTabIndex} index={index}>
-              <Box 
-                component="form" 
+              <Box
+                component="form"
                 onSubmit={(e) => handleLogin(e, role.id)}
                 noValidate
                 sx={{ mt: 1 }}
@@ -266,10 +277,12 @@ export default function ModernLoginForm() {
                   autoComplete="username"
                   autoFocus={index === activeTabIndex}
                   value={fields[role.id].email}
-                  onChange={(e) => handleInput(role.id, "email", e.target.value)}
+                  onChange={(e) =>
+                    handleInput(role.id, "email", e.target.value)
+                  }
                   sx={{ mb: 2 }}
                 />
-                
+
                 <TextField
                   margin="normal"
                   required
@@ -280,7 +293,9 @@ export default function ModernLoginForm() {
                   id={`${role.id}-password`}
                   autoComplete="current-password"
                   value={fields[role.id].password}
-                  onChange={(e) => handleInput(role.id, "password", e.target.value)}
+                  onChange={(e) =>
+                    handleInput(role.id, "password", e.target.value)
+                  }
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -289,40 +304,51 @@ export default function ModernLoginForm() {
                           onClick={() => togglePasswordVisibility(role.id)}
                           edge="end"
                         >
-                          {showPassword[role.id] ? <VisibilityOff /> : <Visibility />}
+                          {showPassword[role.id] ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
                         </IconButton>
                       </InputAdornment>
-                    )
+                    ),
                   }}
                   sx={{ mb: 2 }}
                 />
-                
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                  <Button 
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSczJVOOdAV0IUG6nx72DVPbU2WPKyQbdYrM2lzHb_v01Ra8OQ/viewform" 
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mb: 2,
+                  }}
+                >
+                  <Button
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSczJVOOdAV0IUG6nx72DVPbU2WPKyQbdYrM2lzHb_v01Ra8OQ/viewform"
                     target="_blank"
-                    sx={{ textTransform: 'none' }}
+                    sx={{ textTransform: "none" }}
                   >
                     Forgot Username/Password?
                   </Button>
                 </Box>
-                
+
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   disabled={loading}
-                  sx={{ 
+                  sx={{
                     py: 1.5,
                     mt: 2,
                     mb: 2,
-                    fontSize: '1rem',
+                    fontSize: "1rem",
                   }}
                 >
                   {loading ? (
-                    <CircularProgress size={24} sx={{ color: 'white' }} />
+                    <CircularProgress size={24} sx={{ color: "white" }} />
                   ) : (
-                    'Log In'
+                    "Log In"
                   )}
                 </Button>
               </Box>

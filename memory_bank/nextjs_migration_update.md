@@ -31,6 +31,12 @@
   - `h3`–`h6` are slightly smaller and less bold for better structure.
 - This change enhances visual clarity and professionalism across all pages.
 
+## May 2025: Type Safety Improvements
+
+- Replaced all `as any` type assertions in student-profile page with `as string` for select fields (gender, civil_status).
+- This resolves all major TypeScript warnings and improves code robustness.
+- All frontend forms now use explicit types for select and input fields.
+
 ## Next Steps
 
 - Use these templates for all future dashboard and panel pages.

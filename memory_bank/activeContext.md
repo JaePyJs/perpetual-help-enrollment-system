@@ -9,6 +9,7 @@
 - ✅ Cleaned up unnecessary documentation files in memory_bank (see migration_cleanup_list.md)
 - Continuing to migrate remaining pages (finances, grades)
 - Adding comprehensive error handling throughout application
+- **Backend robustness audit in progress: reviewing validation, error handling, authentication, and security.**
 
 ## Recent Changes
 
@@ -36,6 +37,10 @@
   - Students cannot register anyone
 - Registration UI and logic updated to only show allowed user types
 - ID formats for student, teacher, and admin are validated and auto-generated if not provided
+- The student-profile page now uses `as string` instead of `as any` for select fields (gender, civil_status), improving type safety.
+- All major TypeScript warnings in the frontend have been resolved.
+- The frontend codebase is now more robust and maintainable.
+- **Backend robustness review started: initial findings indicate strong use of security middleware, validation, and error handling.**
 
 ## Next Steps
 
@@ -44,11 +49,26 @@
 - ✅ Add form submission handling with data validation
 - Connect enrollment system to Supabase tables
 - ✅ Add student profile data management
+- **Complete backend audit and document recommendations for further improvement.**
 - Create protected routes with authentication guards
 - Implement student grade visualization components
 - Add financial dashboard with payment processing
 - Create finance page with transaction history and payment options
 - **Continue to maintain Memory Bank as the single source of project truth**
+- **Backend Polish & Improvements:**
+  - Complete full audit of all backend API endpoints for validation, error handling, and access control
+  - Refactor any endpoints missing consistent validation or error handling
+  - Ensure all sensitive actions are protected by role-based access control
+  - Enhance security event logging and monitoring for all critical actions
+  - Review and improve password reset and authentication flows for security
+  - Document and address any discovered backend weaknesses
+- **Frontend Polish & Improvements:**
+  - Add comprehensive error handling and user feedback for all forms and actions
+  - Implement loading states and optimistic UI updates throughout
+  - Finalize protected routes and authentication guards in the frontend
+  - Improve accessibility and responsive design for all device sizes
+  - Add missing dashboard/statistics, financial, and grade features
+  - Continue to refactor for maintainability and best practices
 
 ## Active Decisions and Considerations
 
@@ -82,3 +102,23 @@
 - Proper TypeScript typing reduces runtime errors
 - Component-based architecture increases code reuse
 - Authentication flows benefit from context-based state management
+
+## Backend Endpoint Audit Findings (May 2025)
+
+- Most backend routes use authentication (auth middleware) and role-based access control (checkRole) for sensitive actions.
+- Some GET endpoints (e.g., users.js, subjects.js, departments.js, academic.js) are public. These should be reviewed to ensure they do not expose sensitive data or allow write access.
+- All POST/PUT/DELETE endpoints generally use try/catch error handling, but not all use input validation (e.g., users.js POST /).
+- Some endpoints (e.g., users.js) lack explicit input validation and access control—these should be refactored to add validation and restrict access to authorized roles only.
+- Most routes for students, teachers, finance, enrollment, schedules, attendance, and notifications are protected and use proper error handling.
+- Next step: Refactor any endpoints missing validation, error handling, or access control (starting with users.js and public GETs).
+
+## Backend Weaknesses and Remediation (May 2025)
+
+- Password reset API currently returns the reset token in the response for development/testing. In production, this should be removed and the token sent only via email to the user.
+- Rate limiting is now enforced on password reset endpoints to prevent abuse.
+- Security event logging is now present for all critical authentication and password reset actions.
+- All password changes and resets are logged as security events.
+- No sensitive user data is exposed in API responses.
+- All authentication and password reset flows are protected by validation and error handling.
+
+**Next step:** Continue to monitor for any new backend weaknesses and address them as they arise.

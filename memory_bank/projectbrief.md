@@ -3,15 +3,19 @@
 This file provides the foundational overview for the project in the Memory Bank system.
 
 ## Project Overview
+
 - Brief summary of the project goals and scope.
 
 ## Key Stakeholders
+
 - List of main stakeholders or team members.
 
 ## High-Level Requirements
+
 - Bullet points of the most important requirements.
 
 ## Constraints
+
 - Any known constraints (technical, time, etc).
 
 ## Overview
@@ -66,6 +70,17 @@ The School Enrollment System for Perpetual Help College of Manila is a comprehen
 - Scalable architecture to handle peak enrollment periods
 - Accessible interfaces following WCAG guidelines
 - Theme system with light/dark mode options
+
+## Security and Robustness Commitments
+
+- All API endpoints use input validation and sanitization
+- XSS, CSRF, and HTTP parameter pollution protections are enforced
+- Passwords are hashed and validated for strength
+- Role-based access control is strictly enforced
+- Error handling middleware prevents sensitive data leaks
+- Rate limiting and secure session/cookie handling are in place
+- Security event logging and monitoring are implemented
+- Regular backend audits are performed to ensure continued robustness
 
 ## Success Metrics
 

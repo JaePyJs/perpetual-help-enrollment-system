@@ -19,6 +19,7 @@
 - Added proper TypeScript typing for event handlers.
 - Implemented consistent navigation patterns across dashboards.
 - **Unnecessary documentation files in memory_bank have been deleted for clarity.**
+- **Backend security and validation middleware (XSS, CSRF, rate limiting, input sanitization, role-based access, error handling) are implemented and functional.**
 
 ## What's left to build
 
@@ -37,6 +38,20 @@
 - Add accessibility improvements (WCAG).
 - Implement unit, integration, and end-to-end testing.
 - Prepare deployment pipeline.
+- **Backend audit: review all API endpoints for consistent validation, error handling, and least-privilege access.**
+- **Document and address any backend weaknesses or missing security best practices.**
+- **Backend Polish:**
+  - Refactor endpoints for consistent validation and error handling
+  - Ensure all sensitive actions are protected by role-based access control
+  - Enhance security event logging and monitoring
+  - Review and improve authentication/password reset flows
+- **Frontend Polish:**
+  - Add comprehensive error handling and user feedback
+  - Implement loading states and optimistic UI updates
+  - Finalize protected routes and authentication guards
+  - Improve accessibility and responsive design
+  - Add missing dashboard/statistics, financial, and grade features
+  - Refactor for maintainability and best practices
 
 ## Current status
 
@@ -47,6 +62,7 @@
 - Package dependencies updated with required Supabase libraries.
 - Project structure aligned with Next.js best practices.
 - **Documentation in memory_bank is now streamlined and up to date.**
+- **Backend robustness review underway; initial findings are positive, but a full endpoint audit is planned.**
 
 ## Known issues
 

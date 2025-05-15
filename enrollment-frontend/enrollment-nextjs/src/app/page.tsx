@@ -1,7 +1,38 @@
 "use client";
-import React from "react";
-import { Box, Container } from "@mui/material";
-import ModernLoginForm from "./components/ModernLoginForm";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { supabase } from "@/lib/supabaseClient";
+
+const roleTabs = [
+  {
+    id: "student",
+    label: "Student",
+    icon: (
+      <span role="img" aria-label="Student">
+        🎓
+      </span>
+    ),
+  },
+  {
+    id: "teacher",
+    label: "Teacher",
+    icon: (
+      <span role="img" aria-label="Teacher">
+        👨‍🏫
+      </span>
+    ),
+  },
+  {
+    id: "admin",
+    label: "Admin",
+    icon: (
+      <span role="img" aria-label="Admin">
+        🛡️
+      </span>
+    ),
+  },
+] as const;
 
 type Role = (typeof roleTabs)[number]["id"];
 
@@ -65,7 +96,12 @@ export default function LoginPage() {
     // If the input looks like an ID (e.g., m23-1470-578), try to resolve to email
     let email = usernameOrId;
     if (/^[a-z]\d{2}-\d{4}-\d{3}$/i.test(usernameOrId)) {
-      const idField = role === "student" ? "studentId" : role === "teacher" ? "employeeId" : "adminId";
+      const idField =
+        role === "student"
+          ? "studentId"
+          : role === "teacher"
+          ? "employeeId"
+          : "adminId";
       const { data, error: fetchError } = await supabase
         .from(role + "s")
         .select("email")
@@ -135,8 +171,7 @@ export default function LoginPage() {
   };
 
   return (
-    <ThemeProvider>
-      <ThemeSwitcher />
+    <main>
       <div className="wrapper">
         <div className="container">
           <div className="left-panel">
@@ -177,7 +212,7 @@ export default function LoginPage() {
                   }}
                   role="tab"
                   aria-controls={tab.id}
-                  aria-selected={activeTab === tab.id ? true : false}
+                  aria-selected={activeTab === tab.id ? "true" : "false"}
                   tabIndex={0}
                   type="button"
                 >
@@ -195,33 +230,84 @@ export default function LoginPage() {
                   activeTab === tab.id ? " active" : ""
                 }`}
                 onSubmit={(e) => handleLogin(e, tab.id)}
+                autoComplete="off"
               >
                 <h3 className={`${tab.id}-login-heading`}>
-                  {tab.icon} {tab.label} Log in
+                  <span className="tab-icon" aria-hidden="true">
+                    {tab.icon}
+                  </span>{" "}
+                  {tab.label} Log in
                 </h3>
-                <input
-                  type="text"
-                  placeholder={
-                    tab.id === "student" ? "User" : tab.label + " ID"
-                  }
-                  value={fields[tab.id].email}
-                  onChange={(e) => handleInput(tab.id, "email", e.target.value)}
-                  required
-                  autoComplete="username"
-                  aria-label={tab.label + " username"}
-                />
-                <input
-                  type={showPassword[tab.id] ? "text" : "password"}
-                  placeholder="Password"
-                  className="password-input"
-                  value={fields[tab.id].password}
-                  onChange={(e) =>
-                    handleInput(tab.id, "password", e.target.value)
-                  }
-                  required
-                  autoComplete="current-password"
-                  aria-label={tab.label + " password"}
-                />
+                <div className="input-group">
+                  <input
+                    type="text"
+                    placeholder={
+                      tab.id === "student" ? "User" : tab.label + " ID"
+                    }
+                    value={fields[tab.id].email}
+                    onChange={(e) =>
+                      handleInput(tab.id, "email", e.target.value)
+                    }
+                    required
+                    autoComplete="username"
+                    aria-label={tab.label + " username"}
+                    className="input"
+                  />
+                </div>
+                <div className="input-group password-group">
+                  <input
+                    type={showPassword[tab.id] ? "text" : "password"}
+                    placeholder="Password"
+                    className="input password-input"
+                    value={fields[tab.id].password}
+                    onChange={(e) =>
+                      handleInput(tab.id, "password", e.target.value)
+                    }
+                    required
+                    autoComplete="current-password"
+                    aria-label={tab.label + " password"}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    aria-label={
+                      showPassword[tab.id] ? "Hide password" : "Show password"
+                    }
+                    onClick={() =>
+                      setShowPassword((s: ShowPassword) => ({
+                        ...s,
+                        [tab.id]: !s[tab.id],
+                      }))
+                    }
+                    tabIndex={0}
+                  >
+                    {showPassword[tab.id] ? (
+                      <svg
+                        width="20"
+                        height="20"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M1 1l22 22M17.94 17.94A10.94 10.94 0 0 1 12 19c-5.05 0-9.29-3.14-11-7 1.21-2.73 3.29-5 6-6.32M9.53 9.53A3.5 3.5 0 0 1 12 8.5c1.93 0 3.5 1.57 3.5 3.5 0 .47-.09.92-.26 1.33" />
+                        <path d="M12 5c7.18 0 13 7 13 7s-2.82 3.5-7 5.5" />
+                      </svg>
+                    ) : (
+                      <svg
+                        width="20"
+                        height="20"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <ellipse cx="12" cy="12" rx="10" ry="7" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
                 <div className="actions">
                   <Link
                     className="forgot"
@@ -231,31 +317,51 @@ export default function LoginPage() {
                   >
                     Forgot Username or Password?
                   </Link>
-                  <button
-                    type="button"
-                    className={`show-password${
-                      showPassword[tab.id] ? " active" : ""
-                    }`}
-                    onClick={() =>
-                      setShowPassword((s) => ({ ...s, [tab.id]: !s[tab.id] }))
-                    }
-                    aria-pressed={showPassword[tab.id] ? "true" : "false"}
-                  >
-                    {showPassword[tab.id] ? "Hide" : "Show"}
-                  </button>
                 </div>
                 <button
                   type="submit"
-                  className={`continue${loading ? " loading" : ""}`}
+                  className={`continue btn${loading ? " loading" : ""}`}
                   disabled={loading}
                 >
-                  {loading ? "Logging in..." : "Continue"}
+                  {loading ? (
+                    <span className="spinner" aria-label="Loading"></span>
+                  ) : (
+                    <span>Continue</span>
+                  )}
                 </button>
               </form>
             ))}
           </div>
         </div>
       </div>
-    </ThemeProvider>
+      <style jsx>{`
+        .spinner {
+          display: inline-block;
+          width: 1.5em;
+          height: 1.5em;
+          border: 3px solid #e77f33;
+          border-radius: 50%;
+          border-top: 3px solid #fff;
+          animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+        .input:focus {
+          border-color: #e77f33;
+          box-shadow: 0 0 0 2px rgba(231, 127, 51, 0.15);
+        }
+        .tab-link.active {
+          border-bottom: 3px solid #e77f33;
+          color: #e77f33;
+          font-weight: 600;
+        }
+      `}</style>
+    </main>
   );
 }

@@ -58,3 +58,5 @@ This document provides a clear task list for the School Enrollment System migrat
 - ✅ Implement error handling components
 - ✅ Create loading state components
 - ✅ Create data fetching hooks for Supabase
+- [x] Fix all frontend type safety issues for select fields (student-profile page now uses `as string` for select values)
+- [ ] Review backend robustness and validation for production readiness

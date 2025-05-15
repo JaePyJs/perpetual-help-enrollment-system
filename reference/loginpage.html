@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+ <div class="wrapper">
+  <div class="container">
+    <div class="left-panel">
+	<div class="image-text-wrapper">
+	<div class="image-container">
+			<img src="images/students.png" alt="Student" id="img-student" class="role-image active" />
+			<img src="images/teacher.png" alt="Teacher" id="img-teacher" class="role-image" />
+			<img src="images/admin.png" alt="Admin" id="img-admin" class="role-image" />
+	</div>
+		<div class="welcome-message">
+			<h2><b>Welcome to Perpetual!</b></h2>
+		</div>
+	</div>
+
+	</div>
+
+    <div class="right-panel">
+      <div class="nav-tabs">
+        <button class="tab-link active" onclick="openTab('student')" style="color: white;">Student</button>
+        <button class="tab-link" onclick="openTab('teacher')" style="color: white;">Teacher</button>
+        <button class="tab-link" onclick="openTab('admin')" style="color: white;">Admin</button>
+      </div>
+
+    <div id="student" class="tab-content active">
+		<h3 style="color: white;">🚀 Student Log in</h3>
+		<input type="text" placeholder="User" />
+		<input type="password" placeholder="Password" class="password-input" />
+		<div class="actions">
+			<div class="forgot" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSczJVOOdAV0IUG6nx72DVPbU2WPKyQbdYrM2lzHb_v01Ra8OQ/viewform?usp=dialog', '_blank')">Forgot Username or Password?</div>
+			<div class="show-password" onclick="togglePassword(this)">Show</div>
+		</div>
+			<button class="continue" onclick="location.href='student-dashboard.html'">Continue</button>
+	</div>
+
+
+      <div id="teacher" class="tab-content">
+		<h3 style="color: white;">🎓 Teacher Log in</h3>
+		<input type="text" placeholder="Teacher ID" />
+		<input type="password" placeholder="Password" class="password-input" />
+		<div class="actions">
+			<div class="forgot" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSczJVOOdAV0IUG6nx72DVPbU2WPKyQbdYrM2lzHb_v01Ra8OQ/viewform?usp=dialog', '_blank')">Forgot Username or Password?</div>
+			<div class="show-password" onclick="togglePassword(this)">Show</div>
+		</div>
+		<button class="continue">Continue</button>
+	</div>
+
+      <div id="admin" class="tab-content">
+		<h3 style="color: white;">🤖 Admin Log in</h3>
+		<input type="text" placeholder="Admin ID" />
+		<input type="password" placeholder="Password" class="password-input" />
+		<div class="actions">
+			<div class="forgot" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSczJVOOdAV0IUG6nx72DVPbU2WPKyQbdYrM2lzHb_v01Ra8OQ/viewform?usp=dialog', '_blank')">Forgot Username or Password?</div>
+			<div class="show-password" onclick="togglePassword(this)">Show</div>
+		</div>
+		<button class="continue" onclick="location.href='admin-dashboard.html'">Continue</button>
+	</div>
+    </div>
+  </div>
+ </div>
+  <script>
+  function openTab(tabId) {
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const roleImages = document.querySelectorAll('.role-image');
+
+    tabLinks.forEach(link => link.classList.remove('active'));
+    tabContents.forEach(content => content.classList.remove('active'));
+
+    document.querySelector(`#${tabId}`).classList.add('active');
+    document.querySelector(`.tab-link[onclick*="${tabId}"]`).classList.add('active');
+
+    roleImages.forEach(img => img.classList.remove('active'));
+
+    document.getElementById(`img-${tabId}`).classList.add('active');
+  }
+  function togglePassword(elem) {
+    const container = elem.closest('.tab-content');
+    const passwordInput = container.querySelector('.password-input');
+    
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      elem.textContent = 'Hide';
+    } else {
+      passwordInput.type = 'password';
+      elem.textContent = 'Show';
+    }
+  }
+</script>
+
+</body>
+</html>

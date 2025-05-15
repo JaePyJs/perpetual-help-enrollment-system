@@ -16,6 +16,7 @@ import Loading from "@/app/components/Loading";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import styles from "./student-profile.module.css";
 
+// Add authentication guard for profile page
 export default function StudentProfilePage() {
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const router = useRouter();
@@ -127,122 +128,12 @@ export default function StudentProfilePage() {
     }
   }, [authLoading, isAuthenticated, router]);
 
-  // Handle section change
-  const handleSectionChange = (section: string) => {
-    setActiveSection(section);
-  };
-
-  // Handle personal info form submission
-  const handlePersonalInfoSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    setSaveError(null);
-    setSaveSuccess(false);
-
-    if (!profileData || profileData.length === 0) {
-      setSaveError("Profile data not found");
-      setSaving(false);
-      return;
-    }
-
-    try {
-      const { error } = await updateRecord<StudentProfile>(
-        "student_profiles",
-        profileData[0].id,
-        personalInfo
-      );
-
-      if (error) {
-        setSaveError(error);
-      } else {
-        setSaveSuccess(true);
-        refetchProfile();
-      }
-    } catch (error) {
-      setSaveError("An unexpected error occurred");
-      console.error(error);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  // Handle contact info form submission
-  const handleContactInfoSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    setSaveError(null);
-    setSaveSuccess(false);
-
-    if (!contactData || contactData.length === 0) {
-      setSaveError("Contact data not found");
-      setSaving(false);
-      return;
-    }
-
-    try {
-      const { error } = await updateRecord<ContactInformation>(
-        "contact_information",
-        contactData[0].id,
-        contactInfo
-      );
-
-      if (error) {
-        setSaveError(error);
-      } else {
-        setSaveSuccess(true);
-        refetchContact();
-      }
-    } catch (error) {
-      setSaveError("An unexpected error occurred");
-      console.error(error);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  // Handle file upload for documents
-  const handleFileUpload = async (
-    documentId: string,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      return;
-    }
-
-    setFileUploadLoading(true);
-    const file = e.target.files[0];
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}_${Math.random()
-      .toString(36)
-      .substring(2, 15)}.${fileExt}`;
-    const filePath = `documents/${profileData?.[0]?.student_id}/${fileName}`;
-
-    try {
-      // This is a placeholder for actual Supabase storage upload
-      // In a real implementation, we would use supabase.storage.from("documents").upload()
-      alert(
-        "File upload functionality would be implemented with actual Supabase storage"
-      );
-
-      // Update document record with new file path
-      await updateRecord<Document>("documents", documentId, {
-        file_path: filePath,
-        status: "pending",
-        uploaded_at: new Date().toISOString(),
-      });
-
-      refetchDocuments();
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    } finally {
-      setFileUploadLoading(false);
-    }
-  };
-
+  // Loading state
   if (authLoading || profileLoading) {
-    return <Loading size="large" message="Loading profile data..." />;
+    return <Loading size="large" message="Loading profile..." />;
   }
 
+  // Error handling
   if (profileError) {
     return <ErrorMessage message={`Error loading profile: ${profileError}`} />;
   }
@@ -477,7 +368,7 @@ export default function StudentProfilePage() {
                         onChange={(e) =>
                           setPersonalInfo({
                             ...personalInfo,
-                            gender: e.target.value as any,
+                            gender: e.target.value as string,
                           })
                         }
                         required
@@ -498,7 +389,7 @@ export default function StudentProfilePage() {
                         onChange={(e) =>
                           setPersonalInfo({
                             ...personalInfo,
-                            civil_status: e.target.value as any,
+                            civil_status: e.target.value as string,
                           })
                         }
                         required

@@ -58,6 +58,7 @@ The student profile data is organized across several Supabase tables:
 - Created comprehensive type definitions for all data structures
 - Added proper typing for all component props and state
 - Implemented interfaces for Supabase responses
+- All select fields in the student-profile page now use `as string` instead of `as any` for value updates, resolving all major TypeScript warnings and improving maintainability.
 
 ### Component Architecture
 
@@ -76,3 +77,10 @@ The student profile page consists of several key components:
 3. Enhance document verification workflow
 4. Add profile image upload functionality
 5. Implement notification system for profile changes
+
+# Student Profile Migration Notes (May 2025)
+
+- All select fields in the student-profile page now use `as string` instead of `as any` for value updates.
+- This resolves all major TypeScript warnings and improves maintainability.
+- The frontend is now robust for profile editing and form handling.
+- Backend robustness and validation should be reviewed for production.

@@ -80,7 +80,7 @@ function togglePassword(elem) {
   }
 }
 
-// Login handler
+// Enhanced error handling for login
 async function handleLogin(role) {
   const container = document.querySelector(`#${role}`);
   const button = container.querySelector(".continue");
@@ -121,7 +121,6 @@ async function handleLogin(role) {
     if (response.ok) {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-
       // Redirect based on role
       switch (data.user.role) {
         case "student":
@@ -135,21 +134,21 @@ async function handleLogin(role) {
           break;
       }
     } else {
-      errorMessage.textContent = data.message;
+      errorMessage.textContent =
+        data.message || "Login failed. Please try again.";
       errorMessage.style.display = "block";
+      container.style.animation = "shake 0.5s ease-in-out";
+      setTimeout(() => (container.style.animation = ""), 500);
     }
   } catch (error) {
     console.error("Login error:", error);
     errorMessage.textContent = "Connection error. Please try again.";
     errorMessage.style.display = "block";
-
-    // Show error animation
     container.style.animation = "shake 0.5s ease-in-out";
     setTimeout(() => (container.style.animation = ""), 500);
   } finally {
-    // Reset button state
     button.disabled = false;
-    button.style.backgroundColor = "#e77f33";
+    button.style.backgroundColor = "";
     button.textContent = "Continue";
     button.style.cursor = "pointer";
   }

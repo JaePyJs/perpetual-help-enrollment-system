@@ -3,15 +3,19 @@
 This file provides the product context for the project in the Memory Bank system.
 
 ## Product Vision
+
 - What is the vision for this product?
 
 ## Target Users
+
 - Who are the primary users?
 
 ## User Needs
+
 - What are the main user needs this product addresses?
 
 ## Differentiators
+
 - What makes this product unique or better than alternatives?
 
 ## Purpose
@@ -62,3 +66,17 @@ The School Enrollment System for Perpetual Help College of Manila exists to mode
 - Clear navigation with logical information architecture
 - Real-time updates for enrollment status and availability
 - Helpful error messaging and guided workflows
+
+## Security and Reliability Goals
+
+- All user data is protected with strong validation and sanitization on both frontend and backend
+- Authentication and authorization are enforced for all sensitive actions
+- Security best practices (XSS, CSRF, rate limiting, password hashing, error handling) are implemented throughout
+- System is designed to prevent data leaks and unauthorized access
+- Audit logging and monitoring are in place for accountability
+
+## May 2025: Type Safety and Robustness
+
+- Frontend forms (especially student-profile) now use explicit string types for select fields.
+- All major TypeScript warnings are resolved in the frontend.
+- Backend validation and error handling should be reviewed for production use.

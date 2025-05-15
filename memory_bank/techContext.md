@@ -3,15 +3,19 @@
 This file provides the technical context for the project in the Memory Bank system.
 
 ## Tech Stack
+
 - List the main technologies used (languages, frameworks, platforms).
 
 ## Key Integrations
+
 - Describe important integrations (APIs, services, etc).
 
 ## Technical Constraints
+
 - List any technical constraints or limitations.
 
 ## Deployment/Hosting
+
 - Describe deployment or hosting setup.
 
 ## Technologies Used
@@ -80,3 +84,17 @@ This file provides the technical context for the project in the Memory Bank syst
 - Modular CSS approach with shared base styles and page-specific extensions
 - Theme system using React context for light/dark mode support
 - TypeScript interfaces for type safety and better code quality
+
+### Security Middleware and Practices
+
+- express-validator for input validation
+- express-rate-limit for rate limiting
+- helmet for HTTP headers
+- xss-clean and custom XSS middleware
+- express-mongo-sanitize for NoSQL injection
+- Custom CSRF protection middleware
+- Centralized error handling middleware
+- bcrypt for password hashing
+- Role-based access control middleware
+- Secure cookie/session configuration
+- Security event logging and monitoring
