@@ -3,10 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Welcome to Perpetual Help College of Manila Enrollment System" />
+    <meta
+      name="description"
+      content="Welcome to Perpetual Help College of Manila Enrollment System"
+    />
     <title>Welcome - Perpetual Help College of Manila</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="modern-theme.css" />
     <style>
       body {
@@ -98,9 +107,15 @@
   </head>
   <body>
     <div class="theme-switcher">
-      <button id="theme-light" title="Light Mode"><i class="fas fa-sun"></i></button>
-      <button id="theme-dark" title="Dark Mode"><i class="fas fa-moon"></i></button>
-      <button id="theme-system" title="System"><i class="fas fa-desktop"></i></button>
+      <button id="theme-light" title="Light Mode">
+        <i class="fas fa-sun"></i>
+      </button>
+      <button id="theme-dark" title="Dark Mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button id="theme-system" title="System">
+        <i class="fas fa-desktop"></i>
+      </button>
     </div>
     <div class="flex flex-center mt-2">
       <div class="card landing-card">
@@ -109,10 +124,17 @@
           <h1>Perpetual Help College of Manila</h1>
         </div>
         <h2 class="mb-2 text-center">Enrollment System</h2>
-        <p class="mb-2 text-center">A modern, secure, and user-friendly platform for students, teachers, and administrators.</p>
+        <p class="mb-2 text-center">
+          A modern, secure, and user-friendly platform for students, teachers,
+          and administrators.
+        </p>
         <div class="grid">
-          <a href="loginpage-improved.html" class="btn flex flex-center"><i class="fas fa-sign-in-alt mr-2"></i> Login</a>
-          <a href="user-registration.html" class="btn flex flex-center"><i class="fas fa-user-plus mr-2"></i> Register</a>
+          <a href="loginpage-improved.html" class="btn flex flex-center"
+            ><i class="fas fa-sign-in-alt mr-2"></i> Login</a
+          >
+          <a href="user-registration.html" class="btn flex flex-center"
+            ><i class="fas fa-user-plus mr-2"></i> Register</a
+          >
         </div>
       </div>
     </div>
@@ -120,32 +142,32 @@
       // Theme switcher logic (same as login page)
       const root = document.documentElement;
       const themeBtns = [
-        document.getElementById('theme-light'),
-        document.getElementById('theme-dark'),
-        document.getElementById('theme-system')
+        document.getElementById("theme-light"),
+        document.getElementById("theme-dark"),
+        document.getElementById("theme-system"),
       ];
       function setTheme(theme) {
-        localStorage.setItem('theme', theme);
-        themeBtns.forEach(btn => btn.classList.remove('active'));
-        if (theme === 'light') {
-          root.classList.remove('dark');
-          themeBtns[0].classList.add('active');
-        } else if (theme === 'dark') {
-          root.classList.add('dark');
-          themeBtns[1].classList.add('active');
+        localStorage.setItem("theme", theme);
+        themeBtns.forEach((btn) => btn.classList.remove("active"));
+        if (theme === "light") {
+          root.classList.remove("dark");
+          themeBtns[0].classList.add("active");
+        } else if (theme === "dark") {
+          root.classList.add("dark");
+          themeBtns[1].classList.add("active");
         } else {
-          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            root.classList.add('dark');
+          if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            root.classList.add("dark");
           } else {
-            root.classList.remove('dark');
+            root.classList.remove("dark");
           }
-          themeBtns[2].classList.add('active');
+          themeBtns[2].classList.add("active");
         }
       }
-      themeBtns[0].onclick = () => setTheme('light');
-      themeBtns[1].onclick = () => setTheme('dark');
-      themeBtns[2].onclick = () => setTheme('system');
-      setTheme(localStorage.getItem('theme') || 'system');
+      themeBtns[0].onclick = () => setTheme("light");
+      themeBtns[1].onclick = () => setTheme("dark");
+      themeBtns[2].onclick = () => setTheme("system");
+      setTheme(localStorage.getItem("theme") || "system");
     </script>
   </body>
 </html>
