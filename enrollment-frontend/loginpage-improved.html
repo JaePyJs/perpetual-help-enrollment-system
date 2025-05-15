@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,483 +10,172 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/ui-system.css" />
-    <style>
-      /* Login page specific styles */
-      .login-container {
-        width: 100%;
-        max-width: 1000px;
-        background-color: var(--bg-card);
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        margin: 2rem auto;
-        display: flex;
-        flex-direction: column;
-        border-top: 4px solid var(--primary);
-      }
-
-      @media (min-width: 768px) {
-        .login-container {
-          flex-direction: row;
-          min-height: 600px;
-        }
-      }
-
-      .login-sidebar {
-        background-color: var(--primary);
-        color: white;
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-
-      @media (min-width: 768px) {
-        .login-sidebar {
-          width: 40%;
-        }
-      }
-
-      .login-sidebar img {
-        max-width: 80%;
-        margin-bottom: 1.5rem;
-        transition: transform 0.3s ease;
-      }
-
-      .login-sidebar img:hover {
-        transform: scale(1.05);
-      }
-
-      .login-content {
-        padding: 2rem;
-        flex: 1;
-      }
-
-      .login-tabs {
-        display: flex;
-        border-bottom: 1px solid var(--border-color);
-        margin-bottom: 2rem;
-      }
-
-      .login-tab {
-        padding: 0.75rem 1.5rem;
-        cursor: pointer;
-        font-weight: 500;
-        color: var(--text-secondary);
-        position: relative;
-        transition: all 0.3s ease;
-      }
-
-      .login-tab.active {
-        color: var(--primary);
-      }
-
-      .login-tab::after {
-        content: "";
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: var(--primary);
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
-      }
-
-      .login-tab.active::after {
-        transform: scaleX(1);
-      }
-
-      .login-form {
-        display: none;
-      }
-
-      .login-form.active {
-        display: block;
-        animation: fadeIn 0.5s ease;
-      }
-
-      .password-field {
-        position: relative;
-      }
-
-      .password-toggle {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: var(--text-secondary);
-        background: none;
-        border: none;
-        padding: 0.25rem;
-      }
-
-      .password-toggle:hover {
-        color: var(--primary);
-      }
-
-      .form-error {
-        color: var(--danger);
-        font-size: 0.875rem;
-        margin-top: 0.5rem;
-        display: none;
-      }
-
-      .theme-toggle {
-        position: fixed;
-        top: 1rem;
-        right: 1rem;
-        z-index: 50;
-      }
-    </style>
+    <link rel="stylesheet" href="modern-theme.css" />
   </head>
-
-  <body class="flex items-center justify-center min-h-screen p-4">
-    <!-- Theme Toggler -->
-    <div class="theme-toggle">
-      <button
-        id="light-theme-btn"
-        class="theme-button active"
-        data-theme="light"
-        title="Light Theme"
-      >
+  <body>
+    <div class="theme-switcher">
+      <button id="theme-light" title="Light Mode">
         <i class="fas fa-sun"></i>
       </button>
-      <button
-        id="dark-theme-btn"
-        class="theme-button"
-        data-theme="dark"
-        title="Dark Theme"
-      >
+      <button id="theme-dark" title="Dark Mode">
         <i class="fas fa-moon"></i>
       </button>
-      <button
-        id="system-theme-btn"
-        class="theme-button"
-        data-theme="system"
-        title="System Preference"
-      >
+      <button id="theme-system" title="System">
         <i class="fas fa-desktop"></i>
       </button>
     </div>
-
-    <!-- Login Container -->
-    <div class="login-container animate-fade-in">
-      <!-- Left Side - Image Area -->
-      <div class="login-sidebar animate-slide-right">
-        <img
-          id="role-image"
-          src="images/students.png"
-          alt="Students"
-          class="animate-fade-in"
-          onerror="this.src='https://via.placeholder.com/400x300?text=Students'; this.onerror=null;"
-        />
-        <h2 class="text-center mb-2">Welcome Back!</h2>
-        <p class="text-center">
-          Access your account to continue with the Perpetual Help College
-          enrollment system.
-        </p>
-      </div>
-
-      <!-- Right Side - Login Form -->
-      <div class="login-content animate-slide-up">
-        <!-- Login Tabs -->
-        <div class="login-tabs">
-          <div
-            class="login-tab active"
-            data-role="student"
-            onclick="switchRole('student')"
-          >
-            Student
-          </div>
-          <div
-            class="login-tab"
-            data-role="teacher"
-            onclick="switchRole('teacher')"
-          >
-            Teacher
-          </div>
-          <div
-            class="login-tab"
-            data-role="admin"
-            onclick="switchRole('admin')"
-          >
-            Admin
-          </div>
+    <div class="flex flex-center mt-2">
+      <div class="card login-card">
+        <div class="flex flex-center gap-2 mb-2 logo-row">
+          <img src="images/phcm-logo.svg" alt="PHCM Logo" class="phcm-logo" />
+          <h2>Perpetual Help College of Manila</h2>
         </div>
-
-        <!-- Student Login Form -->
-        <form
-          id="student-form"
-          class="login-form active"
-          onsubmit="validateStudentLogin(event)"
-        >
-          <h3 class="section-title">Student Login</h3>
-
-          <div class="form-group">
-            <label class="form-label" for="student-id">Student ID</label>
-            <input
-              type="text"
-              id="student-id"
-              class="form-control"
-              placeholder="Enter your student ID"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="student-password">Password</label>
-            <div class="password-field">
-              <input
-                type="password"
-                id="student-password"
-                class="form-control"
-                placeholder="Enter your password"
-                required
-              />
-              <button
-                type="button"
-                class="password-toggle"
-                data-password-toggle="student-password"
-                title="Show/hide password"
-              >
-                <i class="fas fa-eye"></i>
-              </button>
-            </div>
-          </div>
-
-          <div id="student-form-error" class="form-error"></div>
-
-          <div class="flex justify-between items-center mb-4">
-            <div>
-              <input type="checkbox" id="student-remember" class="mr-2" />
-              <label for="student-remember">Remember me</label>
-            </div>
-            <a href="#" onclick="forgotPassword('student')" class="text-primary"
-              >Forgot password?</a
-            >
-          </div>
-
-          <button type="submit" class="btn btn-primary w-full mb-4">
-            Sign In
-          </button>
-
-          <p class="text-center">
-            Don't have an account?
-            <a href="user-registration.html" class="text-primary"
-              >Register here</a
-            >
-          </p>
+        <h3 class="mb-2 text-center">Sign in to your account</h3>
+        <div class="flex gap-2 mb-2 flex-center">
+          <button class="btn" id="tab-student" type="button">Student</button>
+          <button class="btn" id="tab-teacher" type="button">Teacher</button>
+          <button class="btn" id="tab-admin" type="button">Admin</button>
+        </div>
+        <form id="login-form" autocomplete="off">
+          <input
+            class="input"
+            id="login-id"
+            type="text"
+            placeholder="ID Number"
+            required
+          />
+          <input
+            class="input"
+            id="login-password"
+            type="password"
+            placeholder="Password"
+            required
+          />
+          <button class="btn mt-2" type="submit">Sign In</button>
         </form>
-
-        <!-- Teacher Login Form -->
-        <form
-          id="teacher-form"
-          class="login-form"
-          onsubmit="validateTeacherLogin(event)"
-        >
-          <h3 class="section-title">Teacher Login</h3>
-
-          <div class="form-group">
-            <label class="form-label" for="teacher-id">Teacher ID</label>
-            <input
-              type="text"
-              id="teacher-id"
-              class="form-control"
-              placeholder="Enter your teacher ID"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="teacher-password">Password</label>
-            <div class="password-field">
-              <input
-                type="password"
-                id="teacher-password"
-                class="form-control"
-                placeholder="Enter your password"
-                required
-              />
-              <button
-                type="button"
-                class="password-toggle"
-                data-password-toggle="teacher-password"
-                title="Show/hide password"
-              >
-                <i class="fas fa-eye"></i>
-              </button>
-            </div>
-          </div>
-
-          <div id="teacher-form-error" class="form-error"></div>
-
-          <div class="flex justify-between items-center mb-4">
-            <div>
-              <input type="checkbox" id="teacher-remember" class="mr-2" />
-              <label for="teacher-remember">Remember me</label>
-            </div>
-            <a href="#" onclick="forgotPassword('teacher')" class="text-primary"
-              >Forgot password?</a
-            >
-          </div>
-
-          <button type="submit" class="btn btn-primary w-full mb-4">
-            Sign In
-          </button>
-        </form>
-
-        <!-- Admin Login Form -->
-        <form
-          id="admin-form"
-          class="login-form"
-          onsubmit="validateAdminLogin(event)"
-        >
-          <h3 class="section-title">Admin Login</h3>
-
-          <div class="form-group">
-            <label class="form-label" for="admin-id">Admin ID</label>
-            <input
-              type="text"
-              id="admin-id"
-              class="form-control"
-              placeholder="Enter your admin ID"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="admin-password">Password</label>
-            <div class="password-field">
-              <input
-                type="password"
-                id="admin-password"
-                class="form-control"
-                placeholder="Enter your password"
-                required
-              />
-              <button
-                type="button"
-                class="password-toggle"
-                data-password-toggle="admin-password"
-                title="Show/hide password"
-              >
-                <i class="fas fa-eye"></i>
-              </button>
-            </div>
-          </div>
-
-          <div id="admin-form-error" class="form-error"></div>
-
-          <div class="flex justify-between items-center mb-4">
-            <div>
-              <input type="checkbox" id="admin-remember" class="mr-2" />
-              <label for="admin-remember">Remember me</label>
-            </div>
-            <a href="#" onclick="forgotPassword('admin')" class="text-primary"
-              >Forgot password?</a
-            >
-          </div>
-
-          <button type="submit" class="btn btn-primary w-full mb-4">
-            Sign In
-          </button>
-        </form>
+        <div class="flex gap-2 mt-2 space-between">
+          <a href="password-change.html">Forgot password?</a>
+          <a href="user-registration.html">Register</a>
+        </div>
+        <div id="login-toast" class="toast d-none"></div>
       </div>
     </div>
-
-    <!-- Scripts -->
-    <script src="js/ui-system.js"></script>
+    <style>
+      .login-card {
+        max-width: 420px;
+        width: 100%;
+      }
+      .phcm-logo {
+        height: 60px;
+      }
+      .logo-row {
+        justify-content: center;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .flex-center {
+        justify-content: center;
+        align-items: center;
+      }
+      .space-between {
+        justify-content: space-between;
+      }
+      .d-none {
+        display: none;
+      }
+    </style>
     <script>
-      // Switch between user roles
+      // Theme switcher logic
+      const root = document.documentElement;
+      const themeBtns = [
+        document.getElementById("theme-light"),
+        document.getElementById("theme-dark"),
+        document.getElementById("theme-system"),
+      ];
+      function setTheme(theme) {
+        localStorage.setItem("theme", theme);
+        themeBtns.forEach((btn) => btn.classList.remove("active"));
+        if (theme === "light") {
+          root.classList.remove("dark");
+          themeBtns[0].classList.add("active");
+        } else if (theme === "dark") {
+          root.classList.add("dark");
+          themeBtns[1].classList.add("active");
+        } else {
+          // system
+          if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            root.classList.add("dark");
+          } else {
+            root.classList.remove("dark");
+          }
+          themeBtns[2].classList.add("active");
+        }
+      }
+      themeBtns[0].onclick = () => setTheme("light");
+      themeBtns[1].onclick = () => setTheme("dark");
+      themeBtns[2].onclick = () => setTheme("system");
+      setTheme(localStorage.getItem("theme") || "system");
+
+      // Tab logic
+      let currentRole = "student";
+      document.getElementById("tab-student").onclick = () =>
+        switchRole("student");
+      document.getElementById("tab-teacher").onclick = () =>
+        switchRole("teacher");
+      document.getElementById("tab-admin").onclick = () => switchRole("admin");
       function switchRole(role) {
-        // Update tabs
-        document.querySelectorAll(".login-tab").forEach((tab) => {
-          tab.classList.remove("active");
-        });
+        currentRole = role;
+        document.getElementById("login-id").placeholder =
+          role === "student"
+            ? "Student ID"
+            : role === "teacher"
+            ? "Teacher ID"
+            : "Admin ID";
         document
-          .querySelector(`.login-tab[data-role="${role}"]`)
-          .classList.add("active");
-
-        // Update forms
-        document.querySelectorAll(".login-form").forEach((form) => {
-          form.classList.remove("active");
-        });
-        document.getElementById(`${role}-form`).classList.add("active");
-
-        // Update image based on role
-        const roleImage = document.getElementById("role-image");
-
-        if (role === "student") {
-          roleImage.src = "images/students.png";
-          roleImage.onerror = function () {
-            this.src = "https://via.placeholder.com/400x300?text=Students";
-            this.onerror = null;
-          };
-        } else if (role === "teacher") {
-          roleImage.src = "images/teachers.png";
-          roleImage.onerror = function () {
-            this.src = "https://via.placeholder.com/400x300?text=Teachers";
-            this.onerror = null;
-          };
-        } else if (role === "admin") {
-          roleImage.src = "images/admins.png";
-          roleImage.onerror = function () {
-            this.src = "https://via.placeholder.com/400x300?text=Admins";
-            this.onerror = null;
-          };
-        }
+          .getElementById("tab-student")
+          .classList.toggle("btn", role !== "student");
+        document
+          .getElementById("tab-student")
+          .classList.toggle("btn-primary", role === "student");
+        document
+          .getElementById("tab-teacher")
+          .classList.toggle("btn", role !== "teacher");
+        document
+          .getElementById("tab-teacher")
+          .classList.toggle("btn-primary", role === "teacher");
+        document
+          .getElementById("tab-admin")
+          .classList.toggle("btn", role !== "admin");
+        document
+          .getElementById("tab-admin")
+          .classList.toggle("btn-primary", role === "admin");
       }
+      switchRole("student");
 
-      // Forgot password handler
-      function forgotPassword(role) {
-        window.location.href = "password-change.html?role=" + role;
-      }
-
-      // Form validation functions
-      function validateStudentLogin(event) {
-        event.preventDefault();
-        const studentId = document.getElementById("student-id").value;
-        const password = document.getElementById("student-password").value;
-
-        // Example validation - Replace with actual validation logic
-        if (studentId === "student123" && password === "password") {
-          window.location.href = "student-dashboard.html";
+      // Login form logic (demo only)
+      document.getElementById("login-form").onsubmit = function (e) {
+        e.preventDefault();
+        // TODO: Replace with real authentication
+        const id = document.getElementById("login-id").value;
+        const pw = document.getElementById("login-password").value;
+        if (id && pw) {
+          showToast("Login successful! (Demo)");
         } else {
-          showFormError("student-form", "Invalid student ID or password");
+          showToast("Please enter your credentials.", true);
         }
-      }
-
-      function validateTeacherLogin(event) {
-        event.preventDefault();
-        const teacherId = document.getElementById("teacher-id").value;
-        const password = document.getElementById("teacher-password").value;
-
-        // Example validation - Replace with actual validation logic
-        if (teacherId === "teacher123" && password === "password") {
-          window.location.href = "teacher-dashboard.html";
-        } else {
-          showFormError("teacher-form", "Invalid teacher ID or password");
-        }
-      }
-
-      function validateAdminLogin(event) {
-        event.preventDefault();
-        const adminId = document.getElementById("admin-id").value;
-        const password = document.getElementById("admin-password").value;
-
-        // Example validation - Replace with actual validation logic
-        if (adminId === "admin123" && password === "password") {
-          window.location.href = "admin-dashboard-improved.html";
-        } else {
-          showFormError("admin-form", "Invalid admin ID or password");
-        }
+      };
+      function showToast(msg, error) {
+        const toast = document.getElementById("login-toast");
+        toast.textContent = msg;
+        toast.style.background = error ? "var(--danger)" : "var(--primary)";
+        toast.classList.remove("d-none");
+        setTimeout(() => {
+          toast.classList.add("d-none");
+        }, 2500);
       }
     </script>
   </body>

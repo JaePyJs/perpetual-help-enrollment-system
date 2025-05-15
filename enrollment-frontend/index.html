@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>School Enrollment System Frontend Navigation</title>
+    <meta name="description" content="Welcome to Perpetual Help College of Manila Enrollment System" />
+    <title>Welcome - Perpetual Help College of Manila</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="modern-theme.css" />
     <style>
       body {
         font-family: "Segoe UI", Arial, sans-serif;
@@ -62,80 +66,86 @@
       .file-links a:hover {
         background-color: #cf6e2b;
       }
+      .landing-card {
+        max-width: 540px;
+        width: 100%;
+      }
+      .phcm-logo {
+        height: 70px;
+      }
+      .logo-row {
+        justify-content: center;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .flex-center {
+        justify-content: center;
+        align-items: center;
+      }
+      .mr-2 {
+        margin-right: 0.75rem;
+      }
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      @media (max-width: 600px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
-    <h1>School Enrollment System - Frontend Navigation</h1>
-
-    <div class="section">
-      <h2>Login Pages</h2>
-      <div class="file-grid">
-        <div class="file-card">
-          <h3>Login Page</h3>
-          <div class="file-links">
-            <a href="loginpage.html">Original</a>
-            <a href="loginpage-improved.html">Improved Version</a>
-          </div>
+    <div class="theme-switcher">
+      <button id="theme-light" title="Light Mode"><i class="fas fa-sun"></i></button>
+      <button id="theme-dark" title="Dark Mode"><i class="fas fa-moon"></i></button>
+      <button id="theme-system" title="System"><i class="fas fa-desktop"></i></button>
+    </div>
+    <div class="flex flex-center mt-2">
+      <div class="card landing-card">
+        <div class="flex flex-center gap-2 mb-2 logo-row">
+          <img src="images/phcm-logo.svg" alt="PHCM Logo" class="phcm-logo" />
+          <h1>Perpetual Help College of Manila</h1>
+        </div>
+        <h2 class="mb-2 text-center">Enrollment System</h2>
+        <p class="mb-2 text-center">A modern, secure, and user-friendly platform for students, teachers, and administrators.</p>
+        <div class="grid">
+          <a href="loginpage-improved.html" class="btn flex flex-center"><i class="fas fa-sign-in-alt mr-2"></i> Login</a>
+          <a href="user-registration.html" class="btn flex flex-center"><i class="fas fa-user-plus mr-2"></i> Register</a>
         </div>
       </div>
     </div>
-
-    <div class="section">
-      <h2>Admin Dashboard</h2>
-      <div class="file-grid">
-        <div class="file-card">
-          <h3>Admin Dashboard</h3>
-          <div class="file-links">
-            <a href="admin-dashboard.html">Original</a>
-            <a href="admin-dashboard-reference.html">Reference Version</a>
-            <a href="admin-dashboard-improved.html">Improved Version</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Student Dashboard</h2>
-      <div class="file-grid">
-        <div class="file-card">
-          <h3>Student Dashboard</h3>
-          <div class="file-links">
-            <a href="student-dashboard.html">Original</a>
-            <a href="student-dashboard-reference.html">Reference Version</a>
-            <a href="student-dashboard-improved.html">Improved Version</a>
-            <a href="student-dashboard-enhanced.html">Enhanced Version</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Other Pages</h2>
-      <div class="file-grid">
-        <div class="file-card">
-          <h3>Password Change</h3>
-          <div class="file-links">
-            <a href="password-change.html">Original</a>
-            <a href="password-change-improved.html">Improved Version</a>
-          </div>
-        </div>
-
-        <div class="file-card">
-          <h3>Access Denied</h3>
-          <div class="file-links">
-            <a href="access-denied.html">Original</a>
-            <a href="access-denied-improved.html">Improved Version</a>
-          </div>
-        </div>
-
-        <div class="file-card">
-          <h3>Two Factor Auth</h3>
-          <div class="file-links">
-            <a href="two-factor-auth.html">Original</a>
-            <a href="two-factor-auth-improved.html">Improved Version</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <script>
+      // Theme switcher logic (same as login page)
+      const root = document.documentElement;
+      const themeBtns = [
+        document.getElementById('theme-light'),
+        document.getElementById('theme-dark'),
+        document.getElementById('theme-system')
+      ];
+      function setTheme(theme) {
+        localStorage.setItem('theme', theme);
+        themeBtns.forEach(btn => btn.classList.remove('active'));
+        if (theme === 'light') {
+          root.classList.remove('dark');
+          themeBtns[0].classList.add('active');
+        } else if (theme === 'dark') {
+          root.classList.add('dark');
+          themeBtns[1].classList.add('active');
+        } else {
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            root.classList.add('dark');
+          } else {
+            root.classList.remove('dark');
+          }
+          themeBtns[2].classList.add('active');
+        }
+      }
+      themeBtns[0].onclick = () => setTheme('light');
+      themeBtns[1].onclick = () => setTheme('dark');
+      themeBtns[2].onclick = () => setTheme('system');
+      setTheme(localStorage.getItem('theme') || 'system');
+    </script>
   </body>
 </html>
