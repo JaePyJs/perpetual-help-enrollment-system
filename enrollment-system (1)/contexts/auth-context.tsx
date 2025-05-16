@@ -238,10 +238,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser(userData);
 
         // Redirect to the appropriate dashboard
-        // For global-admin, redirect to the admin dashboard
+        // For global-admin, redirect to the admin dashboard with a flag to indicate global-admin role
         if (userData.role === "global-admin") {
+          // Store a flag in localStorage to indicate this is a global-admin
+          localStorage.setItem("isGlobalAdmin", "true");
           router.push("/admin/dashboard");
         } else {
+          // Clear the flag if it exists
+          localStorage.removeItem("isGlobalAdmin");
           router.push(`/${userData.role}/dashboard`);
         }
         return;
@@ -384,6 +388,20 @@ export function useAuth() {
 
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
+  }
+
+  // Check if there's a global-admin flag in localStorage
+  // This ensures that even if the user object doesn't have the correct role,
+  // we can still identify global-admin users
+  if (context.user && typeof window !== "undefined") {
+    const isGlobalAdmin = localStorage.getItem("isGlobalAdmin") === "true";
+    if (isGlobalAdmin && context.user.role === "admin") {
+      // Override the role to global-admin if the flag is set
+      context.user = {
+        ...context.user,
+        role: "global-admin",
+      };
+    }
   }
 
   return context;

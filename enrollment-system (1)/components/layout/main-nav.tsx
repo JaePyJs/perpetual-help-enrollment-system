@@ -225,12 +225,17 @@ export function MainNav({ role }: MainNavProps) {
   return (
     <div className="flex h-full flex-col overflow-y-auto py-4">
       <div className="px-3 py-2">
-        <h2 className="mb-2 px-4 text-lg font-poppins font-semibold tracking-tight">
+        <h2 className="mb-2 px-4 text-lg font-poppins font-semibold tracking-tight flex items-center gap-2">
           {role === "admin" || role === "global-admin"
             ? "Admin Portal"
             : role === "teacher"
             ? "Teacher Portal"
             : "Student Portal"}
+          {role === "global-admin" && (
+            <span className="inline-flex items-center rounded-full bg-orange-100 px-2 py-1 text-xs font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+              Global Admin
+            </span>
+          )}
         </h2>
         <div className="space-y-1">
           {navItems[role].map((item) => {

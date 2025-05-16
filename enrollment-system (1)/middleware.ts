@@ -75,6 +75,12 @@ export function middleware(request: NextRequest) {
       // Check if the user is accessing a path for their role
       const roleFromPath = path.split("/")[1]; // e.g., "student" from "/student/dashboard"
 
+      // Special case for global-admin: allow access to admin paths
+      if (decoded.role === "global-admin" && roleFromPath === "admin") {
+        // Global admin can access admin paths
+        return NextResponse.next();
+      }
+
       if (roleFromPath !== decoded.role) {
         // User is trying to access a path for a different role, redirect to their dashboard
         return NextResponse.redirect(
