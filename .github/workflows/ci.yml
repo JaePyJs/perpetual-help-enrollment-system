@@ -185,7 +185,7 @@ jobs:
             cd /var/www/enrollment-system
             cp .env.production public/.env
             cd public
-            npm install --production
+            npm install --production --legacy-peer-deps
             pm2 restart enrollment-system || pm2 start server.js --name "enrollment-system"
 
       - name: Deploy to development server
@@ -224,7 +224,7 @@ jobs:
             cd /var/www/enrollment-system-dev
             cp .env.development public/.env
             cd public
-            npm install --production
+            npm install --production --legacy-peer-deps
             pm2 restart enrollment-system-dev || pm2 start server.js --name "enrollment-system-dev"
 
       - name: Notify deployment
