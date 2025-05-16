@@ -26,7 +26,9 @@ export function LoginForm() {
   const router = useRouter();
   const { toast } = useToast();
   const { login } = useAuth();
-  const [role, setRole] = useState<"student" | "teacher" | "admin">("student");
+  const [role, setRole] = useState<
+    "student" | "teacher" | "admin" | "global-admin"
+  >("student");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -55,11 +57,7 @@ export function LoginForm() {
 
       // Try to login with the provided credentials
       try {
-        await login(
-          data.username,
-          data.password,
-          role as "student" | "teacher" | "admin"
-        );
+        await login(data.username, data.password, role);
 
         toast({
           title: "Login successful",
@@ -102,7 +100,9 @@ export function LoginForm() {
                 ? "/images/students.png"
                 : role === "teacher"
                 ? "/images/teacher.png"
-                : "/images/admin.png"
+                : role === "admin"
+                ? "/images/admin.png"
+                : "/images/admin.png" // Use the same image for global-admin
             }
             alt={`${role} illustration`}
             fill
@@ -124,7 +124,7 @@ export function LoginForm() {
             onValueChange={(value) => setRole(value as any)}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-3 bg-[#3a3a36]">
+            <TabsList className="grid w-full grid-cols-4 bg-[#3a3a36]">
               <TabsTrigger
                 value="student"
                 className="data-[state=active]:bg-[#e77f33]"
@@ -142,6 +142,12 @@ export function LoginForm() {
                 className="data-[state=active]:bg-[#e77f33]"
               >
                 Admin
+              </TabsTrigger>
+              <TabsTrigger
+                value="global-admin"
+                className="data-[state=active]:bg-[#e77f33]"
+              >
+                Global Admin
               </TabsTrigger>
             </TabsList>
 
@@ -162,7 +168,7 @@ export function LoginForm() {
                     id="username"
                     placeholder="User"
                     {...form.register("username")}
-                    className="bg-white"
+                    className="bg-white text-black"
                     disabled={isLoading}
                   />
                   {form.formState.errors.username && (
@@ -179,7 +185,7 @@ export function LoginForm() {
                       type={showPassword ? "text" : "password"}
                       placeholder="Password"
                       {...form.register("password")}
-                      className="bg-white pr-16"
+                      className="bg-white text-black pr-16"
                       disabled={isLoading}
                     />
                     <Button

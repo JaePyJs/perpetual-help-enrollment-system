@@ -238,7 +238,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser(userData);
 
         // Redirect to the appropriate dashboard
-        router.push(`/${userData.role}/dashboard`);
+        // For global-admin, redirect to the admin dashboard
+        if (userData.role === "global-admin") {
+          router.push("/admin/dashboard");
+        } else {
+          router.push(`/${userData.role}/dashboard`);
+        }
         return;
       }
 
