@@ -1,5 +1,7 @@
 # School Enrollment System - Visual Guide
 
+![Perpetual Help College Logo](../../enrollment-frontend/public/images/school-logo.png)
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
@@ -9,6 +11,8 @@
 5. [Teacher Dashboard](#teacher-dashboard)
 6. [Admin Dashboard](#admin-dashboard)
 7. [Common Components](#common-components)
+
+_Documentation Last Updated: June 15, 2024_
 
 ## Introduction
 
@@ -21,6 +25,7 @@ This visual guide provides an overview of the key interfaces and design elements
 The design system is built around the primary brand color (#e77f33) with complementary colors that create a cohesive and accessible design.
 
 #### Primary Colors
+
 - **Primary Orange (#e77f33)** - Brand identity color
 - **Dark Gray (#41413c)** - Used for text and sidebar
 - **Light Cream (#fdf6f2)** - Background color
@@ -28,6 +33,7 @@ The design system is built around the primary brand color (#e77f33) with complem
 - **Black (#000000)** - Text and accents
 
 #### Secondary Colors
+
 - **Success Green (#4caf50)** - Positive actions and success states
 - **Warning Amber (#ff9800)** - Alerts and warnings
 - **Error Red (#f44336)** - Errors and destructive actions
@@ -56,6 +62,7 @@ The design system is built with accessibility in mind:
 The login interface provides access points for all user roles (student, teacher, admin) with role-specific visuals.
 
 **Key Features:**
+
 - Role selection tabs with appropriate imagery
 - Secure authentication form with validation
 - Password visibility toggle
@@ -63,6 +70,7 @@ The login interface provides access points for all user roles (student, teacher,
 - Responsive design for all device sizes
 
 **Visual Elements:**
+
 - School logo prominently displayed
 - Role-specific imagery (student, teacher, admin)
 - Consistent branding with primary orange accents
@@ -73,6 +81,7 @@ The login interface provides access points for all user roles (student, teacher,
 The student dashboard provides a comprehensive overview of the student's academic information and quick access to key features.
 
 **Key Features:**
+
 - Academic progress visualization
 - Financial summary
 - Upcoming deadlines
@@ -80,6 +89,7 @@ The student dashboard provides a comprehensive overview of the student's academi
 - Responsive layout adapting to different screen sizes
 
 **Visual Elements:**
+
 - GPA and credits charts
 - Card-based layout for different information categories
 - Status indicators using the color system
@@ -87,6 +97,7 @@ The student dashboard provides a comprehensive overview of the student's academi
 - Empty states for sections without data
 
 **Main Sections:**
+
 1. **Overview** - Summary of key academic information
 2. **Courses** - Currently enrolled courses
 3. **Grades** - Academic performance metrics
@@ -98,6 +109,7 @@ The student dashboard provides a comprehensive overview of the student's academi
 The teacher dashboard offers tools for managing classes and student performance.
 
 **Key Features:**
+
 - Class management interface
 - Grade input functionality
 - Student performance tracking
@@ -105,6 +117,7 @@ The teacher dashboard offers tools for managing classes and student performance.
 - Report generation
 
 **Visual Elements:**
+
 - Class distribution charts
 - Performance analytics visualizations
 - Tabular data for student information
@@ -112,6 +125,7 @@ The teacher dashboard offers tools for managing classes and student performance.
 - Status indicators for assignments and grades
 
 **Main Sections:**
+
 1. **Overview** - Summary of teaching load and student counts
 2. **Classes** - List of assigned classes with management tools
 3. **Grading** - Interface for inputting and managing grades
@@ -123,6 +137,7 @@ The teacher dashboard offers tools for managing classes and student performance.
 The administrator dashboard provides system-wide management capabilities.
 
 **Key Features:**
+
 - User registration and management
 - Department and course configuration
 - System analytics and reporting
@@ -130,6 +145,7 @@ The administrator dashboard provides system-wide management capabilities.
 - Financial system oversight
 
 **Visual Elements:**
+
 - System health indicators
 - User statistics charts
 - Department and program visualizations
@@ -137,6 +153,7 @@ The administrator dashboard provides system-wide management capabilities.
 - Data tables with filtering and sorting capabilities
 
 **Main Sections:**
+
 1. **Overview** - System-wide statistics and health metrics
 2. **Users** - User management interface
 3. **Academics** - Department, program, and course management

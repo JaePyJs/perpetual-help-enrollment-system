@@ -5,7 +5,7 @@
 ![Perpetual Help College Logo](../../enrollment-frontend/public/images/school-logo.png)
 
 **Version:** 1.0.0
-**Date:** June 2024
+**Date:** June 15, 2024
 
 ---
 

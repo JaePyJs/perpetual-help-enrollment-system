@@ -2,6 +2,8 @@
 
 A modern web-based enrollment system for Perpetual Help College of Manila, featuring separate interfaces for students, teachers, and administrators. This system follows ISO 25010 standards and aims to be a best-in-class enrollment solution.
 
+_Documentation Last Updated: June 15, 2024_
+
 ![Perpetual Help College Logo](enrollment-frontend/public/images/school-logo.png)
 
 ## Project Structure

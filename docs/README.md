@@ -1,6 +1,10 @@
 # Perpetual Help College of Manila - Enrollment System Documentation
 
+![Perpetual Help College Logo](../enrollment-frontend/public/images/school-logo.png)
+
 This directory contains comprehensive documentation for the Perpetual Help College of Manila Enrollment System project.
+
+_Documentation Last Updated: June 15, 2024_
 
 ## Directory Structure
 

@@ -1,5 +1,7 @@
 # School Enrollment System - Implementation Details
 
+![Perpetual Help College Logo](../../enrollment-frontend/public/images/school-logo.png)
+
 ## Table of Contents
 
 1. [Project Structure](#project-structure)
@@ -10,6 +12,8 @@
 6. [Security Implementation](#security-implementation)
 7. [Testing Strategy](#testing-strategy)
 8. [Deployment Process](#deployment-process)
+
+_Documentation Last Updated: June 15, 2024_
 
 ## Project Structure
 
