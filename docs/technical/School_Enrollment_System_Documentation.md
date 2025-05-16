@@ -1,6 +1,6 @@
 # Perpetual Help College of Manila - Enrollment System
 
-![Perpetual Help College Logo](<enrollment-system%20(1)/public/images/school-logo.png>)
+![Perpetual Help College Logo](../../enrollment-frontend/public/images/school-logo.png)
 
 ## Table of Contents
 
@@ -15,6 +15,8 @@
 9. [Installation and Setup](#installation-and-setup)
 10. [Contact Information](#contact-information)
 11. [References](#references)
+
+**Documentation Last Updated: May 17, 2025**
 
 ## Executive Summary
 
