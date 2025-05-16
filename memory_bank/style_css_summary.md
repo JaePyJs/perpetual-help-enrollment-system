@@ -21,4 +21,15 @@
 
 ---
 
+# style_css_summary.md
+
+## May 2025: Style and Design Cleanup
+
+- Legacy CSS files in enrollment-frontend/ are being reviewed for removal if not referenced by the Next.js app
+- Unused or duplicate styles in enrollment-nextjs/styles/ will be removed for maintainability
+- UI/UX review will ensure all styles are modern, consistent, and accessible
+- All changes to styles will be documented in memory_bank and migration_cleanup_list.md
+
+---
+
 If you need a summary or details for other files, let me know!

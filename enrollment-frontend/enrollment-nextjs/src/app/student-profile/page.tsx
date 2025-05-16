@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
-import { useSupabaseData, updateRecord } from "@/lib/useSupabaseData";
+import { useSupabaseData } from "@/lib/useSupabaseData";
 import {
   StudentProfile,
   ContactInformation,
@@ -21,17 +21,14 @@ export default function StudentProfilePage() {
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const router = useRouter();
   const [activeSection, setActiveSection] = useState("personal-info");
-  const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [fileUploadLoading, setFileUploadLoading] = useState(false);
 
   // Student data
   const {
     data: profileData,
     loading: profileLoading,
     error: profileError,
-    refetch: refetchProfile,
   } = useSupabaseData<StudentProfile>({
     table: "student_profiles",
     match: { user_id: user?.id },
@@ -41,7 +38,6 @@ export default function StudentProfilePage() {
     data: contactData,
     loading: contactLoading,
     error: contactError,
-    refetch: refetchContact,
   } = useSupabaseData<ContactInformation>({
     table: "contact_information",
     match: { student_id: profileData?.[0]?.student_id },
@@ -61,7 +57,6 @@ export default function StudentProfilePage() {
     data: documents,
     loading: documentsLoading,
     error: documentsError,
-    refetch: refetchDocuments,
   } = useSupabaseData<Document>({
     table: "documents",
     match: { student_id: profileData?.[0]?.student_id },
@@ -246,7 +241,7 @@ export default function StudentProfilePage() {
                   className={
                     activeSection === "personal-info" ? styles.active : ""
                   }
-                  onClick={() => handleSectionChange("personal-info")}
+                  onClick={() => setActiveSection("personal-info")}
                 >
                   Personal Information
                 </li>
@@ -254,7 +249,7 @@ export default function StudentProfilePage() {
                   className={
                     activeSection === "contact-info" ? styles.active : ""
                   }
-                  onClick={() => handleSectionChange("contact-info")}
+                  onClick={() => setActiveSection("contact-info")}
                 >
                   Contact Information
                 </li>
@@ -262,13 +257,13 @@ export default function StudentProfilePage() {
                   className={
                     activeSection === "academic-info" ? styles.active : ""
                   }
-                  onClick={() => handleSectionChange("academic-info")}
+                  onClick={() => setActiveSection("academic-info")}
                 >
                   Academic Information
                 </li>
                 <li
                   className={activeSection === "documents" ? styles.active : ""}
-                  onClick={() => handleSectionChange("documents")}
+                  onClick={() => setActiveSection("documents")}
                 >
                   Documents
                 </li>
@@ -276,7 +271,7 @@ export default function StudentProfilePage() {
                   className={
                     activeSection === "account-settings" ? styles.active : ""
                   }
-                  onClick={() => handleSectionChange("account-settings")}
+                  onClick={() => setActiveSection("account-settings")}
                 >
                   Account Settings
                 </li>
@@ -294,10 +289,7 @@ export default function StudentProfilePage() {
             >
               <h2>Personal Information</h2>
               <div className="section-content">
-                <form
-                  id="personal-info-form"
-                  onSubmit={handlePersonalInfoSubmit}
-                >
+                <form id="personal-info-form">
                   <div className={styles.formRow}>
                     <div className={styles.formGroup}>
                       <label htmlFor="first-name">First Name</label>
@@ -312,6 +304,7 @@ export default function StudentProfilePage() {
                           })
                         }
                         required
+                        placeholder="Enter your first name"
                       />
                     </div>
                     <div className={styles.formGroup}>
@@ -326,6 +319,7 @@ export default function StudentProfilePage() {
                             middle_name: e.target.value,
                           })
                         }
+                        placeholder="Enter your middle name"
                       />
                     </div>
                     <div className={styles.formGroup}>
@@ -341,6 +335,7 @@ export default function StudentProfilePage() {
                           })
                         }
                         required
+                        placeholder="Enter your last name"
                       />
                     </div>
                   </div>
@@ -415,6 +410,7 @@ export default function StudentProfilePage() {
                           })
                         }
                         required
+                        placeholder="Enter your nationality"
                       />
                     </div>
                     <div className={styles.formGroup}>
@@ -429,16 +425,13 @@ export default function StudentProfilePage() {
                             religion: e.target.value,
                           })
                         }
+                        placeholder="Enter your religion"
                       />
                     </div>
                   </div>
                   <div className={styles.formActions}>
-                    <button
-                      type="submit"
-                      className={styles.primaryBtn}
-                      disabled={saving}
-                    >
-                      {saving ? "Saving..." : "Save Changes"}
+                    <button type="submit" className={styles.primaryBtn}>
+                      Save Changes
                     </button>
                   </div>
                 </form>
@@ -459,10 +452,7 @@ export default function StudentProfilePage() {
                 <ErrorMessage message={contactError} />
               ) : (
                 <div className="section-content">
-                  <form
-                    id="contact-info-form"
-                    onSubmit={handleContactInfoSubmit}
-                  >
+                  <form id="contact-info-form">
                     <div className={styles.formRow}>
                       <div
                         className={`${styles.formGroup} ${styles.fullWidth}`}
@@ -505,6 +495,7 @@ export default function StudentProfilePage() {
                             })
                           }
                           required
+                          placeholder="Enter your mobile number"
                         />
                       </div>
                     </div>
@@ -524,6 +515,7 @@ export default function StudentProfilePage() {
                             })
                           }
                           required
+                          placeholder="Enter your present address"
                         />
                       </div>
                     </div>
@@ -545,6 +537,7 @@ export default function StudentProfilePage() {
                             })
                           }
                           required
+                          placeholder="Enter your permanent address"
                         />
                       </div>
                     </div>
@@ -563,6 +556,7 @@ export default function StudentProfilePage() {
                           })
                         }
                         required
+                        placeholder="Enter emergency contact name"
                       />
                     </div>
                     <div className={styles.formRow}>
@@ -581,6 +575,7 @@ export default function StudentProfilePage() {
                             })
                           }
                           required
+                          placeholder="Enter your relationship with the contact"
                         />
                       </div>
                       <div className={styles.formGroup}>
@@ -598,16 +593,13 @@ export default function StudentProfilePage() {
                             })
                           }
                           required
+                          placeholder="Enter emergency contact number"
                         />
                       </div>
                     </div>
                     <div className={styles.formActions}>
-                      <button
-                        type="submit"
-                        className={styles.primaryBtn}
-                        disabled={saving}
-                      >
-                        {saving ? "Saving..." : "Save Changes"}
+                      <button type="submit" className={styles.primaryBtn}>
+                        Save Changes
                       </button>
                     </div>
                   </form>
@@ -745,22 +737,16 @@ export default function StudentProfilePage() {
                                   type="file"
                                   id={`upload-${document.id}`}
                                   style={{ display: "none" }}
-                                  onChange={(e) =>
-                                    handleFileUpload(document.id, e)
-                                  }
                                 />
                                 <button
                                   className={`${styles.documentBtn} ${styles.uploadBtn}`}
                                   onClick={() =>
-                                    document
+                                    window.document
                                       .getElementById(`upload-${document.id}`)
                                       ?.click()
                                   }
-                                  disabled={fileUploadLoading}
                                 >
-                                  {fileUploadLoading
-                                    ? "Uploading..."
-                                    : "Upload"}
+                                  Upload
                                 </button>
                               </>
                             )}

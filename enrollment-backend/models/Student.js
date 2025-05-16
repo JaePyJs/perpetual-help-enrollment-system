@@ -42,7 +42,7 @@ const studentSchema = new mongoose.Schema({
         return value === expectedEmail;
       },
       message: (props) =>
-        "Email must match studentId format: [studentId]@manila.uphsl.edu.ph",
+        "Email must match the standard format: m23-1470-578@manila.uphsl.edu.ph",
     },
   },
 
@@ -125,7 +125,7 @@ studentSchema.pre("validate", function (next) {
   if (this.email !== expectedEmail) {
     this.invalidate(
       "email",
-      "Email must match studentId format: [studentId]@manila.uphsl.edu.ph"
+      "Email must match the standard format: m23-1470-578@manila.uphsl.edu.ph"
     );
   }
   next();

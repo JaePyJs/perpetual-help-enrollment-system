@@ -199,6 +199,13 @@ export default function UserRegistration() {
             Math.floor(Math.random() * 10000)
           );
         }
+        // Ensure email follows the standard format: m23-1470-578@manila.uphsl.edu.ph
+        if (
+          !studentMeta.email ||
+          !studentMeta.email.includes("@manila.uphsl.edu.ph")
+        ) {
+          studentMeta.email = `${studentMeta.studentId}@manila.uphsl.edu.ph`;
+        }
         meta = studentMeta;
       } else if (userType === "teacher") {
         const teacherMeta = meta as (typeof initialFields)["teacher"];
@@ -332,7 +339,16 @@ export default function UserRegistration() {
               value={fields[userType].email}
               onChange={(e) => handleInput("email", e.target.value)}
               required
+              placeholder={
+                userType === "student" ? "m23-1470-578@manila.uphsl.edu.ph" : ""
+              }
             />
+            {userType === "student" && (
+              <small className={styles.helperText}>
+                For students, email must follow the format:
+                m23-1470-578@manila.uphsl.edu.ph
+              </small>
+            )}
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="phone">Phone Number</label>

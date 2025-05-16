@@ -1,32 +1,26 @@
 "use client";
 
+import React, { ReactNode } from "react";
 import { ThemeProvider } from "@/lib/ThemeContext";
-import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { muiTheme, darkMuiTheme } from "@/lib/muiTheme";
-import { useEffect, useState } from "react";
+import { ToastProvider } from "@/lib/ToastContext";
+import ThemeRegistry from "./ThemeRegistry";
 
-export default function Providers({ children }: { children: React.ReactNode }) {
-  const [currentTheme, setCurrentTheme] = useState(muiTheme);
-  
-  // Check for dark mode preference
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = () => {
-      setCurrentTheme(mediaQuery.matches ? darkMuiTheme : muiTheme);
-    };
-    
-    handleChange();
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
-
+/**
+ * Providers Component
+ * 
+ * Combines all application providers in the correct order.
+ * This ensures consistent context availability throughout the app.
+ * 
+ * @param children - The application components to be wrapped with providers
+ */
+export default function Providers({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider>
-      <MuiThemeProvider theme={currentTheme}>
-        <CssBaseline />
-        {children}
-      </MuiThemeProvider>
-    </ThemeProvider>
+    <ThemeRegistry>
+      <ThemeProvider>
+        <ToastProvider>
+          {children}
+        </ToastProvider>
+      </ThemeProvider>
+    </ThemeRegistry>
   );
 }

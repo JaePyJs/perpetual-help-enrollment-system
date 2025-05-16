@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
-const auth = require("../middleware/auth");
+const { auth, checkRole } = require("../middleware/auth");
 const Student = require("../models/Student");
 const User = require("../models/User");
 const Department = require("../models/Department");
 const StudentProfile = require("../models/StudentProfile");
-const checkRole = require("../middleware/checkRole");
 const validationSchemas = require("../utils/validationSchemas");
 const monitoring = require("../monitoring");
 
@@ -113,7 +112,7 @@ router.post(
     auth,
     checkRole(["admin"]),
     // Validation middleware
-    validationSchemas.studentValidations.createStudent,
+    ...validationSchemas.studentValidations.createStudent,
   ],
   async (req, res) => {
     try {
@@ -216,7 +215,7 @@ router.put(
   [
     auth,
     // Validation middleware
-    validationSchemas.studentValidations.updateStudent,
+    ...validationSchemas.studentValidations.updateStudent,
   ],
   async (req, res) => {
     try {

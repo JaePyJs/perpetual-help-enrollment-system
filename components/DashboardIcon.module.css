@@ -1,0 +1,44 @@
+.iconContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.iconContainer:hover {
+  background-color: rgba(231, 127, 51, 0.1);
+}
+
+.iconWrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgba(231, 127, 51, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: var(--neutral-700, #374151);
+  font-weight: 500;
+}
+
+.active .iconWrapper {
+  background-color: var(--primary-500, #e77f33);
+}
+
+.active .icon {
+  color: white;
+}
+
+.active .label {
+  color: var(--primary-500, #e77f33);
+  font-weight: 600;
+}

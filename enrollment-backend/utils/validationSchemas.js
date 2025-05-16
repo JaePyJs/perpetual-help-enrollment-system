@@ -290,7 +290,7 @@ const studentValidations = {
         const expectedEmail = `${req.body.studentId}@manila.uphsl.edu.ph`;
         if (value !== expectedEmail) {
           throw new Error(
-            "Email must match studentId format: [studentId]@manila.uphsl.edu.ph"
+            "Email must match the standard format: m23-1470-578@manila.uphsl.edu.ph"
           );
         }
         return true;

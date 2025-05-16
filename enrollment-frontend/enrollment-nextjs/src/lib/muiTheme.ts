@@ -1,94 +1,109 @@
 // src/lib/muiTheme.ts
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
-// Create a theme instance with the school's brand colors
+/**
+ * Perpetual Help College MUI Theme
+ *
+ * This theme aligns with our design system colors and typography.
+ * Primary: Orange (#e77f33) - Brand color
+ * Secondary: Blue - Complementary to orange
+ * Accent: Purple - For highlights and special elements
+ */
 export const muiTheme = createTheme({
   palette: {
     primary: {
-      main: '#2563eb', // Primary blue color
-      dark: '#1d4ed8',
-      light: '#3b82f6',
-      contrastText: '#ffffff',
+      main: "#e77f33", // Primary orange (brand color)
+      light: "#ff8a4c",
+      dark: "#dd6b20",
+      contrastText: "#ffffff",
     },
     secondary: {
-      main: '#f97316', // Orange accent
-      dark: '#ea580c',
-      light: '#fb923c',
-      contrastText: '#ffffff',
+      main: "#3f83f8", // Secondary blue (complementary)
+      light: "#76a9fa",
+      dark: "#1c64f2",
+      contrastText: "#ffffff",
     },
     error: {
-      main: '#ef4444',
+      main: "#ef4444",
+      light: "#fee2e2",
+      dark: "#b91c1c",
     },
     warning: {
-      main: '#f59e0b',
+      main: "#f59e0b",
+      light: "#fef3c7",
+      dark: "#b45309",
     },
     info: {
-      main: '#3b82f6',
+      main: "#3b82f6",
+      light: "#dbeafe",
+      dark: "#1d4ed8",
     },
     success: {
-      main: '#10b981',
+      main: "#10b981",
+      light: "#d1fae5",
+      dark: "#047857",
     },
     text: {
-      primary: '#171717',
-      secondary: '#4b5563',
+      primary: "#111827", // neutral-900
+      secondary: "#4b5563", // neutral-600
     },
     background: {
-      default: '#ffffff',
-      paper: '#ffffff',
+      default: "#ffffff",
+      paper: "#ffffff",
     },
   },
   typography: {
     fontFamily: [
-      'Poppins',
-      'Inter',
-      '-apple-system',
-      'BlinkMacSystemFont',
+      "Poppins",
+      "Inter",
+      "-apple-system",
+      "BlinkMacSystemFont",
       '"Segoe UI"',
-      'Roboto',
+      "Roboto",
       '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-    ].join(','),
+      "Arial",
+      "sans-serif",
+    ].join(","),
     h1: {
-      fontFamily: 'Poppins, sans-serif',
+      fontFamily: "Poppins, sans-serif",
       fontWeight: 700,
     },
     h2: {
-      fontFamily: 'Poppins, sans-serif',
+      fontFamily: "Poppins, sans-serif",
       fontWeight: 600,
     },
     h3: {
-      fontFamily: 'Poppins, sans-serif',
+      fontFamily: "Poppins, sans-serif",
       fontWeight: 600,
     },
     h4: {
-      fontFamily: 'Poppins, sans-serif',
+      fontFamily: "Poppins, sans-serif",
       fontWeight: 600,
     },
     h5: {
-      fontFamily: 'Poppins, sans-serif',
+      fontFamily: "Poppins, sans-serif",
       fontWeight: 500,
     },
     h6: {
-      fontFamily: 'Poppins, sans-serif',
+      fontFamily: "Poppins, sans-serif",
       fontWeight: 500,
     },
     subtitle1: {
-      fontFamily: 'Inter, sans-serif',
+      fontFamily: "Inter, sans-serif",
     },
     subtitle2: {
-      fontFamily: 'Inter, sans-serif',
+      fontFamily: "Inter, sans-serif",
     },
     body1: {
-      fontFamily: 'Inter, sans-serif',
+      fontFamily: "Inter, sans-serif",
     },
     body2: {
-      fontFamily: 'Inter, sans-serif',
+      fontFamily: "Inter, sans-serif",
     },
     button: {
-      fontFamily: 'Inter, sans-serif',
+      fontFamily: "Inter, sans-serif",
       fontWeight: 500,
-      textTransform: 'none',
+      textTransform: "none",
     },
   },
   shape: {
@@ -98,17 +113,17 @@ export const muiTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: '0.5rem',
-          padding: '0.5rem 1.5rem',
-          boxShadow: 'none',
-          textTransform: 'none',
+          borderRadius: "0.5rem",
+          padding: "0.5rem 1.5rem",
+          boxShadow: "none",
+          textTransform: "none",
           fontWeight: 500,
-          fontSize: '0.875rem',
+          fontSize: "0.875rem",
         },
         contained: {
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-          '&:hover': {
-            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+          "&:hover": {
+            boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)",
           },
         },
       },
@@ -116,8 +131,8 @@ export const muiTheme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          '& .MuiOutlinedInput-root': {
-            borderRadius: '0.5rem',
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "0.5rem",
           },
         },
       },
@@ -125,8 +140,9 @@ export const muiTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: '0.75rem',
-          boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.05)',
+          borderRadius: "0.75rem",
+          boxShadow:
+            "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.05)",
         },
       },
     },
@@ -138,20 +154,26 @@ export const darkMuiTheme = createTheme({
   ...muiTheme,
   palette: {
     ...muiTheme.palette,
-    mode: 'dark',
+    mode: "dark",
     primary: {
-      main: '#3b82f6',
-      dark: '#2563eb',
-      light: '#60a5fa',
-      contrastText: '#ffffff',
+      main: "#ff8a4c", // Lighter orange for dark mode
+      dark: "#e77f33",
+      light: "#fdba8c",
+      contrastText: "#ffffff",
+    },
+    secondary: {
+      main: "#76a9fa", // Lighter blue for dark mode
+      dark: "#3f83f8",
+      light: "#a4cafe",
+      contrastText: "#ffffff",
     },
     background: {
-      default: '#0f172a',
-      paper: '#1e293b',
+      default: "#121212", // Dark background
+      paper: "#1e1e1e", // Dark card background
     },
     text: {
-      primary: '#f8fafc',
-      secondary: '#cbd5e1',
+      primary: "#f9fafb", // neutral-50 in dark mode
+      secondary: "#d1d5db", // neutral-300 in dark mode
     },
   },
   components: {
@@ -159,9 +181,28 @@ export const darkMuiTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: '#1e293b',
-          borderRadius: '0.75rem',
-          boxShadow: '0 4px 6px -1px rgba(0,0,0,0.2), 0 2px 4px -2px rgba(0,0,0,0.1)',
+          backgroundColor: "#1e1e1e",
+          borderRadius: "0.75rem",
+          boxShadow:
+            "0 4px 6px -1px rgba(0,0,0,0.2), 0 2px 4px -2px rgba(0,0,0,0.1)",
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "0.5rem",
+          padding: "0.5rem 1.5rem",
+          boxShadow: "none",
+          textTransform: "none",
+          fontWeight: 500,
+          fontSize: "0.875rem",
+        },
+        contained: {
+          boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+          "&:hover": {
+            boxShadow: "0 4px 6px -1px rgba(0,0,0,0.2)",
+          },
         },
       },
     },

@@ -115,7 +115,7 @@ const pendingTasks = [
 const navSections = [
   { id: "dashboard", label: "Dashboard", icon: "home" },
   { id: "classes", label: "My Classes", icon: "graduation-cap" },
-  { id: "grades", label: "Grade Management", icon: "chart-line" },
+  { id: "grading", label: "Grade Management", icon: "chart-line" },
   { id: "attendance", label: "Attendance", icon: "clipboard-list" },
   { id: "calendar", label: "Calendar", icon: "calendar-alt" },
 ];
@@ -127,7 +127,7 @@ export default function TeacherDashboard() {
     <div className="dashboard-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <h2>Teacher Panel</h2>
+        <h2>Teacher Portal</h2>
         <div style={{ padding: "1rem", textAlign: "center" }}>
           <Image
             src="/images/phcm-logo.svg"
@@ -358,7 +358,7 @@ export default function TeacherDashboard() {
           </section>
           <section
             className={`dashboard-section${
-              activeSection === "grades" ? " active" : ""
+              activeSection === "grading" ? " active" : ""
             }`}
           >
             <h3 className="section-title">Grade Management</h3>

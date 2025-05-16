@@ -11,7 +11,7 @@ import {
 type FetchOptions = {
   table: string;
   select?: string;
-  match?: Record<string, any>;
+  match?: Record<string, unknown>;
   order?: { column: string; ascending?: boolean };
   limit?: number;
 };
@@ -60,8 +60,12 @@ export function useSupabaseData<T>(options: FetchOptions): {
       } else {
         setData(data as T[]);
       }
-    } catch (err: any) {
-      setError(err.message || "An error occurred while fetching data");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An error occurred while fetching data"
+      );
       setData(null);
     } finally {
       setLoading(false);
@@ -78,7 +82,7 @@ export function useSupabaseData<T>(options: FetchOptions): {
 
 export async function createRecord<T>(
   table: string,
-  data: Record<string, any>
+  data: Record<string, unknown>
 ): Promise<SupabaseResponse<T>> {
   try {
     const { data: result, error } = await supabase
@@ -91,7 +95,7 @@ export async function createRecord<T>(
     }
 
     return { data: result[0] as T, error: null };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return handleSupabaseError(err);
   }
 }
@@ -99,7 +103,7 @@ export async function createRecord<T>(
 export async function updateRecord<T>(
   table: string,
   id: string | number,
-  data: Record<string, any>
+  data: Record<string, unknown>
 ): Promise<SupabaseResponse<T>> {
   try {
     const { data: result, error } = await supabase
@@ -113,7 +117,7 @@ export async function updateRecord<T>(
     }
 
     return { data: result[0] as T, error: null };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return handleSupabaseError(err);
   }
 }
@@ -130,7 +134,7 @@ export async function deleteRecord(
     }
 
     return { data: null, error: null };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return handleSupabaseError(err);
   }
 }

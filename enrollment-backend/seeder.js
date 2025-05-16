@@ -5,7 +5,13 @@ const Course = require("./models/Course");
 
 const users = [
   {
-    name: "Admin User",
+    name: "Global Admin",
+    email: "global-admin@uphc.edu.ph",
+    password: "admin123",
+    role: "global-admin",
+  },
+  {
+    name: "Jam, Agoo",
     email: "admin@uphc.edu.ph",
     password: "admin123",
     role: "admin",
@@ -15,12 +21,18 @@ const users = [
     email: "teacher@uphc.edu.ph",
     password: "teacher123",
     role: "teacher",
+    employeeId: "T-2023-001",
+    specialization: ["Computer Science", "Mathematics"],
   },
   {
     name: "Student One",
     email: "student@uphc.edu.ph",
     password: "student123",
     role: "student",
+    department: "BSIT",
+    yearLevel: 2,
+    studentId: "m23-1470-578",
+    section: "A",
   },
 ];
 

@@ -3,8 +3,9 @@
  * This middleware provides protection against HTTP parameter pollution and other HTTP-based attacks
  */
 
-const hpp = require('hpp');
-const xssClean = require('xss-clean');
+const hpp = require("hpp");
+// const xssClean = require("xss-clean/lib/xss");
+const { sanitizeObject } = require("./xssProtection");
 
 /**
  * HTTP parameter pollution protection middleware
@@ -15,9 +16,7 @@ const xssClean = require('xss-clean');
  */
 const httpParameterProtection = hpp({
   // White-listed parameters that can be duplicated in the query string
-  whitelist: [
-    'sort', 'fields', 'search', 'tags', 'categories', 'ids'
-  ]
+  whitelist: ["sort", "fields", "search", "tags", "categories", "ids"],
 });
 
 /**
@@ -30,24 +29,24 @@ const httpParameterProtection = hpp({
 const additionalSecurityHeaders = (req, res, next) => {
   // Content-Security-Policy: Enhanced control over which resources can be loaded
   res.setHeader(
-    'Content-Security-Policy',
+    "Content-Security-Policy",
     "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'"
   );
-  
+
   // Referrer-Policy: Control how much referrer information is sent
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+
   // Permissions-Policy (formerly Feature-Policy): Control browser features
   res.setHeader(
-    'Permissions-Policy',
-    'geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=()'
+    "Permissions-Policy",
+    "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=()"
   );
-  
+
   // Clear-Site-Data: Clear browsing data on logout
-  if (req.path === '/api/auth/logout') {
-    res.setHeader('Clear-Site-Data', '"cache", "cookies", "storage"');
+  if (req.path === "/api/auth/logout") {
+    res.setHeader("Clear-Site-Data", '"cache", "cookies", "storage"');
   }
-  
+
   next();
 };
 
@@ -61,19 +60,19 @@ const additionalSecurityHeaders = (req, res, next) => {
 const sessionSecurity = (req, res, next) => {
   // Override the cookie setting method to enforce secure flags
   const originalCookie = res.cookie;
-  res.cookie = function(name, value, options = {}) {
+  res.cookie = function (name, value, options = {}) {
     // Default options for security
     const secureOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      ...options
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      ...options,
     };
-    
+
     // Call the original cookie method with secure options
     return originalCookie.call(this, name, value, secureOptions);
   };
-  
+
   next();
 };
 
@@ -81,5 +80,18 @@ module.exports = {
   httpParameterProtection,
   additionalSecurityHeaders,
   sessionSecurity,
-  xssCleanMiddleware: xssClean()
+  xssCleanMiddleware: () => {
+    return (req, res, next) => {
+      if (req.body) {
+        req.body = sanitizeObject(req.body);
+      }
+      if (req.query) {
+        req.query = sanitizeObject(req.query);
+      }
+      if (req.params) {
+        req.params = sanitizeObject(req.params);
+      }
+      next();
+    };
+  },
 };

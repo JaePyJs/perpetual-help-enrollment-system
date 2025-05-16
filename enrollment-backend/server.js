@@ -8,66 +8,6 @@ const { initWebSocketServer } = require("./services/websocket");
 // Import the configured Express application from app.js
 const app = require("./app");
 
-// Security middleware
-app.use(helmet()); // Set secure HTTP headers
-app.use(additionalSecurityHeaders); // Add additional security headers
-
-// Configure CORS with stricter options
-app.use(
-  cors({
-    origin: ["http://localhost:5000", "http://localhost:8080"],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-CSRF-TOKEN"],
-  })
-);
-
-// Rate limiting to prevent brute force attacks
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: {
-    status: "error",
-    message: "Too many requests, please try again later",
-  },
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
-app.use("/api/", limiter);
-
-// Apply stricter rate limits to authentication routes
-const authLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 10, // limit each IP to 10 login attempts per hour
-  message: {
-    status: "error",
-    message: "Too many login attempts, please try again later",
-  },
-});
-app.use("/api/auth/login", authLimiter);
-
-// Body parsing middleware
-app.use(express.json({ limit: "1mb" })); // Limit body size
-app.use(express.urlencoded({ extended: true, limit: "1mb" }));
-app.use(cookieParser()); // For CSRF cookies
-
-// Database sanitization to prevent NoSQL injection
-app.use(mongoSanitize());
-
-// Access logging
-app.use(accessLogger);
-
-// Input sanitization and XSS protection
-app.use(sanitizeInput);
-app.use(xssProtection);
-app.use(xssCleanMiddleware); // Additional XSS protection
-app.use(httpParameterProtection); // Prevent HTTP Parameter Pollution
-app.use(sessionSecurity); // Enhanced cookie security
-
-// CSRF protection
-app.use(setCsrfToken);
-app.use(verifyCsrfToken);
-
 // Database connection with retry
 const connectDB = async () => {
   try {
@@ -116,23 +56,14 @@ app.post("/api/security/log", (req, res) => {
 });
 
 // 404 handler
-app.use((req, res, next) => {
+app.use((_, res) => {
   res.status(404).json({ status: "error", message: "Resource not found" });
 });
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+app.use((err, _, res, __) => {
   // Log the error
   console.error(err.stack);
-
-  // Log as security event if it's a security-related error
-  if (
-    err.name === "UnauthorizedError" ||
-    err.status === 401 ||
-    err.status === 403
-  ) {
-    logSecurityEvent("authorization_error", { error: err.message }, true, req);
-  }
 
   // Don't expose error details in production
   const isProduction = process.env.NODE_ENV === "production";
@@ -165,11 +96,11 @@ const PORT = process.env.PORT || 5000;
 // Create HTTP server
 const server = http.createServer(app);
 
-// Initialize WebSocket server
-initWebSocketServer(server);
+// Initialize WebSocket server - temporarily disabled for troubleshooting
+// initWebSocketServer(server);
 
 // Start server
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`WebSocket server available at ws://localhost:${PORT}/ws`);
+  console.log(`WebSocket server disabled for troubleshooting`);
 });

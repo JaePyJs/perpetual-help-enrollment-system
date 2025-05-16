@@ -15,9 +15,15 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl || "", supabaseAnonKey || "");
 
 // Helper function to handle Supabase errors consistently
-export const handleSupabaseError = (error: any) => {
-  console.error("Supabase Error:", error.message);
-  return { error: error.message || "An unknown error occurred" };
+export const handleSupabaseError = (
+  error: { message?: string } | Error | unknown
+) => {
+  const message =
+    typeof error === "object" && error && "message" in error
+      ? (error as { message?: string }).message
+      : "An unknown error occurred";
+  console.error("Supabase Error:", message);
+  return { error: message };
 };
 
 // Type definitions for common Supabase operations

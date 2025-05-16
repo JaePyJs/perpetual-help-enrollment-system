@@ -37,6 +37,15 @@
 - This resolves all major TypeScript warnings and improves code robustness.
 - All frontend forms now use explicit types for select and input fields.
 
+## May 2025: Migration and Cleanup Progress
+
+- Next.js app (enrollment-nextjs/) is now the primary frontend; legacy HTML/CSS/JS in enrollment-frontend/ are being reviewed for removal
+- Design guideline markdowns are being consolidated or archived
+- reference/ directory is under review for unnecessary files
+- UI/UX review for Next.js app is scheduled to ensure modern, accessible, and consistent design
+- Unused styles and components in Next.js app will be removed for maintainability
+- All changes and removals will be documented in memory_bank and migration_cleanup_list.md
+
 ## Next Steps
 
 - Use these templates for all future dashboard and panel pages.

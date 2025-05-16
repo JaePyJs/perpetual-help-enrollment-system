@@ -19,6 +19,7 @@
     "tailwindcss": "^3.3.3"
   },
   "dependencies": {
-    "enrollment-frontend": "file:"
+    "enrollment-frontend": "file:",
+    "express": "^5.1.0"
   }
 }

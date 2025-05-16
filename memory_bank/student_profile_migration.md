@@ -84,3 +84,9 @@ The student profile page consists of several key components:
 - This resolves all major TypeScript warnings and improves maintainability.
 - The frontend is now robust for profile editing and form handling.
 - Backend robustness and validation should be reviewed for production.
+
+## May 2025: Student Profile Migration and Cleanup
+
+- Confirm that all student profile features are migrated to Next.js and Supabase
+- Remove any legacy student profile HTML/CSS/JS files not referenced by the Next.js app
+- Document any removed files in migration_cleanup_list.md

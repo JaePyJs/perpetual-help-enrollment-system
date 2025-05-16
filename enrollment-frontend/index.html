@@ -3,171 +3,157 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Welcome to Perpetual Help College of Manila Enrollment System"
-    />
-    <title>Welcome - Perpetual Help College of Manila</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="modern-theme.css" />
+    <title>School Enrollment System</title>
     <style>
       body {
-        font-family: "Segoe UI", Arial, sans-serif;
-        max-width: 1200px;
-        margin: 0 auto;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
         padding: 20px;
-        background-color: #fdf6f2;
+        background-color: #f5f5f5;
       }
-      h1,
-      h2 {
-        color: #41413c;
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
       h1 {
-        border-bottom: 2px solid #e77f33;
-        padding-bottom: 10px;
-      }
-      .section {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-      .section h2 {
         color: #e77f33;
-        margin-top: 0;
-      }
-      .file-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 15px;
-      }
-      .file-card {
-        background-color: #f5f5f5;
-        border-left: 4px solid #e77f33;
-        padding: 15px;
-        border-radius: 4px;
-      }
-      .file-card h3 {
-        margin-top: 0;
-        margin-bottom: 10px;
-        color: #41413c;
-      }
-      .file-links {
-        display: flex;
-        gap: 10px;
-      }
-      .file-links a {
-        text-decoration: none;
-        background-color: #e77f33;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 4px;
-        font-size: 14px;
-      }
-      .file-links a:hover {
-        background-color: #cf6e2b;
-      }
-      .landing-card {
-        max-width: 540px;
-        width: 100%;
-      }
-      .phcm-logo {
-        height: 70px;
-      }
-      .logo-row {
-        justify-content: center;
-      }
-      .text-center {
         text-align: center;
       }
-      .flex-center {
-        justify-content: center;
-        align-items: center;
+      h2 {
+        color: #4a6fa5;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
       }
-      .mr-2 {
-        margin-right: 0.75rem;
+      ul {
+        list-style-type: none;
+        padding: 0;
       }
-      .grid {
-        grid-template-columns: 1fr 1fr;
+      li {
+        margin-bottom: 10px;
       }
-      @media (max-width: 600px) {
-        .grid {
-          grid-template-columns: 1fr;
-        }
+      a {
+        display: block;
+        padding: 10px;
+        background-color: #f9f9f9;
+        color: #333;
+        text-decoration: none;
+        border-left: 4px solid #e77f33;
+        transition: all 0.3s ease;
+      }
+      a:hover {
+        background-color: #e77f33;
+        color: white;
+      }
+      .note {
+        background-color: #f8f9fa;
+        border-left: 4px solid #e77f33;
+        padding: 15px;
+        margin-bottom: 20px;
       }
     </style>
   </head>
   <body>
-    <div class="theme-switcher">
-      <button id="theme-light" title="Light Mode">
-        <i class="fas fa-sun"></i>
-      </button>
-      <button id="theme-dark" title="Dark Mode">
-        <i class="fas fa-moon"></i>
-      </button>
-      <button id="theme-system" title="System">
-        <i class="fas fa-desktop"></i>
-      </button>
-    </div>
-    <div class="flex flex-center mt-2">
-      <div class="card landing-card">
-        <div class="flex flex-center gap-2 mb-2 logo-row">
-          <img src="images/phcm-logo.svg" alt="PHCM Logo" class="phcm-logo" />
-          <h1>Perpetual Help College of Manila</h1>
-        </div>
-        <h2 class="mb-2 text-center">Enrollment System</h2>
-        <p class="mb-2 text-center">
-          A modern, secure, and user-friendly platform for students, teachers,
-          and administrators.
-        </p>
-        <div class="grid">
-          <a href="loginpage-improved.html" class="btn flex flex-center"
-            ><i class="fas fa-sign-in-alt mr-2"></i> Login</a
-          >
-          <a href="user-registration.html" class="btn flex flex-center"
-            ><i class="fas fa-user-plus mr-2"></i> Register</a
-          >
-        </div>
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 20px">
+        <img
+          src="images/school-logo.png"
+          alt="School Logo"
+          style="max-width: 200px; height: auto"
+        />
       </div>
+      <h1>School Enrollment System</h1>
+
+      <div class="note">
+        <p>
+          <strong>Note:</strong> This page serves as a table of contents for the
+          School Enrollment System. Make sure the backend server is running on
+          port 5000 and the Next.js frontend is running on port 3000. Click on
+          any link below to navigate to that section of the application.
+        </p>
+      </div>
+
+      <h2>Server Access</h2>
+      <ul>
+        <li>
+          <a href="http://localhost:3000/">Next.js Frontend (port 3000)</a>
+        </li>
+        <li><a href="http://localhost:5000/api">Backend API (port 5000)</a></li>
+      </ul>
+
+      <h2>Backend API Endpoints</h2>
+      <ul>
+        <li><a href="http://localhost:5000/api/auth">Authentication API</a></li>
+        <li><a href="http://localhost:5000/api/users">Users API</a></li>
+        <li><a href="http://localhost:5000/api/students">Students API</a></li>
+        <li><a href="http://localhost:5000/api/teacher">Teachers API</a></li>
+        <li><a href="http://localhost:5000/api/subjects">Subjects API</a></li>
+        <li>
+          <a href="http://localhost:5000/api/enrollment">Enrollment API</a>
+        </li>
+      </ul>
+
+      <h2>Frontend Routes</h2>
+      <ul>
+        <li><a href="http://localhost:3000/">Home/Login</a></li>
+        <li>
+          <a href="http://localhost:3000/student-dashboard"
+            >Student Dashboard</a
+          >
+        </li>
+        <li>
+          <a href="http://localhost:3000/teacher-dashboard"
+            >Teacher Dashboard</a
+          >
+        </li>
+        <li>
+          <a href="http://localhost:3000/admin-dashboard">Admin Dashboard</a>
+        </li>
+        <li>
+          <a href="http://localhost:3000/student-profile">Student Profile</a>
+        </li>
+        <li>
+          <a href="http://localhost:3000/user-registration"
+            >User Registration</a
+          >
+        </li>
+      </ul>
+
+      <h2>Development Resources</h2>
+      <ul>
+        <li>
+          <a href="/memory-bank/projectbrief.html" target="_blank"
+            >Project Brief</a
+          >
+        </li>
+        <li>
+          <a href="/memory-bank/activeContext.html" target="_blank"
+            >Active Context</a
+          >
+        </li>
+        <li>
+          <a href="/memory-bank/techContext.html" target="_blank"
+            >Technical Context</a
+          >
+        </li>
+        <li>
+          <a href="/memory-bank/systemPatterns.html" target="_blank"
+            >System Patterns</a
+          >
+        </li>
+        <li>
+          <a href="/memory-bank/productContext.html" target="_blank"
+            >Product Context</a
+          >
+        </li>
+        <li>
+          <a href="/memory-bank/progress.html" target="_blank">Progress</a>
+        </li>
+      </ul>
     </div>
-    <script>
-      // Theme switcher logic (same as login page)
-      const root = document.documentElement;
-      const themeBtns = [
-        document.getElementById("theme-light"),
-        document.getElementById("theme-dark"),
-        document.getElementById("theme-system"),
-      ];
-      function setTheme(theme) {
-        localStorage.setItem("theme", theme);
-        themeBtns.forEach((btn) => btn.classList.remove("active"));
-        if (theme === "light") {
-          root.classList.remove("dark");
-          themeBtns[0].classList.add("active");
-        } else if (theme === "dark") {
-          root.classList.add("dark");
-          themeBtns[1].classList.add("active");
-        } else {
-          if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            root.classList.add("dark");
-          } else {
-            root.classList.remove("dark");
-          }
-          themeBtns[2].classList.add("active");
-        }
-      }
-      themeBtns[0].onclick = () => setTheme("light");
-      themeBtns[1].onclick = () => setTheme("dark");
-      themeBtns[2].onclick = () => setTheme("system");
-      setTheme(localStorage.getItem("theme") || "system");
-    </script>
   </body>
 </html>

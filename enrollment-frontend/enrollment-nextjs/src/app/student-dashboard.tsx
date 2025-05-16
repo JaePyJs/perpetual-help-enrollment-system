@@ -19,7 +19,13 @@ import {
 const DEFAULT_AVATAR = "/images/student-avatar.svg";
 
 // Add authentication guard and loading/error states for dashboard
-export default function StudentDashboard() {
+// Wrap the dashboard with ProtectedRoute for authentication
+import ProtectedRoute from "./components/ProtectedRoute";
+import GradesVisualization from "./components/GradesVisualization";
+import FinancialDashboard from "./components/FinancialDashboard";
+
+// Main dashboard component
+function StudentDashboardContent() {
   const [activeSection, setActiveSection] = useState("dashboard");
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const router = useRouter();
@@ -332,8 +338,15 @@ export default function StudentDashboard() {
                     <div className="flex items-center justify-between mt-2">
                       <div className="flex items-center">
                         <span
-                          className={styles.changeText}
-                          style={{ color: stat.change_color }}
+                          className={`${styles.changeText} ${
+                            stat.change_color === "#e77f33"
+                              ? styles.statChangeOrange
+                              : stat.change_color === "#28a745"
+                              ? styles.statChangeGreen
+                              : stat.change_color === "#dc3545"
+                              ? styles.statChangeRed
+                              : ""
+                          }`}
                         >
                           <i className={`fas fa-${stat.change_icon} mr-1`} />{" "}
                           {stat.change}
@@ -456,7 +469,9 @@ export default function StudentDashboard() {
             }`}
           >
             <h3 className="section-title">My Grades</h3>
-            {/* Grades content would go here */}
+            {profileData && profileData[0] && (
+              <GradesVisualization studentId={profileData[0].student_id} />
+            )}
           </section>
           <section
             className={`dashboard-section${
@@ -471,8 +486,10 @@ export default function StudentDashboard() {
               activeSection === "payments" ? " active" : ""
             }`}
           >
-            <h3 className="section-title">Payment History</h3>
-            {/* Payments content would go here */}
+            <h3 className="section-title">Financial Dashboard</h3>
+            {profileData && profileData[0] && (
+              <FinancialDashboard studentId={profileData[0].student_id} />
+            )}
           </section>
         </main>
         <footer className="p-4 text-center text-gray-500 text-sm border-t border-gray-200 dark:border-gray-700">
@@ -482,5 +499,14 @@ export default function StudentDashboard() {
         </footer>
       </div>
     </div>
+  );
+}
+
+// Export the protected dashboard component
+export default function StudentDashboard() {
+  return (
+    <ProtectedRoute allowedRoles={["student"]}>
+      <StudentDashboardContent />
+    </ProtectedRoute>
   );
 }

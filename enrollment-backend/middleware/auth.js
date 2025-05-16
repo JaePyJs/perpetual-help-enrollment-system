@@ -9,28 +9,32 @@ const auth = (req, res, next) => {
     // Check if token exists in headers
     const authHeader = req.header("Authorization");
     if (!authHeader) {
-      return res.status(401).json({ message: "No token provided, please authenticate" });
+      return res
+        .status(401)
+        .json({ message: "No token provided, please authenticate" });
     }
-    
+
     // Extract token (handle both "Bearer token" and plain token formats)
-    const token = authHeader.startsWith("Bearer ") 
-      ? authHeader.replace("Bearer ", "") 
+    const token = authHeader.startsWith("Bearer ")
+      ? authHeader.replace("Bearer ", "")
       : authHeader;
-    
+
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     // Add user data to request
     req.user = decoded;
-    
+
     next();
   } catch (error) {
     console.error("Authentication error:", error.message);
-    
+
     if (error.name === "TokenExpiredError") {
-      return res.status(401).json({ message: "Token expired, please login again" });
+      return res
+        .status(401)
+        .json({ message: "Token expired, please login again" });
     }
-    
+
     res.status(401).json({ message: "Please authenticate" });
   }
 };
@@ -45,15 +49,40 @@ const checkRole = (allowedRoles) => {
     if (!req.user) {
       return res.status(401).json({ message: "Authentication required" });
     }
-    
+
+    // Global admin has access to everything
+    if (req.user.role === "global-admin") {
+      return next();
+    }
+
     if (!allowedRoles.includes(req.user.role)) {
-      return res.status(403).json({ 
-        message: "Access denied. You don't have permission to perform this action" 
+      return res.status(403).json({
+        message:
+          "Access denied. You don't have permission to perform this action",
       });
     }
-    
+
     next();
   };
 };
 
-module.exports = { auth, checkRole };
+/**
+ * Check if user is a global admin
+ * Only global admins can create other admin accounts
+ */
+const checkGlobalAdmin = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
+  if (req.user.role !== "global-admin") {
+    return res.status(403).json({
+      message:
+        "Access denied. Only global administrators can perform this action",
+    });
+  }
+
+  next();
+};
+
+module.exports = { auth, checkRole, checkGlobalAdmin };

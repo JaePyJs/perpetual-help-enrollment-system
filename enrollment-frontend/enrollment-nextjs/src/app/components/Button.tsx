@@ -1,42 +1,62 @@
 import React from "react";
 
-const buttonStyle: React.CSSProperties = {
-  transition: "background 0.2s, transform 0.1s",
-};
-const hoverStyle: React.CSSProperties = {
-  background: "#d86e21",
-  transform: "scale(1.03)",
-};
-
+/**
+ * Button Component
+ *
+ * A versatile button component that follows the design system.
+ * Supports different variants, sizes, and states.
+ */
 type ButtonProps = {
   children: React.ReactNode;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
+  variant?: "primary" | "secondary" | "tertiary" | "danger";
+  size?: "sm" | "md" | "lg";
   className?: string;
   disabled?: boolean;
+  fullWidth?: boolean;
+  icon?: React.ReactNode;
+  iconPosition?: "left" | "right";
 };
 
 export default function Button({
   children,
   onClick,
   type = "button",
-  className = "primary-btn",
+  variant = "primary",
+  size = "md",
+  className = "",
   disabled = false,
+  fullWidth = false,
+  icon,
+  iconPosition = "left",
 }: ButtonProps) {
-  const [hovered, setHovered] = React.useState(false);
+  // Combine class names based on props
+  const buttonClasses = [
+    "btn",
+    `btn-${variant}`,
+    size === "sm" ? "btn-sm" : size === "lg" ? "btn-lg" : "",
+    fullWidth ? "w-full" : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <button
       type={type}
       onClick={onClick}
-      className={className}
+      className={buttonClasses}
       disabled={disabled}
-      style={hovered ? { ...buttonStyle, ...hoverStyle } : buttonStyle}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocus={() => setHovered(true)}
-      onBlur={() => setHovered(false)}
+      aria-disabled={disabled}
     >
+      {icon && iconPosition === "left" && (
+        <span className="btn-icon">{icon}</span>
+      )}
       {children}
+      {icon && iconPosition === "right" && (
+        <span className="btn-icon">{icon}</span>
+      )}
     </button>
   );
-} 
+}

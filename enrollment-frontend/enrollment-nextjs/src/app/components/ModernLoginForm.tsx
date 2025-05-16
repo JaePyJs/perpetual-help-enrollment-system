@@ -113,23 +113,24 @@ export default function ModernLoginForm() {
     // If the input looks like an ID (e.g., m23-1470-578), try to resolve to email
     let email = usernameOrId;
     if (/^[a-z]\d{2}-\d{4}-\d{3}$/i.test(usernameOrId)) {
-      const idField =
-        role === "student"
-          ? "studentId"
-          : role === "teacher"
-          ? "employeeId"
-          : "adminId";
-      const { data, error: fetchError } = await supabase
-        .from(role + "s")
-        .select("email")
-        .eq(idField, usernameOrId)
-        .single();
-      if (fetchError || !data?.email) {
-        setError("No account found for this ID number.");
-        setLoading(false);
-        return;
+      // For student IDs, we can directly construct the email
+      if (role === "student") {
+        email = `${usernameOrId}@manila.uphsl.edu.ph`;
+      } else {
+        // For other roles, we need to look up the email
+        const idField = role === "teacher" ? "employeeId" : "adminId";
+        const { data, error: fetchError } = await supabase
+          .from(role + "s")
+          .select("email")
+          .eq(idField, usernameOrId)
+          .single();
+        if (fetchError || !data?.email) {
+          setError("No account found for this ID number.");
+          setLoading(false);
+          return;
+        }
+        email = data.email;
       }
-      email = data.email;
     }
 
     // Form validation
@@ -279,6 +280,16 @@ export default function ModernLoginForm() {
                   value={fields[role.id].email}
                   onChange={(e) =>
                     handleInput(role.id, "email", e.target.value)
+                  }
+                  placeholder={
+                    role.id === "student"
+                      ? "m23-1470-578 or m23-1470-578@manila.uphsl.edu.ph"
+                      : ""
+                  }
+                  helperText={
+                    role.id === "student"
+                      ? "Enter your student ID or full email address"
+                      : ""
                   }
                   sx={{ mb: 2 }}
                 />

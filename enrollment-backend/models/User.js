@@ -23,45 +23,49 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["student", "teacher", "admin"],
+    enum: ["student", "teacher", "admin", "global-admin"],
     required: true,
   },
   profileImage: {
     type: String,
-    default: "default-profile.png"
+    default: "default-profile.png",
   },
   status: {
     type: String,
     enum: ["active", "inactive", "suspended"],
-    default: "active"
+    default: "active",
   },
   contactNumber: String,
   address: String,
   lastLogin: Date,
   passwordResetRequired: {
     type: Boolean,
-    default: true
+    default: true,
   },
-  
+
   // Role-specific fields
   // For students
   department: {
     type: String,
     enum: ["BSIT", "BSCS", "BSN", "BS RADTECH", "SHS", "JHS"],
-    required: function() { return this.role === "student"; }
+    required: function () {
+      return this.role === "student";
+    },
   },
   yearLevel: {
     type: Number,
     min: 1,
     max: 6, // Accounting for K-12 year levels
-    required: function() { return this.role === "student"; }
+    required: function () {
+      return this.role === "student";
+    },
   },
   section: String,
-  
+
   // For teachers
   specialization: [String],
   employeeId: String,
-  
+
   createdAt: {
     type: Date,
     default: Date.now,
@@ -69,7 +73,7 @@ const userSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
 
 userSchema.pre("save", async function (next) {

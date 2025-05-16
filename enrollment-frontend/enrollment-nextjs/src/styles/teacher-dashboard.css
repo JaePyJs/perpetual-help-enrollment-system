@@ -1,0 +1,231 @@
+/* Teacher Dashboard Styles */
+
+/* Dashboard layout */
+.teacher-dashboard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 1024px) {
+  .teacher-dashboard {
+    grid-template-columns: 3fr 1fr;
+  }
+}
+
+/* Dashboard cards */
+.dashboard-card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-6);
+  transition: transform var(--transition-normal) var(--ease-out), 
+              box-shadow var(--transition-normal) var(--ease-out);
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Dashboard header */
+.dashboard-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+}
+
+@media (min-width: 768px) {
+  .dashboard-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+/* Class schedule */
+.class-schedule {
+  display: grid;
+  gap: var(--spacing-4);
+}
+
+.schedule-item {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+  background-color: var(--hover-bg);
+  border-radius: var(--radius-md);
+  align-items: center;
+}
+
+.schedule-time {
+  font-weight: var(--font-medium);
+  color: var(--primary-600);
+}
+
+.schedule-class {
+  font-weight: var(--font-semibold);
+}
+
+.schedule-room {
+  text-align: right;
+  color: var(--neutral-500);
+}
+
+/* Student list */
+.student-list {
+  display: grid;
+  gap: var(--spacing-2);
+}
+
+.student-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast) var(--ease-out);
+}
+
+.student-item:hover {
+  background-color: var(--hover-bg);
+}
+
+.student-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.student-info {
+  flex: 1;
+}
+
+.student-name {
+  font-weight: var(--font-medium);
+}
+
+.student-id {
+  font-size: var(--text-sm);
+  color: var(--neutral-500);
+}
+
+/* Attendance tracker */
+.attendance-tracker {
+  display: grid;
+  gap: var(--spacing-4);
+}
+
+.attendance-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-3);
+  background-color: var(--hover-bg);
+  border-radius: var(--radius-md);
+}
+
+.attendance-stats {
+  display: flex;
+  gap: var(--spacing-4);
+}
+
+.attendance-stat {
+  text-align: center;
+}
+
+.attendance-value {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+}
+
+.attendance-label {
+  font-size: var(--text-sm);
+  color: var(--neutral-500);
+}
+
+/* Grade input */
+.grade-input-form {
+  display: grid;
+  gap: var(--spacing-4);
+}
+
+.grade-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-4);
+  align-items: center;
+}
+
+.grade-input {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+}
+
+/* Notifications */
+.teacher-notifications {
+  display: grid;
+  gap: var(--spacing-3);
+}
+
+.notification-item {
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  background-color: var(--hover-bg);
+  border-left: 3px solid var(--primary-500);
+}
+
+.notification-time {
+  font-size: var(--text-xs);
+  color: var(--neutral-500);
+}
+
+.notification-title {
+  font-weight: var(--font-medium);
+  margin: var(--spacing-1) 0;
+}
+
+.notification-message {
+  font-size: var(--text-sm);
+}
+
+/* Quick actions */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-3);
+}
+
+.quick-action-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3);
+  background-color: var(--hover-bg);
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: background-color var(--transition-fast) var(--ease-out);
+}
+
+.quick-action-button:hover {
+  background-color: var(--primary-50);
+  color: var(--primary-700);
+}
+
+.quick-action-icon {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--spacing-2);
+  color: var(--primary-500);
+}
+
+.quick-action-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+}
