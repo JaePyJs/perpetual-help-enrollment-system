@@ -203,7 +203,7 @@ export function StudentProfile() {
               </Button>
             </div>
           </div>
-          <Form {...form}>
+          <Form value={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}

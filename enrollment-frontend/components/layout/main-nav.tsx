@@ -77,7 +77,7 @@ export function MainNav({ role }: MainNavProps) {
     },
     {
       title: "My Courses",
-      href: "/student/courses",
+      href: "/student/enrollment/courses",
       icon: GraduationCap,
     },
     {
