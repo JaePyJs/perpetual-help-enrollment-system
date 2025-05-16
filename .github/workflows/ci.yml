@@ -23,7 +23,7 @@ jobs:
         run: cd enrollment-backend && npm ci
 
       - name: Install dependencies - Frontend
-        run: cd enrollment-frontend && npm ci
+        run: cd enrollment-frontend && npm ci --legacy-peer-deps
 
       - name: Run ESLint - Backend
         run: cd enrollment-backend && npm run lint
@@ -63,7 +63,7 @@ jobs:
           COOKIE_SECRET: test-cookie-secret
 
       - name: Install dependencies - Frontend
-        run: cd enrollment-frontend && npm ci
+        run: cd enrollment-frontend && npm ci --legacy-peer-deps
 
       - name: Run Frontend Tests
         run: cd enrollment-frontend && npm test
@@ -108,7 +108,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd enrollment-backend && npm ci
-          cd ../enrollment-frontend && npm ci
+          cd ../enrollment-frontend && npm ci --legacy-peer-deps
 
       - name: Build application
         run: node scripts/build.js
