@@ -594,7 +594,7 @@ router.post(
 router.post(
   "/admins",
   auth,
-  checkGlobalAdmin, // Only global admins can create admin accounts
+  checkGlobalAdmin({ action: "create administrator accounts" }), // Only global admins can create admin accounts
   [
     body("name").trim().notEmpty().withMessage("Name is required"),
     body("email").isEmail().withMessage("Valid email is required"),
@@ -670,7 +670,7 @@ router.post(
   }
 );
 
-// Get audit logs (admin only)
+// Get audit logs (admin only, with enhanced access for global admins)
 router.get(
   "/audit-logs",
   auth,
@@ -696,6 +696,16 @@ router.get(
       if (startDate && endDate) {
         filters.startDate = startDate;
         filters.endDate = endDate;
+      }
+
+      // Regular admins can only see non-sensitive logs
+      // Global admins can see all logs
+      if (req.user.role !== "global-admin") {
+        // Exclude sensitive actions for regular admins
+        filters.excludeActions = ["system_setting", "security_alert"];
+
+        // Regular admins can't see global admin actions
+        filters.excludeUserRoles = ["global-admin"];
       }
 
       // Get audit logs

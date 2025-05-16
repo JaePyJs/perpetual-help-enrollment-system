@@ -68,17 +68,38 @@ router.post(
       user.lastLogin = new Date();
       await user.save();
 
-      const token = jwt.sign(
-        { userId: user._id, role: user.role },
-        process.env.JWT_SECRET,
-        { expiresIn: "24h" }
+      // Create JWT payload with all necessary user information
+      const payload = {
+        userId: user._id,
+        sub: user._id, // Standard JWT claim for subject
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        studentId: user.studentId,
+        department: user.department,
+      };
+
+      // Sign the token
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: "24h",
+      });
+
+      // Generate refresh token
+      const refreshToken = jwt.sign(
+        { userId: user._id },
+        process.env.JWT_SECRET || "refresh-token-secret",
+        { expiresIn: "7d" }
       );
 
       // Check if user needs to change password
       const passwordChangeRequired = user.passwordResetRequired;
 
+      // Log the token being sent (for debugging)
+      console.log("Generated token for user:", user._id);
+
       res.json({
         token,
+        refreshToken,
         user: {
           id: user._id,
           name: user.name,
@@ -380,6 +401,74 @@ router.get("/profile", auth, async (req, res) => {
     });
   } catch (error) {
     console.error("Get profile error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Refresh token endpoint
+router.post("/refresh", async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(400).json({ message: "Refresh token is required" });
+    }
+
+    // Verify the refresh token
+    let decoded;
+    try {
+      decoded = jwt.verify(
+        refreshToken,
+        process.env.JWT_SECRET || "refresh-token-secret"
+      );
+    } catch (err) {
+      return res
+        .status(401)
+        .json({ message: "Invalid or expired refresh token" });
+    }
+
+    // Find the user
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Create a new access token
+    const payload = {
+      userId: user._id,
+      sub: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      studentId: user.studentId,
+      department: user.department,
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
+    // Generate a new refresh token
+    const newRefreshToken = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET || "refresh-token-secret",
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      token,
+      refreshToken: newRefreshToken,
+    });
+
+    // Log token refresh
+    require("../middleware/accessLogger").logSecurityEvent(
+      "token_refresh",
+      { userId: user._id, email: user.email },
+      false,
+      req
+    );
+  } catch (error) {
+    console.error("Token refresh error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });

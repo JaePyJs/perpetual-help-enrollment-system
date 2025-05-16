@@ -4,7 +4,6 @@
  */
 
 const hpp = require("hpp");
-// const xssClean = require("xss-clean/lib/xss");
 const { sanitizeObject } = require("./xssProtection");
 
 /**
@@ -28,10 +27,13 @@ const httpParameterProtection = hpp({
  */
 const additionalSecurityHeaders = (req, res, next) => {
   // Content-Security-Policy: Enhanced control over which resources can be loaded
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'"
-  );
+  // More permissive in development, stricter in production
+  const cspValue =
+    process.env.NODE_ENV === "production"
+      ? "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'"
+      : "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:";
+
+  res.setHeader("Content-Security-Policy", cspValue);
 
   // Referrer-Policy: Control how much referrer information is sent
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");

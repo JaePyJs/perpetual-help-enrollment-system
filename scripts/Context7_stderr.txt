@@ -1,2 +1,0 @@
-Context7 Documentation MCP Server running on stdio
-^C

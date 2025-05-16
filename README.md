@@ -2,14 +2,46 @@
 
 A modern web-based enrollment system for Perpetual Help College of Manila, featuring separate interfaces for students, teachers, and administrators. This system follows ISO 25010 standards and aims to be a best-in-class enrollment solution.
 
-![Perpetual Help College Logo](<enrollment-system%20(1)/public/images/school-logo.png>)
+![Perpetual Help College Logo](enrollment-frontend/public/images/school-logo.png)
 
 ## Project Structure
 
-This project consists of two main components:
+This project follows a clean, organized structure:
 
-1. **Frontend** (`enrollment-system/`): The main implementation with modern design and full functionality.
+```bash
+perpetual-help-enrollment-system/
+├── docs/                           # All documentation
+│   ├── technical/                  # Technical documentation
+│   └── user/                       # User documentation
+├── enrollment-backend/             # Backend API
+├── enrollment-frontend/            # Frontend application
+├── scripts/                        # Utility and deployment scripts
+│   ├── deployment/                 # Deployment scripts
+│   ├── testing/                    # Testing scripts
+│   └── utilities/                  # Utility scripts
+└── config/                         # Configuration files
+```
+
+1. **Frontend** (`enrollment-frontend/`): The main implementation with modern design and full functionality.
 2. **Backend API** (`enrollment-backend/`): A Node.js/Express server that provides RESTful API endpoints.
+3. **Documentation** (`docs/`): Comprehensive documentation including technical guides and user manuals.
+4. **Scripts** (`scripts/`): Utility scripts for deployment, testing, and maintenance.
+5. **Configuration** (`config/`): Configuration files for different environments.
+
+## Documentation Structure
+
+The project documentation is organized hierarchically:
+
+- **Root README.md**: High-level project overview, installation instructions, and usage examples.
+- **Component READMEs**: Each major directory contains its own README.md with component-specific details:
+  - `enrollment-backend/README.md`: Backend API documentation, endpoints, and setup.
+  - `enrollment-frontend/README.md`: Frontend application structure, components, and development guide.
+  - `config/README.md`: Configuration system documentation and environment setup.
+  - `scripts/README.md`: Available scripts and their usage.
+  - `docs/README.md`: Documentation structure and organization.
+- **Technical Documentation**: Detailed technical specifications in `docs/technical/`.
+- **User Documentation**: User guides and manuals in `docs/user/`.
+- **Types Documentation**: TypeScript type definitions in `enrollment-frontend/types/README.md`.
 
 ## Features
 
@@ -43,7 +75,7 @@ This project consists of two main components:
 - React with Hooks
 - TypeScript
 - Tailwind CSS
-- Shadcn UI Components
+- [shadcn/ui](https://ui.shadcn.com/) Components
 - React Hook Form with Zod validation
 - Recharts for data visualization
 - Dark mode support
@@ -110,7 +142,7 @@ This project consists of two main components:
 3. Install frontend dependencies:
 
    ```bash
-   cd "../enrollment-system (1)"
+   cd "../enrollment-frontend"
    npm install
    ```
 
@@ -127,7 +159,7 @@ This project consists of two main components:
 You can start all servers with a single command:
 
 ```bash
-start-servers.bat
+./scripts/deployment/start-servers.bat
 ```
 
 This will start:
@@ -155,7 +187,7 @@ Or start them individually:
 3. Start the frontend development server:
 
    ```bash
-   cd "enrollment-system (1)"
+   cd "enrollment-frontend"
    npm run dev
    ```
 
@@ -286,6 +318,54 @@ Examples: `A-2023-5678` or `GA-2023-9012`
    ```bash
    git push origin main
    ```
+
+## Troubleshooting
+
+### Common Issues and Solutions
+
+#### Backend Connection Issues
+
+If the frontend cannot connect to the backend:
+
+1. Verify that the backend server is running on port 5000
+2. Check that CORS is properly configured in the backend
+3. Ensure environment variables are set correctly
+4. Check browser console for specific error messages
+
+#### Database Connection Issues
+
+If the backend cannot connect to MongoDB:
+
+1. Verify MongoDB is running (locally or in the cloud)
+2. Check connection string in the .env file
+3. Ensure network connectivity to the database server
+4. Check MongoDB logs for any errors
+
+#### Authentication Problems
+
+If users cannot log in:
+
+1. Verify the user credentials in the database
+2. Check that JWT secret is properly set in the .env file
+3. Clear browser cookies and local storage
+4. Ensure token expiration is set correctly
+
+#### Navigation Issues
+
+If navigation between pages doesn't work correctly:
+
+1. Check for JavaScript errors in the browser console
+2. Verify that Next.js routes are properly configured
+3. Ensure links use the correct path format
+4. Check for any middleware issues affecting navigation
+
+### Getting Help
+
+If you encounter issues not covered in this troubleshooting guide:
+
+1. Check the documentation in the `docs/` directory
+2. Review the GitHub repository issues section
+3. Contact the development team at [support@uphc.edu.ph](mailto:support@uphc.edu.ph)
 
 ## License
 

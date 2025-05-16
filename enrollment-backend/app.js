@@ -33,13 +33,21 @@ const app = express();
 app.use(helmet()); // Set secure HTTP headers
 app.use(additionalSecurityHeaders); // Add additional security headers
 
-// Configure CORS to allow frontend origins
+// Configure CORS to allow frontend origins - more permissive for development
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"], // Allow frontend origins
+    origin: process.env.CORS_ORIGINS
+      ? process.env.CORS_ORIGINS.split(",")
+      : ["http://localhost:3000"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-CSRF-Token"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-CSRF-Token",
+      "X-Requested-With",
+    ],
+    exposedHeaders: ["Content-Length", "X-CSRF-Token"],
   })
 );
 
@@ -78,9 +86,9 @@ app.use(
 // Session security
 app.use(sessionSecurity);
 
-// CSRF protection
-app.use(setCsrfToken);
-// Temporarily disabled for testing
+// CSRF protection - completely disabled for development
+// Uncomment these lines in production
+// app.use(setCsrfToken);
 // app.use("/api", verifyCsrfToken);
 
 // Request validation
@@ -98,35 +106,99 @@ app.get("/test", (req, res) => {
   res.json({ message: "Server is working" });
 });
 
+// Add a health check endpoint
+app.get("/api/health", (req, res) => {
+  const healthData = {
+    status: "ok",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || "development",
+    database:
+      mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+  };
+
+  // If database is not connected, return 503 Service Unavailable
+  if (healthData.database !== "connected") {
+    return res.status(503).json({
+      ...healthData,
+      status: "error",
+      message: "Database connection is not established",
+    });
+  }
+
+  res.json(healthData);
+});
+
 // API routes - these would typically be imported from separate route files
 const authRoutes = require("./routes/auth");
 const studentRoutes = require("./routes/student");
 
-// Add detailed logging middleware for API routes
+// Add enhanced detailed logging middleware for API routes
 app.use("/api", (req, res, next) => {
   const startTime = Date.now();
+  const requestId = Math.random().toString(36).substring(2, 15);
+
   console.log(
-    `[${new Date().toISOString()}] API Request: ${req.method} ${
-      req.originalUrl
-    }`
+    `[${new Date().toISOString()}][ReqID:${requestId}] 🔍 API Request: ${
+      req.method
+    } ${req.originalUrl}`
   );
+  console.log(`[ReqID:${requestId}] 📡 Headers:`, {
+    "user-agent": req.headers["user-agent"],
+    "content-type": req.headers["content-type"],
+    authorization: req.headers["authorization"] ? "Bearer [REDACTED]" : "None",
+    "x-csrf-token": req.headers["x-csrf-token"] ? "[PRESENT]" : "[MISSING]",
+  });
 
   // Log request body for debugging (except passwords)
   if (req.body && Object.keys(req.body).length > 0) {
     const sanitizedBody = { ...req.body };
     if (sanitizedBody.password) sanitizedBody.password = "[REDACTED]";
-    console.log(`Request Body:`, sanitizedBody);
+    if (sanitizedBody.token) sanitizedBody.token = "[REDACTED]";
+    if (sanitizedBody.refreshToken) sanitizedBody.refreshToken = "[REDACTED]";
+    console.log(`[ReqID:${requestId}] 📦 Request Body:`, sanitizedBody);
+  }
+
+  // Log query parameters
+  if (req.query && Object.keys(req.query).length > 0) {
+    console.log(`[ReqID:${requestId}] 🔍 Query Params:`, req.query);
   }
 
   // Capture and log response
   const originalSend = res.send;
   res.send = function (data) {
     const responseTime = Date.now() - startTime;
+    let responseData;
+
+    try {
+      // Try to parse the response data if it's JSON
+      if (typeof data === "string" && data.startsWith("{")) {
+        responseData = JSON.parse(data);
+        // Redact sensitive information
+        if (responseData.token) responseData.token = "[REDACTED]";
+        if (responseData.refreshToken) responseData.refreshToken = "[REDACTED]";
+      } else {
+        responseData =
+          typeof data === "object"
+            ? "[Object]"
+            : data.substring(0, 100) + (data.length > 100 ? "..." : "");
+      }
+    } catch (e) {
+      responseData = "[Unparseable data]";
+    }
+
     console.log(
-      `[${new Date().toISOString()}] Response: ${
+      `[${new Date().toISOString()}][ReqID:${requestId}] ✅ Response: ${
         res.statusCode
       } (${responseTime}ms)`
     );
+
+    if (res.statusCode >= 400) {
+      console.error(`[ReqID:${requestId}] ❌ Error Response:`, responseData);
+    } else {
+      console.log(`[ReqID:${requestId}] 📤 Response Data:`, responseData);
+    }
+
     return originalSend.call(this, data);
   };
 

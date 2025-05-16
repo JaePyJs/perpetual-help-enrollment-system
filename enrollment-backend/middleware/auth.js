@@ -9,6 +9,7 @@ const auth = (req, res, next) => {
     // Check if token exists in headers
     const authHeader = req.header("Authorization");
     if (!authHeader) {
+      console.log("No Authorization header found");
       return res
         .status(401)
         .json({ message: "No token provided, please authenticate" });
@@ -19,8 +20,11 @@ const auth = (req, res, next) => {
       ? authHeader.replace("Bearer ", "")
       : authHeader;
 
+    console.log("Token received:", token ? "Token present" : "No token");
+
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Token verified successfully for user:", decoded.userId);
 
     // Add user data to request
     req.user = decoded;
@@ -43,15 +47,31 @@ const auth = (req, res, next) => {
  * Role-based access control middleware
  * Checks if user has one of the allowed roles
  * @param {Array} allowedRoles - Array of roles allowed to access the route
+ * @param {Object} options - Additional options for role checking
+ * @param {boolean} options.strictGlobalAdmin - If true, only global-admin can access (no override)
  */
-const checkRole = (allowedRoles) => {
+const checkRole = (allowedRoles, options = {}) => {
+  const { strictGlobalAdmin = false } = options;
+
   return (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({ message: "Authentication required" });
     }
 
-    // Global admin has access to everything
+    // Global admin has access to everything except strictly global-admin routes
     if (req.user.role === "global-admin") {
+      // For strict global-admin routes, we still need to check
+      if (strictGlobalAdmin && !allowedRoles.includes("global-admin")) {
+        return res.status(403).json({
+          message:
+            "This action requires explicit Global Administrator privileges",
+        });
+      }
+
+      // Log access by global admin for auditing purposes
+      console.log(
+        `Global Admin ${req.user.userId} accessed ${req.originalUrl}`
+      );
       return next();
     }
 
@@ -68,21 +88,35 @@ const checkRole = (allowedRoles) => {
 
 /**
  * Check if user is a global admin
- * Only global admins can create other admin accounts
+ * Only global admins can perform certain high-privilege actions
+ * @param {Object} options - Additional options
+ * @param {string} options.action - Description of the action being performed (for logging)
  */
-const checkGlobalAdmin = (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({ message: "Authentication required" });
-  }
+const checkGlobalAdmin = (options = {}) => {
+  const { action = "perform this action" } = options;
 
-  if (req.user.role !== "global-admin") {
-    return res.status(403).json({
-      message:
-        "Access denied. Only global administrators can perform this action",
-    });
-  }
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
 
-  next();
+    if (req.user.role !== "global-admin") {
+      // Log unauthorized access attempt for security monitoring
+      console.warn(
+        `Unauthorized global admin access attempt by ${req.user.userId} (${req.user.role}) for ${req.originalUrl}`
+      );
+
+      return res.status(403).json({
+        message: `Access denied. Only global administrators can ${action}`,
+      });
+    }
+
+    // Log successful global admin action for audit trail
+    console.log(
+      `Global Admin ${req.user.userId} authorized to ${action} at ${req.originalUrl}`
+    );
+    next();
+  };
 };
 
 module.exports = { auth, checkRole, checkGlobalAdmin };

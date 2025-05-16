@@ -2,8 +2,8 @@ require("dotenv").config();
 const http = require("http");
 const mongoose = require("mongoose");
 
-// Import WebSocket service
-const { initWebSocketServer } = require("./services/websocket");
+// Import WebSocket service - temporarily disabled to fix connectivity issues
+// const { initWebSocketServer } = require("./services/websocket");
 
 // Import the configured Express application from app.js
 const app = require("./app");
@@ -55,6 +55,18 @@ app.post("/api/security/log", (req, res) => {
   }
 });
 
+// Simple health check endpoint
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || "development",
+    database:
+      mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+  });
+});
+
 // 404 handler
 app.use((_, res) => {
   res.status(404).json({ status: "error", message: "Resource not found" });
@@ -96,7 +108,8 @@ const PORT = process.env.PORT || 5000;
 // Create HTTP server
 const server = http.createServer(app);
 
-// Initialize WebSocket server - temporarily disabled for troubleshooting
+// WebSocket server is disabled for troubleshooting
+// Uncomment the line below to enable WebSocket server
 // initWebSocketServer(server);
 
 // Start server

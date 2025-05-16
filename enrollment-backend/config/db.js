@@ -10,10 +10,15 @@ const connectDB = async () => {
     const adminCount = await User.countDocuments({ role: "admin" });
 
     if (adminCount === 0) {
+      // Use environment variables for admin credentials or fallback to defaults
+      const adminName = process.env.ADMIN_NAME || "Admin User";
+      const adminEmail = process.env.ADMIN_EMAIL || "admin@uphc.edu.ph";
+      const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
+
       await User.create({
-        name: "Admin User",
-        email: "admin@school.edu",
-        password: "admin123",
+        name: adminName,
+        email: adminEmail,
+        password: adminPassword,
         role: "admin",
       });
       console.log("Admin user seeded");

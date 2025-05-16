@@ -1,2 +1,0 @@
-GitHub MCP Server running on stdio
-^C
