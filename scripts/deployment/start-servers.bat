@@ -1,11 +1,16 @@
 @echo off
+cd /D "%~dp0..\\.."
 echo ===================================================
 echo    Starting Perpetual Help Enrollment System
 echo ===================================================
 echo.
 
 echo [1/3] Starting MongoDB Database...
-start cmd /k "echo MongoDB Server && mongod || echo MongoDB failed to start - please make sure it's installed"
+if not exist ".\\data\\db" (
+    echo Creating MongoDB data directory: .\\data\\db
+    mkdir ".\\data\\db"
+)
+start cmd /k "echo MongoDB Server && "C:\\Program Files\\MongoDB\\Server\\8.0\\bin\\mongod.exe" --dbpath ".\\data\\db" || echo MongoDB failed to start - please make sure it's installed and data directory is accessible."
 
 echo [2/3] Starting Backend Server...
 start cmd /k "cd enrollment-backend && echo Backend Server && npm start"
