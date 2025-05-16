@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SystemPatterns - School Enrollment System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+<style>
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #e77f33;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  h1 {
+    font-size: 2.5em;
+    border-bottom: 2px solid #e77f33;
+    padding-bottom: 0.2em;
+  }
+  h2 {
+    font-size: 1.8em;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.2em;
+  }
+  h3 {
+    font-size: 1.5em;
+  }
+  a {
+    color: #e77f33;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  pre {
+    background-color: #f0f0f0;
+    padding: 1em;
+    border-radius: 5px;
+    overflow-x: auto;
+  }
+  code {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    background-color: #f0f0f0;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+  }
+  blockquote {
+    border-left: 4px solid #e77f33;
+    padding-left: 1em;
+    margin-left: 0;
+    color: #666;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  ul, ol {
+    padding-left: 2em;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2em;
+  }
+  .header a {
+    display: inline-block;
+    padding: 0.5em 1em;
+    background-color: #e77f33;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  .header a:hover {
+    background-color: #d06a20;
+  }
+</style>
+
+</head>
+<body>
+  <div class="header">
+    <h1>SystemPatterns</h1>
+    <a href="/">Back to Navigation</a>
+  </div>
+  <h1>System Patterns</h1>
+<h2>Architecture Overview</h2>
+<p>The School Enrollment System follows a modern web application architecture with clear separation of concerns:</p>
+<h3>High-Level Architecture</h3>
+<pre><code>┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│                 │     │                 │     │                 │
+│  Client Layer   │◄───►│  Server Layer   │◄───►│  Database Layer │
+│  (Next.js)      │     │  (Node.js/      │     │  (MongoDB)      │
+│                 │     │   Express)      │     │                 │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+</code></pre>
+<ol>
+<li><strong>Client Layer</strong>: Next.js frontend providing server-side rendering and client-side interactivity</li>
+<li><strong>Server Layer</strong>: Node.js/Express backend providing RESTful API endpoints and business logic</li>
+<li><strong>Database Layer</strong>: MongoDB database for flexible, document-based data storage</li>
+</ol>
+<h2>Design Patterns</h2>
+<h3>Frontend Patterns</h3>
+<ol>
+<li><p><strong>Component-Based Architecture</strong></p>
+<ul>
+<li>Reusable UI components organized by functionality</li>
+<li>Hierarchical component structure for consistent UI</li>
+<li>Shared components library for common elements</li>
+</ul>
+</li>
+<li><p><strong>Container/Presenter Pattern</strong></p>
+<ul>
+<li>Container components handle data fetching and state</li>
+<li>Presenter components focus on rendering UI</li>
+<li>Clear separation of data management and presentation</li>
+</ul>
+</li>
+<li><p><strong>Responsive Design Pattern</strong></p>
+<ul>
+<li>Mobile-first approach</li>
+<li>Fluid layouts with CSS Grid and Flexbox</li>
+<li>Breakpoints for different device sizes</li>
+</ul>
+</li>
+<li><p><strong>Form Management Pattern</strong></p>
+<ul>
+<li>Controlled form components</li>
+<li>Progressive form completion</li>
+<li>Client-side validation with server validation backup</li>
+</ul>
+</li>
+</ol>
+<h3>Backend Patterns</h3>
+<ol>
+<li><p><strong>MVC Architecture</strong></p>
+<ul>
+<li>Models: Data structures and database interactions</li>
+<li>Controllers: Request handling and business logic</li>
+<li>Routes: API endpoint definitions</li>
+</ul>
+</li>
+<li><p><strong>Repository Pattern</strong></p>
+<ul>
+<li>Data access abstraction</li>
+<li>Centralized database operations</li>
+<li>Consistent error handling</li>
+</ul>
+</li>
+<li><p><strong>Middleware Pattern</strong></p>
+<ul>
+<li>Authentication and authorization</li>
+<li>Request validation</li>
+<li>Error handling</li>
+<li>Logging and monitoring</li>
+</ul>
+</li>
+<li><p><strong>Service Layer Pattern</strong></p>
+<ul>
+<li>Business logic encapsulation</li>
+<li>Reusable service modules</li>
+<li>Separation from controllers</li>
+</ul>
+</li>
+</ol>
+<h2>Data Models</h2>
+<h3>Core Entities</h3>
+<ol>
+<li><p><strong>User</strong></p>
+<ul>
+<li>Base user information</li>
+<li>Authentication details</li>
+<li>Role-based permissions</li>
+</ul>
+</li>
+<li><p><strong>Student</strong></p>
+<ul>
+<li>Personal information</li>
+<li>Academic history</li>
+<li>Enrollment status</li>
+<li>Financial records</li>
+</ul>
+</li>
+<li><p><strong>Teacher</strong></p>
+<ul>
+<li>Professional information</li>
+<li>Teaching assignments</li>
+<li>Specializations</li>
+</ul>
+</li>
+<li><p><strong>Course</strong></p>
+<ul>
+<li>Course details</li>
+<li>Prerequisites</li>
+<li>Schedule information</li>
+<li>Capacity and enrollment limits</li>
+</ul>
+</li>
+<li><p><strong>Enrollment</strong></p>
+<ul>
+<li>Student-course relationships</li>
+<li>Enrollment status</li>
+<li>Payment information</li>
+<li>Timestamps</li>
+</ul>
+</li>
+<li><p><strong>Department</strong></p>
+<ul>
+<li>Organizational structure</li>
+<li>Faculty assignments</li>
+<li>Course offerings</li>
+</ul>
+</li>
+</ol>
+<h3>Relationships</h3>
+<pre><code>┌─────────┐     ┌─────────┐     ┌─────────┐
+│         │     │         │     │         │
+│  User   │────►│ Student │◄────│ Course  │
+│         │     │         │     │         │
+└─────────┘     └─────────┘     └─────────┘
+     ▲               │               ▲
+     │               │               │
+     │               ▼               │
+┌─────────┐     ┌─────────┐     ┌─────────┐
+│         │     │         │     │         │
+│ Teacher │◄────│Enrollment│────►│Department│
+│         │     │         │     │         │
+└─────────┘     └─────────┘     └─────────┘
+</code></pre>
+<h2>Authentication and Authorization</h2>
+<ol>
+<li><p><strong>JWT-Based Authentication</strong></p>
+<ul>
+<li>Token-based authentication</li>
+<li>Refresh token mechanism</li>
+<li>Secure cookie storage</li>
+</ul>
+</li>
+<li><p><strong>Role-Based Access Control</strong></p>
+<ul>
+<li>Student, Teacher, and Admin roles</li>
+<li>Permission-based access to resources</li>
+<li>Middleware for route protection</li>
+</ul>
+</li>
+</ol>
+<h2>API Structure</h2>
+<ol>
+<li><p><strong>RESTful Endpoints</strong></p>
+<ul>
+<li>Resource-based URL structure</li>
+<li>Standard HTTP methods (GET, POST, PUT, DELETE)</li>
+<li>Consistent response formats</li>
+</ul>
+</li>
+<li><p><strong>API Versioning</strong></p>
+<ul>
+<li>Version prefix in URL (/api/v1/...)</li>
+<li>Backward compatibility considerations</li>
+</ul>
+</li>
+<li><p><strong>Error Handling</strong></p>
+<ul>
+<li>Standardized error responses</li>
+<li>Appropriate HTTP status codes</li>
+<li>Detailed error messages in development</li>
+</ul>
+</li>
+</ol>
+<h2>State Management</h2>
+<ol>
+<li><p><strong>Frontend State</strong></p>
+<ul>
+<li>Local component state for UI elements</li>
+<li>Context API for shared state</li>
+<li>Server state management with SWR or React Query</li>
+</ul>
+</li>
+<li><p><strong>Backend State</strong></p>
+<ul>
+<li>Stateless API design</li>
+<li>Session management via JWT</li>
+<li>Database transactions for data integrity</li>
+</ul>
+</li>
+</ol>
+<h2>Communication Patterns</h2>
+<ol>
+<li><p><strong>Client-Server Communication</strong></p>
+<ul>
+<li>RESTful API calls</li>
+<li>JSON data format</li>
+<li>Axios for HTTP requests</li>
+</ul>
+</li>
+<li><p><strong>Real-time Updates</strong></p>
+<ul>
+<li>WebSocket connections for live updates</li>
+<li>Notification system for important events</li>
+</ul>
+</li>
+</ol>
+<h2>Security Patterns</h2>
+<ol>
+<li><p><strong>Input Validation</strong></p>
+<ul>
+<li>Client-side validation for user experience</li>
+<li>Server-side validation for security</li>
+<li>Sanitization to prevent injection attacks</li>
+</ul>
+</li>
+<li><p><strong>Data Protection</strong></p>
+<ul>
+<li>Encryption for sensitive data</li>
+<li>Hashed passwords with salt</li>
+<li>HTTPS for all communications</li>
+</ul>
+</li>
+<li><p><strong>Rate Limiting</strong></p>
+<ul>
+<li>Protection against brute force attacks</li>
+<li>API request throttling</li>
+<li>Graduated response to suspicious activity</li>
+</ul>
+</li>
+</ol>
+<p>These system patterns provide a comprehensive framework for the development and maintenance of the School Enrollment System, ensuring consistency, scalability, and maintainability throughout the application lifecycle.</p>
+
+</body>
+</html>
+    

@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechContext - School Enrollment System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+<style>
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #e77f33;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  h1 {
+    font-size: 2.5em;
+    border-bottom: 2px solid #e77f33;
+    padding-bottom: 0.2em;
+  }
+  h2 {
+    font-size: 1.8em;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.2em;
+  }
+  h3 {
+    font-size: 1.5em;
+  }
+  a {
+    color: #e77f33;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  pre {
+    background-color: #f0f0f0;
+    padding: 1em;
+    border-radius: 5px;
+    overflow-x: auto;
+  }
+  code {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    background-color: #f0f0f0;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+  }
+  blockquote {
+    border-left: 4px solid #e77f33;
+    padding-left: 1em;
+    margin-left: 0;
+    color: #666;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  ul, ol {
+    padding-left: 2em;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2em;
+  }
+  .header a {
+    display: inline-block;
+    padding: 0.5em 1em;
+    background-color: #e77f33;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  .header a:hover {
+    background-color: #d06a20;
+  }
+</style>
+
+</head>
+<body>
+  <div class="header">
+    <h1>TechContext</h1>
+    <a href="/">Back to Navigation</a>
+  </div>
+  <h1>Technical Context</h1>
+<h2>Technology Stack</h2>
+<h3>Frontend</h3>
+<ul>
+<li><strong>Framework</strong>: Next.js 15.3.2</li>
+<li><strong>Language</strong>: TypeScript/JavaScript</li>
+<li><strong>Styling</strong>: CSS Modules, custom design system</li>
+<li><strong>State Management</strong>: React Context API, SWR for data fetching</li>
+<li><strong>UI Components</strong>: Custom component library</li>
+<li><strong>Build Tools</strong>: Turbopack (Next.js built-in)</li>
+</ul>
+<h3>Backend</h3>
+<ul>
+<li><strong>Framework</strong>: Node.js with Express</li>
+<li><strong>Language</strong>: JavaScript</li>
+<li><strong>API</strong>: RESTful endpoints</li>
+<li><strong>Authentication</strong>: JWT-based auth with refresh tokens</li>
+<li><strong>Validation</strong>: Express-validator</li>
+<li><strong>Middleware</strong>: Custom middleware for auth, validation, error handling</li>
+</ul>
+<h3>Database</h3>
+<ul>
+<li><strong>Primary Database</strong>: MongoDB</li>
+<li><strong>ODM</strong>: Mongoose for schema definition and validation</li>
+<li><strong>Indexes</strong>: Optimized for common queries</li>
+<li><strong>Data Structure</strong>: Document-based with references</li>
+</ul>
+<h3>Infrastructure</h3>
+<ul>
+<li><strong>Deployment</strong>: Local development environment</li>
+<li><strong>Version Control</strong>: Git with GitHub</li>
+<li><strong>CI/CD</strong>: Not yet implemented</li>
+<li><strong>Monitoring</strong>: Console logging (development)</li>
+</ul>
+<h2>Development Environment</h2>
+<h3>Setup Requirements</h3>
+<ul>
+<li>Node.js (v18+)</li>
+<li>npm or yarn</li>
+<li>MongoDB (local or remote instance)</li>
+<li>Git</li>
+</ul>
+<h3>Directory Structure</h3>
+<pre><code>school-enrollment-system/
+├── enrollment-backend/         # Backend API server
+│   ├── controllers/            # Request handlers
+│   ├── middleware/             # Express middleware
+│   ├── models/                 # Mongoose models
+│   ├── routes/                 # API routes
+│   ├── services/               # Business logic
+│   ├── utils/                  # Helper functions
+│   ├── app.js                  # Express app setup
+│   └── server.js               # Server entry point
+│
+├── enrollment-frontend/        # Frontend applications
+│   ├── enrollment-nextjs/      # Next.js application
+│   │   ├── public/             # Static assets
+│   │   ├── src/                # Source code
+│   │   │   ├── app/            # Next.js App Router
+│   │   │   ├── components/     # React components
+│   │   │   ├── hooks/          # Custom React hooks
+│   │   │   ├── lib/            # Utility functions
+│   │   │   ├── styles/         # CSS styles
+│   │   │   └── types/          # TypeScript types
+│   │   ├── next.config.js      # Next.js configuration
+│   │   └── package.json        # Dependencies
+│   └── images/                 # Shared images
+│
+└── memory-bank/               # Project documentation
+    ├── projectbrief.md        # Project overview
+    ├── productContext.md      # Product requirements
+    ├── systemPatterns.md      # Architecture patterns
+    ├── techContext.md         # Technical details
+    ├── activeContext.md       # Current development focus
+    └── progress.md            # Project progress
+</code></pre>
+<h2>Running the Application</h2>
+<h3>Backend Server</h3>
+<pre><code class="language-bash">cd enrollment-backend
+npm install
+npm run dev
+</code></pre>
+<ul>
+<li>Runs on port 5000 by default</li>
+<li>Connects to MongoDB at mongodb://localhost:27017/school_enrollment</li>
+<li>Provides RESTful API endpoints</li>
+</ul>
+<h3>Frontend Application</h3>
+<pre><code class="language-bash">cd enrollment-frontend/enrollment-nextjs
+npm install
+npm run dev
+</code></pre>
+<ul>
+<li>Runs on port 3000 by default</li>
+<li>Connects to backend API at <a href="http://localhost:5000/api">http://localhost:5000/api</a></li>
+</ul>
+<h3>Navigation Page</h3>
+<pre><code class="language-bash">cd enrollment-frontend
+npx http-server -p 8080
+</code></pre>
+<ul>
+<li>Runs on port 8080</li>
+<li>Provides links to both frontend and backend</li>
+</ul>
+<h2>API Structure</h2>
+<h3>Authentication Endpoints</h3>
+<ul>
+<li><code>POST /api/auth/register</code>: Create new user account</li>
+<li><code>POST /api/auth/login</code>: Authenticate user</li>
+<li><code>POST /api/auth/refresh</code>: Refresh access token</li>
+<li><code>POST /api/auth/logout</code>: Invalidate tokens</li>
+</ul>
+<h3>User Endpoints</h3>
+<ul>
+<li><code>GET /api/users</code>: List users (admin only)</li>
+<li><code>GET /api/users/:id</code>: Get user details</li>
+<li><code>PUT /api/users/:id</code>: Update user</li>
+<li><code>DELETE /api/users/:id</code>: Delete user (admin only)</li>
+</ul>
+<h3>Student Endpoints</h3>
+<ul>
+<li><code>GET /api/students</code>: List students</li>
+<li><code>GET /api/students/:id</code>: Get student details</li>
+<li><code>POST /api/students</code>: Create student</li>
+<li><code>PUT /api/students/:id</code>: Update student</li>
+<li><code>DELETE /api/students/:id</code>: Delete student</li>
+</ul>
+<h3>Teacher Endpoints</h3>
+<ul>
+<li><code>GET /api/teacher</code>: List teachers</li>
+<li><code>GET /api/teacher/:id</code>: Get teacher details</li>
+<li><code>POST /api/teacher</code>: Create teacher</li>
+<li><code>PUT /api/teacher/:id</code>: Update teacher</li>
+<li><code>DELETE /api/teacher/:id</code>: Delete teacher</li>
+</ul>
+<h3>Enrollment Endpoints</h3>
+<ul>
+<li><code>GET /api/enrollment</code>: List enrollments</li>
+<li><code>GET /api/enrollment/:id</code>: Get enrollment details</li>
+<li><code>POST /api/enrollment</code>: Create enrollment</li>
+<li><code>PUT /api/enrollment/:id</code>: Update enrollment</li>
+<li><code>DELETE /api/enrollment/:id</code>: Cancel enrollment</li>
+</ul>
+<h2>Database Schema</h2>
+<h3>User Collection</h3>
+<ul>
+<li><code>_id</code>: ObjectId (Primary Key)</li>
+<li><code>username</code>: String (Unique)</li>
+<li><code>email</code>: String (Unique)</li>
+<li><code>password</code>: String (Hashed)</li>
+<li><code>role</code>: String (enum: &#39;student&#39;, &#39;teacher&#39;, &#39;admin&#39;)</li>
+<li><code>isActive</code>: Boolean</li>
+<li><code>lastLogin</code>: Date</li>
+<li><code>createdAt</code>: Date</li>
+<li><code>updatedAt</code>: Date</li>
+</ul>
+<h3>Student Collection</h3>
+<ul>
+<li><code>_id</code>: ObjectId (Primary Key)</li>
+<li><code>userId</code>: ObjectId (Reference to User)</li>
+<li><code>studentId</code>: String (School ID)</li>
+<li><code>firstName</code>: String</li>
+<li><code>lastName</code>: String</li>
+<li><code>email</code>: String</li>
+<li><code>contactNumber</code>: String</li>
+<li><code>address</code>: Object</li>
+<li><code>dateOfBirth</code>: Date</li>
+<li><code>gender</code>: String</li>
+<li><code>department</code>: ObjectId (Reference to Department)</li>
+<li><code>enrollmentStatus</code>: String</li>
+<li><code>academicStatus</code>: String</li>
+<li><code>createdAt</code>: Date</li>
+<li><code>updatedAt</code>: Date</li>
+</ul>
+<h3>Teacher Collection</h3>
+<ul>
+<li><code>_id</code>: ObjectId (Primary Key)</li>
+<li><code>userId</code>: ObjectId (Reference to User)</li>
+<li><code>employeeId</code>: String</li>
+<li><code>firstName</code>: String</li>
+<li><code>lastName</code>: String</li>
+<li><code>email</code>: String</li>
+<li><code>contactNumber</code>: String</li>
+<li><code>department</code>: ObjectId (Reference to Department)</li>
+<li><code>subjects</code>: Array of ObjectId (References to Subject)</li>
+<li><code>createdAt</code>: Date</li>
+<li><code>updatedAt</code>: Date</li>
+</ul>
+<h2>Testing Strategy</h2>
+<h3>Unit Testing</h3>
+<ul>
+<li>Backend: Jest for controller and service testing</li>
+<li>Frontend: React Testing Library for component testing</li>
+</ul>
+<h3>Integration Testing</h3>
+<ul>
+<li>API endpoint testing with Supertest</li>
+<li>Database operations testing</li>
+</ul>
+<h3>End-to-End Testing</h3>
+<ul>
+<li>Not yet implemented</li>
+</ul>
+<h2>Deployment Considerations</h2>
+<h3>Environment Variables</h3>
+<ul>
+<li>Database connection strings</li>
+<li>JWT secrets</li>
+<li>API keys</li>
+<li>Environment-specific configuration</li>
+</ul>
+<h3>Security Measures</h3>
+<ul>
+<li>HTTPS for production</li>
+<li>Secure cookie settings</li>
+<li>CORS configuration</li>
+<li>Rate limiting</li>
+<li>Input validation and sanitization</li>
+</ul>
+<p>This technical context provides a comprehensive overview of the technology stack, development environment, and technical considerations for the School Enrollment System.</p>
+
+</body>
+</html>
+    

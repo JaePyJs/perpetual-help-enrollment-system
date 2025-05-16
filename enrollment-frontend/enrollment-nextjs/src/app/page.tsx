@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 
 const roleTabs = [
@@ -49,6 +50,7 @@ type ShowPassword = {
 };
 
 export default function LoginPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<Role>("student");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -150,9 +152,9 @@ export default function LoginPage() {
       }
 
       // Redirect logic (customize per role)
-      if (role === "student") window.location.href = "/student-dashboard";
-      else if (role === "teacher") window.location.href = "/teacher-dashboard";
-      else if (role === "admin") window.location.href = "/admin-dashboard";
+      if (role === "student") router.push("/student-dashboard");
+      else if (role === "teacher") router.push("/teacher-dashboard");
+      else if (role === "admin") router.push("/admin-dashboard");
     } catch (err: unknown) {
       const errorMessage =
         err instanceof Error
@@ -173,39 +175,47 @@ export default function LoginPage() {
   return (
     <main>
       <div className="wrapper">
-        <div className="container">
+        <div className="container animate-scale-in">
           <div className="left-panel">
             <div className="image-text-wrapper">
               <div className="image-container student-theme">
                 <Image
+                  key={
+                    activeTab
+                  } /* Add key to force re-render when tab changes */
                   src={getActiveImage()}
                   alt={`${
                     activeTab.charAt(0).toUpperCase() + activeTab.slice(1)
                   } Portal`}
                   width={180}
                   height={180}
-                  className="role-image active"
+                  className="role-image hover-scale"
                   priority
                 />
               </div>
-              <div className="welcome-message">
+              <div className="welcome-message animate-fade-in-up delay-1">
                 <h2>
                   <b>Welcome to Perpetual!</b>
                 </h2>
               </div>
             </div>
           </div>
-          <div className="right-panel">
+          <div className="right-panel animate-fade-in-right delay-2">
             {error && (
-              <div id="error-message" className="error-message">
+              <div id="error-message" className="error-message animate-shake">
                 {error}
               </div>
             )}
-            <div className="nav-tabs" role="tablist">
-              {roleTabs.map((tab) => (
+            <div
+              className="nav-tabs animate-fade-in-down delay-3"
+              role="tablist"
+            >
+              {roleTabs.map((tab, index) => (
                 <button
                   key={tab.id}
-                  className={`tab-link${activeTab === tab.id ? " active" : ""}`}
+                  className={`tab-link${
+                    activeTab === tab.id ? " active" : ""
+                  } hover-lift`}
                   onClick={() => {
                     setActiveTab(tab.id);
                     setError("");
@@ -215,8 +225,11 @@ export default function LoginPage() {
                   aria-selected={activeTab === tab.id ? "true" : "false"}
                   tabIndex={0}
                   type="button"
+                  style={{ animationDelay: `${(index + 3) * 50}ms` }}
                 >
-                  <span aria-hidden="true">{tab.icon}</span>
+                  <span aria-hidden="true" className="animate-fade-in">
+                    {tab.icon}
+                  </span>
                   {tab.label}
                   <span className="sr-only">Login</span>
                 </button>
@@ -232,13 +245,15 @@ export default function LoginPage() {
                 onSubmit={(e) => handleLogin(e, tab.id)}
                 autoComplete="off"
               >
-                <h3 className={`${tab.id}-login-heading`}>
+                <h3
+                  className={`${tab.id}-login-heading animate-fade-in-down delay-3`}
+                >
                   <span className="tab-icon" aria-hidden="true">
                     {tab.icon}
                   </span>{" "}
                   {tab.label} Log in
                 </h3>
-                <div className="input-group">
+                <div className="input-group animate-fade-in-up delay-3">
                   <input
                     type="text"
                     placeholder={
@@ -251,14 +266,14 @@ export default function LoginPage() {
                     required
                     autoComplete="username"
                     aria-label={tab.label + " username"}
-                    className="input"
+                    className="input hover-glow"
                   />
                 </div>
-                <div className="input-group password-group">
+                <div className="input-group password-group animate-fade-in-up delay-4">
                   <input
                     type={showPassword[tab.id] ? "text" : "password"}
                     placeholder="Password"
-                    className="input password-input"
+                    className="input password-input hover-glow"
                     value={fields[tab.id].password}
                     onChange={(e) =>
                       handleInput(tab.id, "password", e.target.value)
@@ -269,7 +284,7 @@ export default function LoginPage() {
                   />
                   <button
                     type="button"
-                    className="password-toggle"
+                    className="password-toggle hover-scale"
                     aria-label={
                       showPassword[tab.id] ? "Hide password" : "Show password"
                     }
@@ -308,9 +323,9 @@ export default function LoginPage() {
                     )}
                   </button>
                 </div>
-                <div className="actions">
+                <div className="actions animate-fade-in-up delay-4">
                   <Link
-                    className="forgot"
+                    className="forgot hover-lift"
                     href="https://docs.google.com/forms/d/e/1FAIpQLSczJVOOdAV0IUG6nx72DVPbU2WPKyQbdYrM2lzHb_v01Ra8OQ/viewform?usp=dialog"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -320,11 +335,16 @@ export default function LoginPage() {
                 </div>
                 <button
                   type="submit"
-                  className={`continue btn${loading ? " loading" : ""}`}
+                  className={`continue btn${
+                    loading ? " loading" : ""
+                  } btn-pulse animate-fade-in-up delay-4`}
                   disabled={loading}
                 >
                   {loading ? (
-                    <span className="spinner" aria-label="Loading"></span>
+                    <span
+                      className="spinner animate-spin"
+                      aria-label="Loading"
+                    ></span>
                   ) : (
                     <span>Continue</span>
                   )}

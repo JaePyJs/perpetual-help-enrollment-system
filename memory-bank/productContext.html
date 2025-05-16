@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProductContext - School Enrollment System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+<style>
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #e77f33;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  h1 {
+    font-size: 2.5em;
+    border-bottom: 2px solid #e77f33;
+    padding-bottom: 0.2em;
+  }
+  h2 {
+    font-size: 1.8em;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.2em;
+  }
+  h3 {
+    font-size: 1.5em;
+  }
+  a {
+    color: #e77f33;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  pre {
+    background-color: #f0f0f0;
+    padding: 1em;
+    border-radius: 5px;
+    overflow-x: auto;
+  }
+  code {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    background-color: #f0f0f0;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+  }
+  blockquote {
+    border-left: 4px solid #e77f33;
+    padding-left: 1em;
+    margin-left: 0;
+    color: #666;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  ul, ol {
+    padding-left: 2em;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2em;
+  }
+  .header a {
+    display: inline-block;
+    padding: 0.5em 1em;
+    background-color: #e77f33;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  .header a:hover {
+    background-color: #d06a20;
+  }
+</style>
+
+</head>
+<body>
+  <div class="header">
+    <h1>ProductContext</h1>
+    <a href="/">Back to Navigation</a>
+  </div>
+  <h1>Product Context</h1>
+<h2>Purpose and Problem Statement</h2>
+<p>The School Enrollment System addresses critical challenges faced by Perpetual Help College Manila in managing student enrollment:</p>
+<ol>
+<li><strong>Manual Process Inefficiency</strong>: The current paper-based enrollment process is time-consuming, error-prone, and resource-intensive.</li>
+<li><strong>Data Management Challenges</strong>: Student records are difficult to maintain, update, and access when stored in physical files.</li>
+<li><strong>Communication Gaps</strong>: Information sharing between departments, students, and faculty is slow and inconsistent.</li>
+<li><strong>Reporting Limitations</strong>: Generating accurate, timely reports for decision-making is cumbersome with manual systems.</li>
+<li><strong>Scalability Issues</strong>: The current process cannot efficiently handle increasing student numbers.</li>
+</ol>
+<h2>User Personas</h2>
+<h3>Student</h3>
+<ul>
+<li><strong>Demographics</strong>: Ages 16-25, varying levels of technical proficiency</li>
+<li><strong>Goals</strong>: Complete enrollment quickly, access academic information easily, manage payments conveniently</li>
+<li><strong>Pain Points</strong>: Long queues, repetitive form filling, difficulty tracking enrollment status</li>
+<li><strong>Usage Context</strong>: Primarily mobile devices, often with limited internet connectivity</li>
+</ul>
+<h3>Faculty/Teacher</h3>
+<ul>
+<li><strong>Demographics</strong>: Ages 25-65, varying technical skills</li>
+<li><strong>Goals</strong>: Access class rosters, submit grades efficiently, communicate with students</li>
+<li><strong>Pain Points</strong>: Delayed access to student information, manual grade calculations, limited communication channels</li>
+<li><strong>Usage Context</strong>: Mix of desktop and mobile devices, primarily during working hours</li>
+</ul>
+<h3>Administrator</h3>
+<ul>
+<li><strong>Demographics</strong>: Ages 30-60, moderate to high technical proficiency</li>
+<li><strong>Goals</strong>: Oversee enrollment process, generate reports, manage system settings</li>
+<li><strong>Pain Points</strong>: Data inconsistency, manual data compilation, limited oversight of enrollment progress</li>
+<li><strong>Usage Context</strong>: Primarily desktop computers during office hours</li>
+</ul>
+<h2>User Journey</h2>
+<h3>Student Enrollment Journey</h3>
+<ol>
+<li><strong>Discovery</strong>: Student learns about enrollment period through school announcements</li>
+<li><strong>Registration</strong>: Creates account or logs in to existing account</li>
+<li><strong>Profile Completion</strong>: Fills in or updates personal information</li>
+<li><strong>Course Selection</strong>: Browses and selects courses for the semester</li>
+<li><strong>Document Submission</strong>: Uploads required documents</li>
+<li><strong>Fee Assessment</strong>: Reviews tuition and other fees</li>
+<li><strong>Payment</strong>: Completes payment through available methods</li>
+<li><strong>Confirmation</strong>: Receives enrollment confirmation and class schedule</li>
+</ol>
+<h3>Teacher Journey</h3>
+<ol>
+<li><strong>Preparation</strong>: Logs in to view assigned classes</li>
+<li><strong>Class Management</strong>: Reviews student rosters and course details</li>
+<li><strong>Instruction</strong>: Conducts classes and tracks attendance</li>
+<li><strong>Assessment</strong>: Inputs grades and provides feedback</li>
+<li><strong>Reporting</strong>: Submits final grades and reports</li>
+</ol>
+<h3>Administrator Journey</h3>
+<ol>
+<li><strong>Setup</strong>: Configures enrollment periods and system settings</li>
+<li><strong>Monitoring</strong>: Oversees enrollment progress and resolves issues</li>
+<li><strong>Reporting</strong>: Generates and analyzes enrollment statistics</li>
+<li><strong>Maintenance</strong>: Updates course offerings and user accounts</li>
+</ol>
+<h2>User Experience Goals</h2>
+<ol>
+<li><strong>Intuitive Interface</strong>: Design a clean, straightforward interface that requires minimal training</li>
+<li><strong>Responsive Design</strong>: Ensure seamless experience across devices (desktop, tablet, mobile)</li>
+<li><strong>Accessibility</strong>: Comply with WCAG guidelines for inclusive access</li>
+<li><strong>Efficiency</strong>: Minimize clicks and steps required to complete tasks</li>
+<li><strong>Feedback</strong>: Provide clear status updates and confirmation messages</li>
+<li><strong>Error Prevention</strong>: Implement validation and helpful error messages</li>
+<li><strong>Performance</strong>: Ensure fast load times and responsive interactions</li>
+</ol>
+<h2>Key Workflows</h2>
+<h3>Student Enrollment</h3>
+<ul>
+<li>Account creation and authentication</li>
+<li>Personal information management</li>
+<li>Course selection and scheduling</li>
+<li>Document upload and verification</li>
+<li>Fee calculation and payment</li>
+<li>Enrollment confirmation</li>
+</ul>
+<h3>Grade Management</h3>
+<ul>
+<li>Grade input and calculation</li>
+<li>Progress tracking</li>
+<li>Report generation</li>
+<li>Grade verification and publication</li>
+</ul>
+<h3>Administrative Oversight</h3>
+<ul>
+<li>Enrollment period configuration</li>
+<li>User account management</li>
+<li>Course and curriculum updates</li>
+<li>Report generation and analysis</li>
+<li>System configuration and maintenance</li>
+</ul>
+<h2>Integration Requirements</h2>
+<ul>
+<li><strong>Student Information System</strong>: Sync with existing student records</li>
+<li><strong>Learning Management System</strong>: Share course and enrollment data</li>
+<li><strong>Financial System</strong>: Process payments and manage financial records</li>
+<li><strong>Communication Tools</strong>: Send notifications via email and SMS</li>
+<li><strong>Document Management</strong>: Store and retrieve student documents</li>
+</ul>
+<p>This product context serves as a foundation for understanding the purpose, users, and key workflows of the School Enrollment System, guiding development decisions to ensure the solution effectively addresses the needs of all stakeholders.</p>
+
+</body>
+</html>
+    
