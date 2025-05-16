@@ -365,7 +365,16 @@ If you encounter issues not covered in this troubleshooting guide:
 
 1. Check the documentation in the `docs/` directory
 2. Review the GitHub repository issues section
-3. Contact the development team at [support@uphc.edu.ph](mailto:support@uphc.edu.ph)
+3. Contact the development team at [m23-1470-578@manila.uphsl.edu.ph](mailto:m23-1470-578@manila.uphsl.edu.ph)
+
+## Development Team
+
+This project was developed by:
+
+- Marc Angelo Macaraig
+- Jam Agoo
+- Jho Av Maurish Yee
+- [JaePyJs](https://github.com/JaePyJs) (GitHub)
 
 ## License
 
