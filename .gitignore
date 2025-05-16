@@ -101,3 +101,6 @@ Thumbs.db
 *.bak
 *.backup
 mongodb_data/
+data/db/
+data/db/*
+data/
