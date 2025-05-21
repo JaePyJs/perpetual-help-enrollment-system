@@ -1,0 +1,133 @@
+/**
+ * ESLint Configuration
+ * This file configures ESLint for the backend codebase
+ */
+
+module.exports = {
+  env: {
+    node: true,
+    commonjs: true,
+    es2021: true,
+    mocha: true
+  },
+  extends: [
+    'eslint:recommended'
+  ],
+  parserOptions: {
+    ecmaVersion: 'latest'
+  },
+  rules: {
+    // Possible Errors
+    'no-console': 'warn',
+    'no-debugger': 'error',
+    'no-dupe-args': 'error',
+    'no-dupe-keys': 'error',
+    'no-duplicate-case': 'error',
+    'no-empty': 'warn',
+    'no-ex-assign': 'error',
+    'no-extra-boolean-cast': 'warn',
+    'no-extra-semi': 'warn',
+    'no-irregular-whitespace': 'warn',
+    'no-obj-calls': 'error',
+    'no-unexpected-multiline': 'error',
+    'no-unreachable': 'error',
+    'valid-typeof': 'error',
+
+    // Best Practices
+    'array-callback-return': 'error',
+    'block-scoped-var': 'error',
+    'curly': ['warn', 'multi-line'],
+    'default-case': 'warn',
+    'dot-notation': 'warn',
+    'eqeqeq': ['warn', 'always', { 'null': 'ignore' }],
+    'no-caller': 'error',
+    'no-empty-function': 'warn',
+    'no-eval': 'error',
+    'no-extend-native': 'error',
+    'no-extra-bind': 'warn',
+    'no-fallthrough': 'warn',
+    'no-floating-decimal': 'warn',
+    'no-implied-eval': 'error',
+    'no-lone-blocks': 'warn',
+    'no-multi-spaces': 'warn',
+    'no-multi-str': 'warn',
+    'no-new-func': 'error',
+    'no-new-wrappers': 'error',
+    'no-param-reassign': 'warn',
+    'no-return-assign': 'error',
+    'no-self-compare': 'error',
+    'no-sequences': 'error',
+    'no-throw-literal': 'error',
+    'no-unused-expressions': 'error',
+    'no-useless-concat': 'warn',
+    'no-useless-escape': 'warn',
+    'no-void': 'error',
+    'no-with': 'error',
+    'radix': 'warn',
+    'wrap-iife': ['warn', 'any'],
+    'yoda': 'warn',
+
+    // Variables
+    'no-label-var': 'error',
+    'no-shadow': 'warn',
+    'no-shadow-restricted-names': 'error',
+    'no-undef': 'error',
+    'no-undef-init': 'warn',
+    'no-unused-vars': ['warn', { 'argsIgnorePattern': '^_' }],
+    'no-use-before-define': ['error', { 'functions': false }],
+
+    // Node.js and CommonJS
+    'callback-return': 'warn',
+    'global-require': 'warn',
+    'handle-callback-err': 'warn',
+    'no-mixed-requires': 'warn',
+    'no-new-require': 'error',
+    'no-path-concat': 'warn',
+
+    // Stylistic Issues
+    'array-bracket-spacing': ['warn', 'never'],
+    'block-spacing': 'warn',
+    'brace-style': ['warn', '1tbs', { 'allowSingleLine': true }],
+    'comma-dangle': ['warn', 'only-multiline'],
+    'comma-spacing': 'warn',
+    'comma-style': 'warn',
+    'computed-property-spacing': 'warn',
+    'eol-last': 'warn',
+    'func-call-spacing': 'warn',
+    'key-spacing': 'warn',
+    'keyword-spacing': 'warn',
+    'linebreak-style': ['warn', 'unix'],
+    'max-depth': ['warn', 4],
+    'max-len': ['warn', { 'code': 100, 'ignoreComments': true, 'ignoreUrls': true }],
+    'max-nested-callbacks': ['warn', 4],
+    'max-params': ['warn', 4],
+    'max-statements-per-line': ['warn', { 'max': 2 }],
+    'new-cap': ['warn', { 'newIsCap': true, 'capIsNew': false }],
+    'new-parens': 'warn',
+    'no-array-constructor': 'error',
+    'no-bitwise': 'warn',
+    'no-lonely-if': 'warn',
+    'no-mixed-operators': 'warn',
+    'no-mixed-spaces-and-tabs': 'warn',
+    'no-multiple-empty-lines': ['warn', { 'max': 2, 'maxEOF': 1 }],
+    'no-nested-ternary': 'warn',
+    'no-new-object': 'error',
+    'no-trailing-spaces': 'warn',
+    'no-unneeded-ternary': 'warn',
+    'no-whitespace-before-property': 'warn',
+    'object-curly-spacing': ['warn', 'always'],
+    'operator-assignment': 'warn',
+    'operator-linebreak': ['warn', 'after'],
+    'quote-props': ['warn', 'as-needed'],
+    'quotes': ['warn', 'single', { 'avoidEscape': true, 'allowTemplateLiterals': true }],
+    'semi': ['warn', 'always'],
+    'semi-spacing': 'warn',
+    'space-before-blocks': 'warn',
+    'space-before-function-paren': ['warn', { 'anonymous': 'always', 'named': 'never' }],
+    'space-in-parens': ['warn', 'never'],
+    'space-infix-ops': 'warn',
+    'space-unary-ops': 'warn',
+    'spaced-comment': ['warn', 'always'],
+    'unicode-bom': 'warn'
+  }
+};

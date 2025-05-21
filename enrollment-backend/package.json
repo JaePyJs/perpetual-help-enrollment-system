@@ -1,14 +1,22 @@
 {
   "name": "enrollment-backend",
   "version": "1.0.0",
-  "description": "School Enrollment System Backend",
+  "description": "School Enrollment System Backend for Perpetual Help College of Manila",
   "main": "server.js",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
     "seed": "node seeder.js",
     "test": "mocha --exit tests/**/*.test.js --timeout 10000 || exit 0",
-    "lint": "echo 'No linting configured for backend'"
+    "test:watch": "mocha --watch tests/**/*.test.js --timeout 10000",
+    "coverage": "nyc --reporter=lcov --reporter=text npm test",
+    "lint": "eslint . --ext .js || exit 0",
+    "debug": "node --inspect server.js",
+    "start:prod": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -34,7 +42,30 @@
   "devDependencies": {
     "chai": "^4.3.10",
     "chai-http": "^4.4.0",
+    "eslint": "^8.56.0",
     "mocha": "^10.2.0",
-    "nodemon": "^3.0.1"
-  }
+    "nodemon": "^3.0.1",
+    "nyc": "^15.1.0",
+    "sinon": "^17.0.1",
+    "supertest": "^6.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JaePyJs/perpetual-help-enrollment-system.git"
+  },
+  "keywords": [
+    "school",
+    "enrollment",
+    "education",
+    "management",
+    "express",
+    "mongodb",
+    "node"
+  ],
+  "author": "Perpetual Help College of Manila",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JaePyJs/perpetual-help-enrollment-system/issues"
+  },
+  "homepage": "https://github.com/JaePyJs/perpetual-help-enrollment-system#readme"
 }
