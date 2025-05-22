@@ -76,13 +76,58 @@ app.post("/api/security/log", (req, res) => {
 
 // Simple health check endpoint
 app.get("/health", (req, res) => {
+  // Get memory usage in MB
+  const memUsage = process.memoryUsage();
+  const formatMemory = (bytes) => (bytes / 1024 / 1024).toFixed(2) + ' MB';
+  
+  // Get system info
+  const os = require('os');
+  const cpuUsage = process.cpuUsage();
+  const totalCPUs = os.cpus().length;
+  
+  // Check all connections for database health status
+  const dbState = {
+    0: 'disconnected',
+    1: 'connected',
+    2: 'connecting',
+    3: 'disconnecting',
+  };
+
   res.json({
     status: "ok",
-    timestamp: new Date().toISOString(),
+    version: require('./package.json').version,
+    serverTime: new Date().toISOString(),
+    startedAt: new Date(Date.now() - process.uptime() * 1000).toISOString(),
     uptime: process.uptime(),
     environment: process.env.NODE_ENV || "development",
-    database:
-      mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    database: {
+      status: dbState[mongoose.connection.readyState] || 'unknown',
+      connectionState: mongoose.connection.readyState,
+      collections: Object.keys(mongoose.connection.collections).length || 0,
+      models: Object.keys(mongoose.models).length || 0
+    },
+    system: {
+      platform: process.platform,
+      nodeVersion: process.version,
+      cpus: totalCPUs,
+      loadAvg: os.loadavg(),
+      freeMemory: formatMemory(os.freemem()),
+      totalMemory: formatMemory(os.totalmem()),
+      hostname: os.hostname()
+    },
+    process: {
+      pid: process.pid,
+      memory: {
+        rss: formatMemory(memUsage.rss),
+        heapTotal: formatMemory(memUsage.heapTotal),
+        heapUsed: formatMemory(memUsage.heapUsed),
+        external: formatMemory(memUsage.external)
+      },
+      cpu: {
+        user: cpuUsage.user,
+        system: cpuUsage.system
+      }
+    }
   });
 });
 
