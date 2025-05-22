@@ -8,14 +8,33 @@ const mongoose = require("mongoose");
 // Import the configured Express application from app.js
 const app = require("./app");
 
-// Database connection with retry
-const connectDB = async () => {
+// Database connection with improved retry mechanism and error handling
+const MAX_RETRIES = 5;
+const RETRY_INTERVAL = 5000; // 5 seconds
+
+const connectDB = async (retryCount = 0) => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log("MongoDB connected successfully");
+    await mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 10000, // Timeout after 10 seconds
+      heartbeatFrequencyMS: 30000, // Check server status every 30 seconds
+    });
+    console.log(`MongoDB connected successfully at ${new Date().toISOString()}`);
+    
+    // Add connection event listeners for better monitoring
+    mongoose.connection.on('disconnected', () => {
+      console.warn('MongoDB disconnected! Attempting to reconnect...');
+      setTimeout(() => connectDB(), 3000);
+    });
   } catch (err) {
     console.error("MongoDB connection error:", err);
-    process.exit(1);
+    
+    if (retryCount < MAX_RETRIES) {
+      console.log(`Retrying connection (${retryCount + 1}/${MAX_RETRIES}) in ${RETRY_INTERVAL/1000} seconds...`);
+      setTimeout(() => connectDB(retryCount + 1), RETRY_INTERVAL);
+    } else {
+      console.error(`Failed to connect to MongoDB after ${MAX_RETRIES} attempts. Exiting...`);
+      process.exit(1);
+    }
   }
 };
 
@@ -75,7 +94,7 @@ app.use((_, res) => {
 // Error handling middleware
 app.use((err, _, res, __) => {
   // Log the error
-  console.error(err.stack);
+  console.error(`[${new Date().toISOString()}] Server Error:`, err.stack);
 
   // Don't expose error details in production
   const isProduction = process.env.NODE_ENV === "production";
@@ -93,6 +112,14 @@ app.use((err, _, res, __) => {
     return res.status(401).json({
       status: "error",
       message: "Authentication required",
+    });
+  }
+
+  if (err.name === "MongoError" || err.name === "MongoServerError") {
+    return res.status(503).json({
+      status: "error",
+      message: "Database service unavailable",
+      details: isProduction ? undefined : err.message,
     });
   }
 
